@@ -1,0 +1,42 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_pfe
+    ports:
+      - "27018:27017"
+    restart: always
+
+  spark-master:
+    image: apache/spark:latest
+    container_name: spark_master_pfe
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    # Commande spécifique pour garder l'image Apache vivante
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    restart: always
+
+  spark-worker:
+    image: apache/spark:latest
+    container_name: worker_1_pfe
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    restart: always
+
+# --- LE DEUXIÈME WORKER AJOUTÉ ICI ---
+  spark-worker-2:
+    image: apache/spark:latest
+    container_name: worker_2_pfe
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    depends_on:
+      - spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    restart: always
