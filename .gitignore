@@ -1,0 +1,43 @@
+# Environnements virtuels
+venv/
+venv_py310/
+.env/
+ENV/
+
+# Fichiers binaires et archives
+*.deb
+*.jar
+*.tar.gz
+*.tgz
+*.zip
+
+# Données (trop volumineuses)
+donnees/
+*.csv
+*.xlsx
+*.parquet
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# IDE
+.vscode/
+.idea/
+
+# Logs et outputs
+outputs/
+logs/
+*.log
+
+# Fichiers temporaires
+tmp/
+temp/
+*.tmp
