@@ -1,0 +1,41 @@
+
+======================================================================
+RAPPORT — SUPPRESSION URLS & @ — VERSION DISTRIBUÉE (mapPartitions)
+======================================================================
+Date             : 2026-02-27 16:14:03
+Mode             : Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
+Réseau Docker    : projet_telecom_spark_network
+URI Workers      : mongodb://mongodb_pfe:27017/
+
+⏱️  TEMPS D'EXÉCUTION:
+   • Connexion Spark     : 11.08s
+   • Chargement données  : 7.79s
+   • Analyse             : 1.96s
+   • Nettoyage           : 6.21s
+   • Écriture MongoDB    : 1.17s
+   • Vérification        : 0.08s
+   • ─────────────────────────────────
+   • TEMPS TOTAL         : 28.38s
+   • Vitesse             : 936.52 doc/s
+
+📊 RÉSULTATS:
+   • Total documents        : 26576
+   • URLs supprimées        : 23 / 23 (100.00%)
+   • @ supprimés            : 74 / 74 (100.00%)
+   • URLs restantes         : 0
+   • @ restants             : 0
+
+📁 STOCKAGE:
+   • Source      : telecom_algerie.commentaires_bruts
+   • Destination : telecom_algerie.commentaires_sans_urls_arobase
+   • Insérés     : 26576
+   • Statut      : ✅ SUCCÈS
+
+🏗️  ARCHITECTURE:
+   MongoDB ──► Driver (prépare les plages skip/limit)
+                  ↙                    ↘
+             Worker 1              Worker 2
+          (lit + nettoie)       (lit + nettoie)
+                  ↓                    ↓
+             MongoDB               MongoDB
+           (écrit direct)        (écrit direct)
