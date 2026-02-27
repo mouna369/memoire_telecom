@@ -30,7 +30,7 @@ print(f"   • Application ID: {spark.sparkContext.applicationId}")
 
 # 2. Lecture depuis MongoDB
 print("\n📂 Connexion à MongoDB...")
-client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=5000)
+client = MongoClient('localhost', 27018, serverSelectionTimeoutMS=5000)
 db = client['telecom_algerie']
 collection = db['commentaires_bruts']
 
@@ -119,3 +119,4 @@ print("="*60)
 
 spark.stop()
 print("\n✅ Session Spark terminée")
+

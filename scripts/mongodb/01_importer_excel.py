@@ -1,90 +1,84 @@
-# scripts/mongodb/01_importer_excel.py (version finale)
-from pyspark.sql import SparkSession
-from pymongo import MongoClient
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+SCRIPT: Importer les fichiers Excel dans MongoDB
+À exécuter UNE SEULE fois au début
+"""
+
 import pandas as pd
+from pymongo import MongoClient
+from datetime import datetime
 import os
-import shutil
-import time
+import glob
 
 print("="*60)
-print("🚀 LECTURE MONGODB → SPARK CLUSTER")
+print("📥 IMPORT DES FICHIERS EXCEL VERS MONGODB")
 print("="*60)
 
-# 1. Vérifier le dossier de sortie
-output_dir = "/home/mouna/projet_telecom/donnees/transformees"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-    print(f"📁 Dossier créé: {output_dir}")
-else:
-    print(f"📁 Dossier existant: {output_dir}")
-    print(f"📁 Permissions: {oct(os.stat(output_dir).st_mode)[-3:]}")
+# 1. Connexion à MongoDB
+print("\n🔌 Connexion à MongoDB...")
+try:
+    client = MongoClient('localhost', 27018, serverSelectionTimeoutMS=5000)
+    client.admin.command('ping')
+    print("✅ Connecté à MongoDB")
+except Exception as e:
+    print(f"❌ Erreur: {e}")
+    exit(1)
 
-# 2. Connexion au cluster
-print("\n⚡ Connexion au cluster Spark...")
-spark = SparkSession.builder \
-    .appName("Nettoyage_Telecom") \
-    .master("spark://localhost:7077") \
-    .config("spark.executor.memory", "2g") \
-    .config("spark.executor.cores", "2") \
-    .config("spark.sql.adaptive.enabled", "true") \
-    .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
-    .getOrCreate()
-
-print(f"✅ Spark connecté - Version: {spark.version}")
-
-# 3. Lecture depuis MongoDB
-print("\n📂 Connexion à MongoDB...")
-client = MongoClient('localhost', 27017, serverSelectionTimeoutMS=5000)
+# 2. Créer la base et la collection
 db = client['telecom_algerie']
 collection = db['commentaires_bruts']
 
-total_mongo = collection.count_documents({})
-print(f"📊 MongoDB contient {total_mongo} documents")
+# 3. Chercher les fichiers Excel
+print("\n🔍 Recherche des fichiers Excel...")
+fichiers = glob.glob("/home/mouna/projet_telecom/donnees/brutes/*.xlsx")
 
-print("⏳ Chargement des données...")
-data = list(collection.find())
-print(f"✅ {len(data)} documents récupérés")
+if not fichiers:
+    print("❌ Aucun fichier trouvé dans donnees/brutes/")
+    print("📁 Vérifie le dossier")
+    exit(1)
 
-# 4. Conversion pandas
-print("\n🐼 Conversion en pandas...")
-df_pandas = pd.DataFrame(data)
-if '_id' in df_pandas.columns:
-    df_pandas = df_pandas.drop('_id', axis=1)
-print(f"✅ pandas DataFrame: {len(df_pandas)} lignes")
-print(f"📋 Colonnes: {list(df_pandas.columns)}")
+print(f"✅ {len(fichiers)} fichier(s) trouvé(s):")
+for f in fichiers:
+    print(f"   - {os.path.basename(f)}")
 
-# 5. Conversion Spark
-print("\n🔄 Conversion en Spark DataFrame...")
-df = spark.createDataFrame(df_pandas)
-nb_lignes = df.count()
-print(f"✅ Spark DataFrame: {nb_lignes} lignes")
 
-# 6. Sauvegarde
-print("\n💾 Sauvegarde en Parquet...")
-output_path = f"{output_dir}/donnees_brutes.parquet"
+# 4. Importer chaque fichier
+total = 0
+for fichier in fichiers:
+    print(f"\n📄 Traitement de: {os.path.basename(fichier)}")
+    
+    # Lire l'Excel
+    df = pd.read_excel(fichier, header=1)
+    print(f"   📊 {len(df)} lignes lues")
+    
+    # Convertir en documents
+    documents = []
+    for idx, row in df.iterrows():
+        doc = {
+            'Commentaire_Client': str(row.get('Commentaire Client', '')),
+            'commentaire_moderateur': str(row.get('Commentaire Modérateur', '')), 
+            'date': str(row.get('Date', '')),
+            'source': str(row.get('Réseau Social', '')),
+            'moderateur': str(row.get('Modérateur', '')),
+            'metadata': {
+                'fichier': os.path.basename(fichier),
+                'ligne': idx + 2,
+                'date_import': datetime.now()
+            },
+            'statut': 'brut'
+        }
+        documents.append(doc)
+    
+    # Insérer dans MongoDB
+    resultat = collection.insert_many(documents)
+    print(f"   ✅ {len(resultat.inserted_ids)} documents insérés")
+    total += len(resultat.inserted_ids)
 
-# Supprimer l'ancien dossier s'il existe
-if os.path.exists(output_path):
-    print(f"🗑️ Suppression de l'ancien dossier: {output_path}")
-    shutil.rmtree(output_path)
-
-# Sauvegarde avec moins de partitions pour éviter les erreurs
-df.coalesce(1).write.mode("overwrite").parquet(output_path)
-print(f"✅ Données sauvegardées dans: {output_path}")
-
-# 7. Vérification
-print("\n🔍 Vérification de la sauvegarde...")
-if os.path.exists(output_path):
-    taille = sum(os.path.getsize(os.path.join(dirpath, filename)) 
-                 for dirpath, _, filenames in os.walk(output_path) 
-                 for filename in filenames)
-    print(f"✅ Dossier créé: {output_path}")
-    print(f"📊 Taille: {taille / 1024 / 1024:.2f} Mo")
-else:
-    print(f"❌ Erreur: le dossier n'a pas été créé!")
-
+# 5. Résumé
 print("\n" + "="*60)
-print("🎉 TRAITEMENT TERMINÉ AVEC SUCCÈS !")
+print("📊 RÉSUMÉ FINAL")
 print("="*60)
-
-spark.stop()
+print(f"✅ Total importé: {total} commentaires")
+print(f"📁 Dans MongoDB: telecom_algerie.commentaires_bruts")
+print("="*60)
