@@ -1,0 +1,34 @@
+🔴 Dates différentes :
+   Même commentaire + même jour + même source
+   → SUPPRIMER toutes sauf 1  ❌ (bug collecte)
+
+   Même commentaire + jours différents
+   → GARDER (client qui répète sa plainte) ✅
+
+🟣 Modérateurs différents :
+   → GARDER TOUT ✅ (utile pour analyse)
+
+🔵 Sources différentes :
+   → GARDER 1 par source ✅
+
+
+   # Supprimer : même texte + même jour + même source
+# Garder    : même texte + même jour + source différente (1 par source) ( 1 par date ) 
+# Garder    : même texte + jours différents (1 par date ) 
+# Garder    : même texte + modérateurs différents
+```
+
+---
+
+## La différence clé :
+```
+Exemple : 27 copies même jour
+Facebook  21:38
+Instagram 21:29
+Instagram 21:27
+
+Binôme  → garde 1 seule copie ❌
+          (supprime Facebook ET Instagram)
+
+Toi     → garde 1 Facebook + 1 Instagram ✅
+          (plus intelligent pour analyse par plateforme)

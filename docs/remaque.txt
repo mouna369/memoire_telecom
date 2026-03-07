@@ -1,0 +1,2 @@
+remarque 1 :
+bach n9der ndir spark-master : sudo nano /etc/hosts  / 127.0.0.1   spark-master /

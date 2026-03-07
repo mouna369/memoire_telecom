@@ -1,0 +1,30 @@
+
+======================================================================
+RAPPORT — SUPPRESSION INTELLIGENTE DES DOUBLONS
+======================================================================
+Date       : 2026-02-28 23:51:00
+Mode       : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
+Collection : telecom_algerie.commentaires_sans_chiffres_certains → commentaires_sans_doublons
+
+RÈGLES APPLIQUÉES :
+   ❌ R1 : même texte(60c) + même jour + même source + même mod → garder 1
+   ✅ R2 : même texte(60c) + même jour + source diff            → 1 par source
+   ✅ R3 : même texte(60c) + jours différents                   → 1 par jour
+   ✅ R4 : même texte(60c) + même jour + mod diff               → 1 par modérateur
+   ✅ R5 : texte tronqué vs complet → garder le plus long (complet)
+
+RÉSULTATS :
+   • Documents source          : 26551
+   • Documents supprimés       : 1096
+   • Documents gardés          : 25455
+   • Taux de réduction         : 4.13%
+
+TEMPS :
+   • Total                     : 30.56s
+   • Vitesse                   : 869 docs/s
+
+STOCKAGE :
+   • Source      : telecom_algerie.commentaires_sans_chiffres_certains
+   • Destination : telecom_algerie.commentaires_sans_doublons
+   • Statut      : ✅ SUCCÈS
+======================================================================

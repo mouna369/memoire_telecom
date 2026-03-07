@@ -1,0 +1,633 @@
+{
+    "meta": {
+        "collection": "telecom_algerie.commentaires_sans_urls_arobase",
+        "total_documents": 26551,
+        "description": "Analyse automatique des chiffres — décider quoi garder ou supprimer"
+    },
+    "a_GARDER": {
+        "description": "Ces mots donnent du SENS au chiffre → NE PAS supprimer le chiffre",
+        "mots_apres_chiffre": {
+            "description": "Mots qui SUIVENT un chiffre (ex: '30 [MOT]')",
+            "top_30": [
+                {
+                    "mot": "ميغا",
+                    "frequence": 780,
+                    "exemple": "60 ميغا",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "g",
+                    "frequence": 670,
+                    "exemple": "4g",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "يوم",
+                    "frequence": 571,
+                    "exemple": "15 يوم",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "دج",
+                    "frequence": 509,
+                    "exemple": "2200 دج",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "G",
+                    "frequence": 490,
+                    "exemple": "1G",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ايام",
+                    "frequence": 297,
+                    "exemple": "10 ايام",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "اشهر",
+                    "frequence": 295,
+                    "exemple": "9 اشهر",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ميقا",
+                    "frequence": 273,
+                    "exemple": "60ميقا",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "الف",
+                    "frequence": 270,
+                    "exemple": "300 الف",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "و",
+                    "frequence": 256,
+                    "exemple": "2026 و",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "جيغا",
+                    "frequence": 199,
+                    "exemple": "1 جيغا",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "du",
+                    "frequence": 180,
+                    "exemple": "20250927181446511421 du",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "مسكن",
+                    "frequence": 165,
+                    "exemple": "236 مسكن",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "أشهر",
+                    "frequence": 165,
+                    "exemple": "9 أشهر",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "mois",
+                    "frequence": 146,
+                    "exemple": "06 mois",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "h",
+                    "frequence": 138,
+                    "exemple": "18h",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ميڨا",
+                    "frequence": 136,
+                    "exemple": "600 ميڨا",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "جي",
+                    "frequence": 124,
+                    "exemple": "4جي",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "أيام",
+                    "frequence": 119,
+                    "exemple": "3 أيام",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ساعة",
+                    "frequence": 106,
+                    "exemple": "24ساعة",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "m",
+                    "frequence": 87,
+                    "exemple": "600m",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "%",
+                    "frequence": 86,
+                    "exemple": "100%",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "جيقا",
+                    "frequence": 85,
+                    "exemple": "1000 جيقا",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "مرات",
+                    "frequence": 84,
+                    "exemple": "4 مرات",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "gb",
+                    "frequence": 81,
+                    "exemple": "1gb",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "نوفمبر",
+                    "frequence": 80,
+                    "exemple": "8 نوفمبر",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "jours",
+                    "frequence": 78,
+                    "exemple": "28 jours",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "mb",
+                    "frequence": 76,
+                    "exemple": "600mb",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "شهر",
+                    "frequence": 75,
+                    "exemple": "3 شهر",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "متر",
+                    "frequence": 63,
+                    "exemple": "1 متر",
+                    "decision": "✅ GARDER"
+                }
+            ]
+        },
+        "mots_avant_chiffre": {
+            "description": "Mots qui PRÉCÈDENT un chiffre (ex: '[MOT] 4G')",
+            "top_30": [
+                {
+                    "mot": "من",
+                    "frequence": 562,
+                    "exemple": "من 15",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "في",
+                    "frequence": 481,
+                    "exemple": "في 3",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "عندي",
+                    "frequence": 295,
+                    "exemple": "عندي 3",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "مودام",
+                    "frequence": 228,
+                    "exemple": "مودام 4",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "منذ",
+                    "frequence": 207,
+                    "exemple": "منذ 20",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ويفي",
+                    "frequence": 202,
+                    "exemple": "ويفي 6",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "de",
+                    "frequence": 188,
+                    "exemple": "de 2",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "du",
+                    "frequence": 185,
+                    "exemple": "du 1",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "idoom",
+                    "frequence": 150,
+                    "exemple": "idoom 4",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "wifi",
+                    "frequence": 138,
+                    "exemple": "wifi 6",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "حي",
+                    "frequence": 128,
+                    "exemple": "حي 236",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "تاع",
+                    "frequence": 126,
+                    "exemple": "تاع 120",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "le",
+                    "frequence": 114,
+                    "exemple": "le 10",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "اشتراك",
+                    "frequence": 104,
+                    "exemple": "اشتراك 600",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "على",
+                    "frequence": 95,
+                    "exemple": "على 16",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "بـ",
+                    "frequence": 92,
+                    "exemple": "بـ 250",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "نخلص",
+                    "frequence": 88,
+                    "exemple": "نخلص 600",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "رقم",
+                    "frequence": 88,
+                    "exemple": "رقم 12",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "الى",
+                    "frequence": 87,
+                    "exemple": "الى 60",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "حتى",
+                    "frequence": 86,
+                    "exemple": "حتى 00",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "دج",
+                    "frequence": 78,
+                    "exemple": "دج 100",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "ta",
+                    "frequence": 77,
+                    "exemple": "ta3",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "تدفق",
+                    "frequence": 75,
+                    "exemple": "تدفق 50",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "عرض",
+                    "frequence": 71,
+                    "exemple": "عرض 1000",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "إلى",
+                    "frequence": 67,
+                    "exemple": "إلى 100",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "غير",
+                    "frequence": 67,
+                    "exemple": "غير 1",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "سنة",
+                    "frequence": 65,
+                    "exemple": "سنة 2016",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "الرقم",
+                    "frequence": 51,
+                    "exemple": "الرقم 12",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "تلحقني",
+                    "frequence": 49,
+                    "exemple": "تلحقني 16",
+                    "decision": "✅ GARDER"
+                },
+                {
+                    "mot": "فيبر",
+                    "frequence": 49,
+                    "exemple": "فيبر 2600",
+                    "decision": "✅ GARDER"
+                }
+            ]
+        }
+    },
+    "a_SUPPRIMER": {
+        "description": "Ces chiffres n'ont aucun contexte → candidats à la suppression",
+        "repetitions": {
+            "description": "Chiffres répétés (0000000, 11111) → bruit pur",
+            "resultats": [
+                {
+                    "chiffre": "00000...",
+                    "frequence": 59,
+                    "exemple": "ريزوووووووو 0000000000",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "0000...",
+                    "frequence": 18,
+                    "exemple": "ا يتجاوز سعره 10000 دج و مقوي للاش",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "4444...",
+                    "frequence": 6,
+                    "exemple": "بلهاتف رقم 043544449",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "9999...",
+                    "frequence": 3,
+                    "exemple": "تخفيض 9999 دينار جزائري ر",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "2222...",
+                    "frequence": 2,
+                    "exemple": "الشكوى 20251012222439361017 هل تر",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "66666...",
+                    "frequence": 2,
+                    "exemple": "27 ولا عيطولي 066666615",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "33333...",
+                    "frequence": 1,
+                    "exemple": "tv ytgataaaaaaa3333333333333",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "chiffre": "99999...",
+                    "frequence": 1,
+                    "exemple": "المشترك رقم 2 999998",
+                    "decision": "❌ SUPPRIMER"
+                }
+            ]
+        },
+        "numeros_telephone": {
+            "description": "Numéros téléphone algériens (0555..., 0661...) → données personnelles",
+            "resultats": [
+                {
+                    "format": "0668XXXXXXX",
+                    "frequence": 3,
+                    "exemple": "0668134044",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0667XXXXXXX",
+                    "frequence": 2,
+                    "exemple": "0667958364",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0551XXXXXXX",
+                    "frequence": 2,
+                    "exemple": "0551383392",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0699XXXXXXX",
+                    "frequence": 2,
+                    "exemple": "0699993793",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0664XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0664514558",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0663XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0663938546",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0698XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0698757679",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0662XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0662293892",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0770XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0770475813",
+                    "decision": "❌ SUPPRIMER"
+                },
+                {
+                    "format": "0795XXXXXXX",
+                    "frequence": 1,
+                    "exemple": "0795261917",
+                    "decision": "❌ SUPPRIMER"
+                }
+            ]
+        },
+        "chiffres_seuls_longs": {
+            "description": "Chiffres longs sans contexte (+4 chiffres seuls) → probablement du bruit",
+            "top_20": [
+                {
+                    "chiffre": "2025...",
+                    "frequence": 509,
+                    "contexte": "nternet depuis août 2025 a baba hsen😡",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2026...",
+                    "frequence": 230,
+                    "contexte": "en 2026 le débit de la 4G n",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "1000...",
+                    "frequence": 100,
+                    "contexte": "1000 جيغا بسرعة تدفق 50",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2000...",
+                    "frequence": 63,
+                    "contexte": "بريدي موب عوض تسديد 2000 دينار أخطأت و سددت",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "0000...",
+                    "frequence": 56,
+                    "contexte": "ريزوووووووو 0000000000",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2200...",
+                    "frequence": 48,
+                    "contexte": "انا نخلص في 2200 دج باش تجيني 60 ميغ",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "7000...",
+                    "frequence": 38,
+                    "contexte": "ني اشري مودام آخر ب 7000",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "3000...",
+                    "frequence": 34,
+                    "contexte": "ات 1000 الشهر بمعنى 3000 ل تسعين يوما ماذا ر",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2024...",
+                    "frequence": 33,
+                    "contexte": "ركيب الفيبر منذ اخر 2024 السانية وهران ليومن",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "1500...",
+                    "frequence": 28,
+                    "contexte": "من المعلومات ونتصل 1500 ندخل رقم الهاتف الي",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "7500...",
+                    "frequence": 24,
+                    "contexte": "المشكلة ليس في 7500 او 1000 جيغا اذا ال",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2023...",
+                    "frequence": 21,
+                    "contexte": "الخدمة منذ شهر ماي 2023 رغم كل الاتصالات و",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2400...",
+                    "frequence": 20,
+                    "contexte": "ت بتسديد شهر انترنت 2400 DA علما اني استأجرت",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2030...",
+                    "frequence": 19,
+                    "contexte": "تى يلحقنا الفيبر في 2030",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2018...",
+                    "frequence": 17,
+                    "contexte": "يزو نتاوعكم مازالهم 2018 هابدلوهم اسيدي ولا",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2600...",
+                    "frequence": 16,
+                    "contexte": "ئة 1600 1000المجموع 2600 دج ولم استفد من الب",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "0212...",
+                    "frequence": 15,
+                    "contexte": "مين و انا نعيط 12 و 02121 واحد مارفد علينا في",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "2009...",
+                    "frequence": 15,
+                    "contexte": "لك الإنترنت منذ سنة 2009 هذه الوضعية غير مقب",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "4500...",
+                    "frequence": 13,
+                    "contexte": "هو العرض موديم يسوى 4500 و الانترنات 1000 ال",
+                    "decision": "⚠️ VÉRIFIER"
+                },
+                {
+                    "chiffre": "6500...",
+                    "frequence": 12,
+                    "contexte": "كسي 1000 كي نفليكسي 6500 نفس السرعة قبل و بع",
+                    "decision": "⚠️ VÉRIFIER"
+                }
+            ]
+        }
+    },
+    "resume": {
+        "mots_apres_chiffre_uniques": 2155,
+        "mots_avant_chiffre_uniques": 2977,
+        "repetitions_detectees": 92,
+        "telephones_detectes": 20,
+        "chiffres_seuls_detectes": 1715
+    }
+}

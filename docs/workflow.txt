@@ -1,0 +1,140 @@
+╔══════════════════════════════════════════════════════════════╗
+║                    COLLECTE DES DONNÉES                      ║
+║  Commentaires Facebook/Instagram/Twitter                     ║
+║  3 ans de données — Dialecte Algérien + Arabe               ║
+║              ↓ stockage brut                                 ║
+║                    MongoDB                                   ║
+║           (commentaires_bruts)                               ║
+╚══════════════════════════════════════════════════════════════╝
+                         ↓
+╔══════════════════════════════════════════════════════════════╗
+║              PIPELINE BIG DATA — SPARK MULTI-NODE           ║
+║                                                              ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 1 — Nettoyage (✅ FAIT !)                │       ║
+║   │  • Suppression URLs et @                        │       ║
+║   │  • Worker1 + Worker2 en parallèle               │       ║
+║   │  • Résultat → commentaires_sans_urls_arobase    │       ║
+║   └─────────────────────────────────────────────────┘       ║
+║                         ↓                                    ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 2 — Nettoyage avancé                     │       ║
+║   │  • Suppression stopwords                        │       ║
+║   │  • Normalisation arabe/dialecte algérien        │       ║
+║   │  • Tokenisation                                 │       ║
+║   │  • Résultat → commentaires_tokenises            │       ║
+║   └─────────────────────────────────────────────────┘       ║
+║                         ↓                                    ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 3 — Intégration & Mise à jour MongoDB    │       ║
+║   │  • Pipeline automatisé                          │       ║
+║   │  • Nouveaux commentaires → traitement auto      │       ║
+║   │  • Versioning des données                       │       ║
+║   └─────────────────────────────────────────────────┘       ║
+╚══════════════════════════════════════════════════════════════╝
+                         ↓
+╔══════════════════════════════════════════════════════════════╗
+║                    MODÈLE LLM                                ║
+║                                                              ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 4 — Adaptation LLM                       │       ║
+║   │  • Fine-tuning sur dialecte algérien            │       ║
+║   │  • AraBERT / CAMeL / DarijaBERT                 │       ║
+║   │  • Entraînement distribué sur Spark             │       ║
+║   └─────────────────────────────────────────────────┘       ║
+╚══════════════════════════════════════════════════════════════╝
+                         ↓
+╔══════════════════════════════════════════════════════════════╗
+║                    ANALYSE NLP                               ║
+║                                                              ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 5 — Analyse de Sentiments                │       ║
+║   │  • Positif / Négatif / Neutre                   │       ║
+║   │  • Par source, par période                      │       ║
+║   │  • Résultat → commentaires_sentiments           │       ║
+║   └─────────────────────────────────────────────────┘       ║
+║                         ↓                                    ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 6 — Extraction des Thèmes (LDA/BERTopic) │       ║
+║   │  • Réseau, Facturation, Service client...       │       ║
+║   │  • Clustering automatique                       │       ║
+║   │  • Résultat → commentaires_themes               │       ║
+║   └─────────────────────────────────────────────────┘       ║
+╚══════════════════════════════════════════════════════════════╝
+                         ↓
+╔══════════════════════════════════════════════════════════════╗
+║                 ANALYSE TEMPORELLE                           ║
+║                                                              ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 7 — Évolution dans le temps              │       ║
+║   │  • Satisfaction par mois/trimestre              │       ║
+║   │  • Détection pics négatifs (crises)             │       ║
+║   │  • Corrélation événements télécom               │       ║
+║   │  • Résultat → analyse_temporelle                │       ║
+║   └─────────────────────────────────────────────────┘       ║
+╚══════════════════════════════════════════════════════════════╝
+                         ↓
+╔══════════════════════════════════════════════════════════════╗
+║                    DASHBOARD                                 ║
+║                                                              ║
+║   ┌─────────────────────────────────────────────────┐       ║
+║   │  ÉTAPE 8 — Visualisation Interactive            │       ║
+║   │  • Évolution temporelle sentiment               │       ║
+║   │  • Nuage de mots par thème                      │       ║
+║   │  • Carte des crises détectées                   │       ║
+║   │  • KPIs satisfaction client                     │       ║
+║   │  • Tech : Dash / Streamlit / PowerBI            │       ║
+║   └─────────────────────────────────────────────────┘       ║
+╚══════════════════════════════════════════════════════════════╝
+
+- Suppression URLs + @          ✅ FAIT
+- Suppression Hashtags (#Djezzy → Djezzy ou supprimé)
+- Suppression Emojis            (garder pour étape finale)
+- Suppression Ponctuations      . , ! ? ; : ... « » ( )
+- Suppression Chiffres          0 1 2 3 4 5 6 7 8 9
+- Suppression numéros téléphone 0555 12 34 56
+- Suppression espaces multiples "bonjour    monde" → "bonjour monde"
+- Suppression lignes vides
+2. Normalisation Arabe
+- Supprimer Tashkeel (voyelles)  كِتَابٌ  →  كتاب
+- Supprimer Tatweel              كـــتاب  →  كتاب
+- Normaliser Hamza               أ إ آ    →  ا
+- Normaliser Ta marbuta          مدرسة   →  مدرس
+- Normaliser Alef maqsura        على     →  علي
+- Normaliser Ya                  ي  →  ى
+
+3. Normalisation Dialecte Algérien
+- Normaliser les répétitions     واااااو  →  واو
+- Unifier les variantes          
+  هكذا / هكاك / هكا  →  هكذا
+  واش / وش           →  ماذا
+  راهو / راه         →  هو
+- Gérer le code-switching        
+  "réseau" + "شبكة"  →  garder les deux
+
+
+
+  4. Suppression Stopwords
+- Stopwords Arabe standard
+  في، من، إلى، على، هذا، هذه...
+
+- Stopwords Dialecte Algérien
+  واش، راهو، كيما، بصح، حتى...
+
+- Stopwords Français
+  je, tu, il, le, la, les, de...
+
+- Stopwords spécifiques Télécom
+  salam, bonjour, bonsoir, svp, stp
+
+
+  5. Tokenisation
+- Découper le texte en tokens (mots)
+  "خدمة الانترنت سيئة" → ["خدمة", "انترنت", "سيئة"]
+
+- Gérer les mots composés
+  "ما يخدمش" → ["ما", "يخدم", "ش"]  
+               ou garder → ["مايخدمش"]
+
+- Filtrer les mots courts (< 2 lettres)
+  و، أ، ب، ك  → supprimer

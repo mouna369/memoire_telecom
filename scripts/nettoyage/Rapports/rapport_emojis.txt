@@ -1,0 +1,34 @@
+
+======================================================================
+RAPPORT — EXTRACTION EMOJIS (Multi-Node Spark)
+======================================================================
+Date        : 2026-03-06 23:16:36
+Spark 4.1.1 | Multi-Node | 3 Workers
+Collection  : telecom_algerie.commentaires_sans_doublons → commentaires_sans_emojis
+Dict        : /opt/dictionnaires/master_dict.json
+
+TRAITEMENT :
+   • Extraction emojis  → colonne emojis_originaux
+   • Traduction arabe   → colonne emojis_sentiment
+   • Suppression emojis → Commentaire_Client propre
+
+RÉSULTATS :
+   • Total source           : 25455
+   • Total inséré           : 25455
+   • Docs avec emojis       : 1045
+   • Docs sans emojis       : 24410
+   • Pourcentage avec emojis: 4.1%
+
+STRUCTURE NOUVELLE COLLECTION :
+   • Commentaire_Client  : texte sans emojis
+   • emojis_originaux    : ["😠", "👎", ...]
+   • emojis_sentiment    : ["غضب شديد", "عدم رضا", ...]
+
+TEMPS :
+   • Total               : 34.01s
+   • Vitesse             : 748 docs/s
+
+STOCKAGE :
+   • Source      : telecom_algerie.commentaires_sans_doublons
+   • Destination : telecom_algerie.commentaires_sans_emojis
+======================================================================

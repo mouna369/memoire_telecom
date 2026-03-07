@@ -131,6 +131,7 @@ services:
       - spark-data:/data
       - ./data/results:/opt/data
       - ./pymongo_libs:/opt/pymongo_libs
+      - ./dictionnaires:/opt/dictionnaires
     networks:
       - spark_network
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
@@ -147,6 +148,7 @@ services:
       - spark-data:/data
       - ./data/results:/opt/data
       - ./pymongo_libs:/opt/pymongo_libs
+      - ./dictionnaires:/opt/dictionnaires
     networks:
       - spark_network
     depends_on:
@@ -165,12 +167,33 @@ services:
       - spark-data:/data
       - ./data/results:/opt/data
       - ./pymongo_libs:/opt/pymongo_libs
+      - ./dictionnaires:/opt/dictionnaires
     networks:
       - spark_network
     depends_on:
       - spark-master
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     restart: always
+
+  spark-worker-3:
+    image: apache/spark:latest
+    container_name: worker_3_pfe
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - PYTHONPATH=/opt/pymongo_libs
+    volumes:
+      - spark-data:/data
+      - ./data/results:/opt/data
+      - ./pymongo_libs:/opt/pymongo_libs
+      - ./dictionnaires:/opt/dictionnaires
+    networks:
+      - spark_network
+    depends_on:
+      - spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    restart: always
+
 
 volumes:
   spark-data:

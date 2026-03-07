@@ -1,0 +1,57 @@
+spark-worker-3:
+    image: apache/spark:latest
+    container_name: worker_3_pfe
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - PYTHONPATH=/opt/pymongo_libs
+    volumes:
+      - spark-data:/data
+      - ./data/results:/opt/data
+      - ./pymongo_libs:/opt/pymongo_libs
+    networks:
+      - spark_network
+    depends_on:
+      - spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    restart: always
+
+
+
+
+
+
+
+
+
+
+
+# Redémarrer avec le nouveau Worker
+docker compose down
+docker compose up -d
+
+# Copier pymongo dans le nouveau Worker
+docker cp ~/projet_telecom/pymongo_libs/pymongo worker_3_pfe:/usr/lib/python3/dist-packages/
+docker cp ~/projet_telecom/pymongo_libs/bson worker_3_pfe:/usr/lib/python3/dist-packages/
+
+# Vérifier
+docker exec worker_3_pfe python3 -c "import sys; sys.path.insert(0,'/opt/pymongo_libs'); import pymongo; print('Worker3 OK:', pymongo.version)"
+```
+
+---
+
+## Le nouveau flux :
+```
+MongoDB (26579 docs)
+         ↓
+    Driver (calcule 3 plages)
+         ↓
+    Spark Master
+    ↙      ↓      ↘
+W1       W2       W3
+8860    8860     8859
+docs    docs     docs
+  ↓       ↓       ↓
+MongoDB MongoDB MongoDB
+         ↓
+  commentaires_sans_urls_arobase
