@@ -1,0 +1,20 @@
+
+============================================================
+RAPPORT PIPELINE NETTOYAGE — TÉLÉCOM DZ
+============================================================
+Date    : 2026-03-08 01:02:57
+Scripts : /home/mouna/projet_telecom/scripts/nettoyage/Nettoyage_des_textes/code
+
+RÉSULTATS :
+   Étape 1 — URLs+Hashtags : 26576 → 26551 docs (39.7s)
+   Étape 2 — Chiffres      : 26551 → 26551 docs (35.3s)
+   Étape 3 — Doublons      : 26551 → 25456 docs (28.4s)
+   Étape 4 — Emojis        : 25456 → 25456 docs (28.4s)
+
+TOTAL :
+   Docs initiaux  : 26576
+   Docs finaux    : 25456
+   Docs supprimés : 1120
+   Temps total    : 132.3s
+   Statut         : ✅ SUCCÈS
+============================================================

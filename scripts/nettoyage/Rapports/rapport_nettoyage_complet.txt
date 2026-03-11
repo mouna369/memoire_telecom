@@ -1,0 +1,34 @@
+
+======================================================================
+RAPPORT — NETTOYAGE COMPLET (URLs + @ + # + Ponctuations + Lignes vides)
+======================================================================
+Date   : 2026-03-08 01:01:23
+Mode   : Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
+
+⏱️  TEMPS:
+   • Connexion Spark  : 11.07s
+   • Chargement       : 15.81s
+   • Analyse          : 6.09s
+   • Nettoyage        : 2.61s
+   • Écriture MongoDB : 1.43s
+   • TOTAL            : 37.27s (713 doc/s)
+
+📊 RÉSULTATS:
+   • Total source       : 26576 documents
+   • URLs supprimées    : 23 (100.0%)
+   • @ supprimés        : 74 (100.0%)
+   • # supprimés        : 174 (100.0%)  # ✅ AJOUTÉ
+   • Ponct. supprimées  : 8152 (100.0%)
+   • Lignes vides       : 25 ignorées (non insérées)
+   • Total inséré       : 26551 documents
+
+🧹 PONCTUATIONS SUPPRIMÉES:
+   • Latines  : . , ! ? ; : " ' « » ( ) [ ] { }
+   • Arabes   : ؟ ، ؛
+   • Symboles : … – — ~ ` ^ * + = < > | \ / _
+
+📁 STOCKAGE:
+   • Source      : telecom_algerie.commentaires_bruts
+   • Destination : telecom_algerie.commentaires_sans_urls_arobase
+   • Insérés     : 26551
+   • Statut      : ✅ SUCCÈS

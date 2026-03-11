@@ -1,0 +1,30 @@
+======================================================================
+RAPPORT DE COMPARAISON DOUBLONS AVANT/APRÈS
+======================================================================
+Date : 2026-03-11 23:40:31
+
+📊 AVANT SUPPRESSION
+--------------------------------------------------
+   Collection : commentaires_sans_urls_arobase
+   Documents  : 26551
+   Doublons   : 2197 (8.27%)
+
+📊 APRÈS SUPPRESSION
+--------------------------------------------------
+   Collection : commentaires_sans_doublons
+   Documents  : 25456
+   Doublons   : 1148 (4.51%)
+
+📊 RÉSULTAT
+--------------------------------------------------
+   Supprimés  : 1095 documents
+   Éliminés   : 1049 doublons
+   Taux final : 4.51%
+
+📊 DOUBLONS RÉSIDUELS
+--------------------------------------------------
+   Sources différentes    : 135
+   Dates différentes      : 640
+   Modérateurs différents : 567
+   Critères mixtes        : 594
+   Doublons parfaits      : 0

@@ -1,0 +1,32 @@
+
+======================================================================
+RAPPORT — NORMALISATION ARABE v3.8.2 (Multi-Node Spark)
+======================================================================
+Date        : 2026-03-11 21:52:13
+Mode        : full | Spark 4.1.1 | 3 Workers
+Collection  : telecom_algerie.commentaires_sans_emojis → commentaires_normalises
+Dict        : /opt/dictionnaires/master_dict.json
+Rules       : /opt/dictionnaires/linguistic_rules.json
+
+NOUVEAUTÉS v3 vs v2 :
+   ✅ FIX-1  : Protection chiffres séparateurs (15:00 / 8000 DA)
+   ✅ FIX-2  : Chiffres tronqués corrigés
+   ✅ FIX-3  : جدا جدا conservé
+   ✅ FIX-4  : Faux doublons suffixes arabes
+   ✅ FIX-5  : Arabizi avant latin_dom (slm/mkch)
+   ✅ FIX-6  : Texte latin dominant protégé
+   ✅ FIX-7  : ئ→ي supprimé (سيئة conservé)
+   ✅ FIX-8→26 : dictionnaire enrichi
+
+RÉSULTATS :
+   • Total source          : 25456
+   • Documents modifiés    : 20660
+   • Total inséré          : 25456
+   • Tashkeel restants     : 0
+   • Tatweel restants      : 0
+   • Statut                : ✅ SUCCÈS TOTAL !
+
+TEMPS :
+   • Total                 : 33.89s
+   • Vitesse               : 751 docs/s
+======================================================================

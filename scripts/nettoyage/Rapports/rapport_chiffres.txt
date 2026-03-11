@@ -1,0 +1,39 @@
+
+======================================================================
+RAPPORT — NETTOYAGE DES CHIFFRES (CAS CERTAINS)
+======================================================================
+Date   : 2026-03-08 01:01:58
+Mode   : Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
+
+❌ SUPPRIMÉS (cas certains) :
+   • Téléphones mobiles   : 0664514558 / 0551383392
+   • Téléphones fixes     : 027955127  / 042057067
+   • Numéros réclamation  : 20250927181446511421 (+10 chiffres)
+   • Répétitions pures    : 0000000000 (+5 chiffres identiques)
+
+✅ GARDÉS (pour le LLM NLP) :
+   • Prix ambigus         : 1500 / 7000 / 14000
+   • Chiffres seuls       : 1000 / 3000
+   • Années               : 2009 / 2022 / 2025
+   • Prix clairs          : 2200 دج / 9999 دينار
+   • Quantités            : 60 ميغا / 1 جيغا
+
+⏱️  TEMPS:
+   • Connexion Spark  : 12.56s
+   • Chargement       : 11.75s
+   • Analyse          : 3.92s
+   • Traitement       : 4.38s
+   • TOTAL            : 32.77s (810 doc/s)
+
+📊 RÉSULTATS:
+   • Total source          : 26551 documents
+   • Documents modifiés    : 172
+   • Total inséré          : 26551
+   • Téléphones restants   : 3
+   • Réclamations restantes: 5
+   • Répétitions restantes : 6
+   • Statut                : ⚠️ INCOMPLET
+
+📁 STOCKAGE:
+   • Source      : telecom_algerie.commentaires_sans_urls_arobase
+   • Destination : telecom_algerie.commentaires_sans_chiffres_certains
