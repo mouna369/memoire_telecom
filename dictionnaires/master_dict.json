@@ -1,7 +1,7 @@
 {
   "_metadata": {
     "description": "Dictionnaire unifié — normalisation AraBERT/CAMeL/MarBERT pour corpus télécom DZ",
-    "version": "3.8",
+    "version": "3.9",
     "target_models": [
       "AraBERT",
       "CAMeL-BERT",
@@ -11,23 +11,15 @@
     "corpus": "Télécom DZ — 26K commentaires (AT / Djezzy / Mobilis / Ooredoo)",
     "last_updated": "2026-03",
     "changelog": [
-      "v3.8 FIX-19: connexion variantes (كوناكسيون/كونكسيو), ADSL (لادياسال), fibre (فيبروتيك/فايبر/فيبر), modem (مودام/المودام), Wi-Fi (ويفي/يفي), débit (ديبي), unités phonétiques (ميقا/جيقا), Mi Box, الفكس, google tv",
+      "v3.9 FIX-Q5: arabizi_words — baridimo/baridimob/baridicash/myidoom/hty ajoutés (vérification qualitative N°2,14)",
+      "v3.8 FIX-19: connexion variantes, ADSL, fibre, modem, Wi-Fi, débit, unités phonétiques, Mi Box, الفكس, google tv",
       "v3.8 FIX-20: arabizi_words — majozch, masma3nach, wana, rahom, 3lina, 3awdoulna, s7ab, nkhdmou, tdkhol, tl3b, dayrin, kdabin, barkaw, lo9doum, sebtembre, g33 et autres",
       "v3.8 FIX-21: telecom_tech — nokia/tenda/zte/huawei, mi box, airon, ethernet, gigabit, starlink, google tv, wi-fi, débit",
       "v3.8 FIX-22: french_corrections — sebtembre→septembre",
       "v3.7 FIX-14: mixed_ar_fr_regex — gaming/serveur/Fortnite/RAM/ligne/TV Box/promotion/موديم/ولله/Netflix/Amazon/prime vidéo",
       "v3.7 FIX-15: telecom_tech — twinbox, tv box, fortnite, netflix, prime video ajoutés",
       "v3.6 FIX-7 : unicode_arabic — suppression ئ→ي (détruisait سيئة→سييه)",
-      "v3.6 FIX-8 : mixed_ar_fr_regex — ajout بينج→ping (variante de بينغ)",
-      "v3.6 FIX-9 : mixed_ar_fr_regex — ajout بونيص/بونص→bonus",
-      "v3.6 FIX-10: mixed_ar_fr_regex — ajout الكونيكسيو/الكنكسيون→الانترنت",
-      "v3.6 FIX-11: mixed_ar_fr_regex — ajout نت (arabe)→الانترنت",
-      "v3.6 FIX-12: mixed_ar_fr_regex — ajout انتارنات/انتارنت→الانترنت",
-      "v3.6 FIX-13: arabizi_words — enrichissement dialecte algérien latin fréquent",
-      "v3.5 FIX-1: arabizi_monograms a-z supprimées",
-      "v3.5 FIX-2: unicode_arabic ajout ة→ه",
-      "v3.5 FIX-3: mixed_ar_fr_regex ajout لافيبغ + variantes",
-      "v3.5 FIX-4: telecom_tech ajout dsl, febre, cable, xgs-pon"
+      "v3.6 FIX-8 à FIX-13: mixed_ar_fr_regex enrichissements, arabizi dialecte algérien latin"
     ]
   },
   "unicode_arabic": {
@@ -260,7 +252,12 @@
     "lo9doum": "القدوم",
     "sebtembre": "سبتمبر",
     "g33": "غالقين",
-    "minpa": "مينبا"
+    "minpa": "مينبا",
+    "baridimo": "بريدي موب",
+    "baridimob": "بريدي موب",
+    "baridicash": "بريدي كاش",
+    "myidoom": "تطبيق idoom",
+    "hty": "حتى"
   },
   "arabizi_upper": {
     "WLH": "والله",
@@ -441,7 +438,12 @@
     "SEBTEMBRE": "سبتمبر",
     "G33": "غالقين",
     "Minpa": "مينبا",
-    "MINPA": "مينبا"
+    "MINPA": "مينبا",
+    "BARIDIMO": "بريدي موب",
+    "BARIDIMOB": "بريدي موب",
+    "BARIDICASH": "بريدي كاش",
+    "MYIDOOM": "تطبيق idoom",
+    "HTY": "حتى"
   },
   "emojis": {
     "❤️": "حب",
@@ -494,6 +496,7 @@
     "🙄": "عدم رضا",
     "😑": "حياد سلبي",
     "😐": "حياد",
+    "🫣": "خوف",
     "👎": "عدم رضا",
     "🚫": "رفض",
     "❌": "رفض",
@@ -545,11 +548,14 @@
     "💀": "غضب شديد",
     "🤦": "خيبة",
     "🤦‍♂️": "خيبة",
-    "🤦‍♀️": "خيبة"
+    "🤦‍♀️": "خيبة",
+    "💪🏼": "قوة"
   },
   "mixed_ar_fr_regex": {
-    "\\bنوكيا\\b" : "Nokia",
-    "نوكيا" : "Nokia",
+    "\\b[وبلكف]*بونيص\\b": "bonus",
+    "\\b[وبلكف]*بونص\\b": "bonus",
+    "\\bنوكيا\\b": "Nokia",
+    "نوكيا": "Nokia",
     "\\bالكونيكسيون\\b": "اتصال",
     "\\bكوناكسيون\\b": "اتصال",
     "\\bالكوناكسيون\\b": "اتصال",
@@ -675,10 +681,6 @@
     "\\bأمازون\\b": "Amazon",
     "\\bprime video\\b": "Prime Video",
     "\\bprime vidéo\\b": "Prime Video",
-    "\\bكوناكسيون\\b": "اتصال",
-    "\\bالكوناكسيون\\b": "اتصال",
-    "\\bالكونكسيو\\b": "اتصال",
-    "\\bكوناكسيو\\b": "اتصال",
     "\\bلادياسال\\b": "ADSL",
     "\\bلاديزال\\b": "ADSL",
     "\\bفيبروتيك\\b": "fibre optique",
@@ -706,7 +708,10 @@
     "\\bzte\\b": "ZTE",
     "\\bhuawei\\b": "Huawei",
     "\\bsebtembre\\b": "septembre",
-    "\\bsebtambre\\b": "septembre"
+    "\\bsebtambre\\b": "septembre",
+    "\\bbaridimo\\b": "بريدي موب",
+    "\\bbaridimob\\b": "بريدي موب",
+    "\\bbaridicash\\b": "بريدي كاش"
   },
   "network_variants": {
     "latin": [
@@ -907,7 +912,7 @@
     "فيبر": "fibre optique",
     "الفيبر": "fibre optique",
     "febre": "fibre optique",
-    "cable": "كابل",
+    "كابل ": "cable",
     "بينغ": "ping",
     "البينغ": "ping",
     "بينج": "ping",
@@ -962,7 +967,9 @@
     "google": "Google",
     "débit": "débit",
     "debit": "débit",
-    "bras cassés": "bras cassés"
+    "bras cassés": "bras cassés",
+    "مودام": "مودم",
+    "المودام": "مودم"
   },
   "french_corrections_regex": {
     "\\bconexion\\b": "connexion",

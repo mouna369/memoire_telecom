@@ -82,3 +82,4 @@ print("="*60)
 print(f"✅ Total importé: {total} commentaires")
 print(f"📁 Dans MongoDB: telecom_algerie.commentaires_bruts")
 print("="*60)
+

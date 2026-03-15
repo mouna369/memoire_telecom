@@ -1,533 +1,703 @@
 ======================================================================
-RAPPORT — ANALYSE DÉTAILLÉE DES DOUBLONS
+RAPPORT — ANALYSE DÉTAILLÉE DES DOUBLONS (ALIGNÉE MONGODB)
 ======================================================================
-Date       : 2026-02-28 22:28:43
+Date       : 2026-03-15 23:19:37
 Collection : telecom_algerie.commentaires_sans_urls_arobase
+Méthode    : Normalisation 60 caractères, comparaison par jour
 
 ======================================================================
 📊 RÉSUMÉ GLOBAL
 ======================================================================
-   Total documents                        : 26551
-   Commentaires uniques                   : 24354
-   Total groupes de doublons              : 1142
-   Total documents en double              : 2197
-   Taux de doublons                       : 8.27%
+   Total documents                        : 26565
+   Textes normalisés uniques              : 24301
+   Total groupes de doublons              : 1172
+   Total documents en double              : 2264
+   Taux de doublons                       : 8.52%
 
-   🔵 TYPE 1 — Sources différentes        : 136 groupes
-   🔴 TYPE 2 — Dates différentes          : 1030 groupes
-   🟣 TYPE 3 — Modérateurs différents     : 571 groupes
+   🔵 TYPE 1 — Sources différentes        : 139 groupes
+   🔴 TYPE 2 — Jours différents           : 509 groupes
+   🟣 TYPE 3 — Modérateurs différents     : 591 groupes
+   ⚪ TYPE 4 — Doublons parfaits          : 507 groupes
 
 ======================================================================
-🔵 TYPE 1 — MÊME COMMENTAIRE, SOURCES DIFFÉRENTES
+🔵 TYPE 1 — MÊME TEXTE NORMALISÉ, SOURCES DIFFÉRENTES
    → Même client qui a posté sur plusieurs plateformes
    → Garder 1 copie par source
 ======================================================================
 
-  [1] NB COPIES : 79 | SOURCES : Instagram, Facebook, IdoomMarket
+  [1] NB COPIES : 80 | SOURCES : IdoomMarket, Facebook, Instagram
        COMMENTAIRE : تطبيق my idoom يحتاج إلى خاصية توقيف مؤقت للأنترنات وإعادة تشغيلها عند الحاجة بد...
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 20:16          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 11:14          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=28/11/2025 10:45          Modérateur=Mounira Rai
-         • Source=Facebook        Date=27/11/2025 21:05          Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-28 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-27 Modérateur=MohamedAmine GHEBGHOUB
 
-  [2] NB COPIES : 27 | SOURCES : Instagram, Facebook
+  [2] NB COPIES : 40 | SOURCES : Facebook, Instagram
        COMMENTAIRE : كي يطلقولي الفيبر برك وساهل 20 يوم ملي ركبولي كلشي من هذاك النهار وانا طالع هابط...
        DÉTAIL :
-         • Source=Facebook        Date=30/11/2025 21:38          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:29          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:27          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:27          Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-30 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Instagram       Jour=2025-11-30 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Instagram       Jour=2025-11-30 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Instagram       Jour=2025-11-30 Modérateur=MohamedAmine GHEBGHOUB
 
-  [3] NB COPIES : 24 | SOURCES : Instagram, Facebook, IdoomMarket
-       COMMENTAIRE : السعر
-       DÉTAIL :
-         • Source=Facebook        Date=31/01/2026 08:26          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=28/11/2025 21:02          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 17:56          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=28/11/2025 17:46          Modérateur=Hiba GUELLIL
-
-  [4] NB COPIES : 22 | SOURCES : Facebook, IdoomMarket
+  [3] NB COPIES : 22 | SOURCES : IdoomMarket, Facebook
        COMMENTAIRE : تم
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 14:34          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:58          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
 
-  [5] NB COPIES : 22 | SOURCES : Facebook, LinkedIn
+  [4] NB COPIES : 21 | SOURCES : IdoomMarket, Facebook, Instagram
+       COMMENTAIRE : السعر
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Ines Ikram CHABBI
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+
+  [5] NB COPIES : 21 | SOURCES : Facebook, LinkedIn
        COMMENTAIRE : بالتوفيق
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 12:39          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=26/11/2025 13:05          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=26/11/2025 07:06          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=25/11/2025 17:55          Modérateur=Amel AISSOU
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-25 Modérateur=Amel AISSOU
 
-  [6] NB COPIES : 16 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : غالي بزاف
+  [6] NB COPIES : 16 | SOURCES : IdoomMarket, Facebook, Instagram
+       COMMENTAIRE : FixRoutingAT مشكل الروتنغ البينغ مرتفع PacketLoss GamingDZ Algérie Télécom اتصال...
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 11:45          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 11:44          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=19/01/2026 18:12          Modérateur=Kenza Hoceini
-         • Source=Facebook        Date=26/12/2025 18:48          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-16 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-05 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-12-27 Modérateur=Nihad BOUBEKEUR
 
-  [7] NB COPIES : 16 | SOURCES : Instagram, Facebook, IdoomMarket
+  [7] NB COPIES : 16 | SOURCES : IdoomMarket, Facebook, Instagram
        COMMENTAIRE : عندي مشكل داروهولي اتصلات جزائر بسكرة اليوم بدلت مودام فيبر ويفي 4 بالمودام جديد...
        DÉTAIL :
-         • Source=Instagram       Date=09/12/2025 20:29          Modérateur=Dalil ZERGOUG
-         • Source=Facebook        Date=09/12/2025 09:43          Modérateur=Nihad BOUBEKEUR
-         • Source=IdoomMarket     Date=09/12/2025 08:28          Modérateur=Rania KHIAR
-         • Source=Facebook        Date=08/12/2025 20:41          Modérateur=Aimen NOURI
+         • Source=Instagram       Jour=2025-12-09 Modérateur=Dalil ZERGOUG
+         • Source=Facebook        Jour=2025-12-09 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-09 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-12-08 Modérateur=Aimen NOURI
 
-  [8] NB COPIES : 13 | SOURCES : Facebook, IdoomMarket
+  [8] NB COPIES : 13 | SOURCES : IdoomMarket, Facebook
+       COMMENTAIRE : غالي بزاف
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2026-01-19 Modérateur=Kenza Hoceini
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Aimen NOURI
+
+  [9] NB COPIES : 13 | SOURCES : IdoomMarket, Facebook
        COMMENTAIRE : مهتم
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 09:00          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:59          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=26/11/2025 16:24          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/11/2025 08:19          Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [9] NB COPIES : 12 | SOURCES : Facebook, IdoomMarket
+  [10] NB COPIES : 13 | SOURCES : IdoomMarket, Facebook
+       COMMENTAIRE : J'ai à mon actif 5 réclamations sans intervention de votre part Numéros réclamat...
+       DÉTAIL :
+         • Source=IdoomMarket     Jour=2025-11-06 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
+
+  [11] NB COPIES : 12 | SOURCES : IdoomMarket, Facebook
        COMMENTAIRE : سعر
        DÉTAIL :
-         • Source=IdoomMarket     Date=26/11/2025 20:29          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=IdoomMarket     Date=26/11/2025 16:22          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/01/2026 13:26          Modérateur=Ines Ikram CHABBI
-         • Source=IdoomMarket     Date=21/11/2025 08:04          Modérateur=Nihed LEBCIR
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2026-01-21 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [10] NB COPIES : 11 | SOURCES : Instagram, Facebook
-       COMMENTAIRE : ردو علينا في الخاص
-       DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 18:03          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 14:54          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 11:48          Modérateur=Hiba GUELLIL
-         • Source=Instagram       Date=22/11/2025 09:59          Modérateur=Nihed LEBCIR
-
-  [11] NB COPIES : 11 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : غالي
-       DÉTAIL :
-         • Source=IdoomMarket     Date=27/11/2025 14:36          Modérateur=Ilham BOSLI
-         • Source=IdoomMarket     Date=22/01/2026 13:49          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=26/12/2025 23:50          Modérateur=Aimen NOURI
-         • Source=IdoomMarket     Date=17/01/2026 19:51          Modérateur=Rania KHIAR
-
-  [12] NB COPIES : 11 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : خردة
-       DÉTAIL :
-         • Source=Facebook        Date=24/01/2026 08:32          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=29/12/2025 12:22          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=28/12/2025 09:45          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/12/2025 09:37          Modérateur=Nihad BOUBEKEUR
-
-  [13] NB COPIES : 11 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : كم السعر
-       DÉTAIL :
-         • Source=Facebook        Date=26/12/2025 09:36          Modérateur=Mounira Rai
-         • Source=IdoomMarket     Date=21/11/2025 18:54          Modérateur=Mounira Rai
-         • Source=IdoomMarket     Date=21/11/2025 08:07          Modérateur=Nihed LEBCIR
-         • Source=IdoomMarket     Date=18/12/2025 19:39          Modérateur=Ines GUECHIDA
-
-  [14] NB COPIES : 10 | SOURCES : Instagram, Facebook, IdoomMarket
+  [12] NB COPIES : 11 | SOURCES : IdoomMarket, Facebook, Instagram
        COMMENTAIRE : ندعوكم للتواصل معنا عبر الخاص قصد تزويدنا بمعلومات أوفر فيما يخص انشغالكم لنتمكن...
        DÉTAIL :
-         • Source=Facebook        Date=31/01/2026 18:52          Modérateur=Baya Benhagouga
-         • Source=Facebook        Date=27/01/2026 15:39          Modérateur=Ahlem Baroudi
-         • Source=IdoomMarket     Date=27/11/2025 08:11          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=30/12/2025 17:57          Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Baya Benhagouga
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-19 Modérateur=Romaissa ZEHIOUA
 
-  [15] NB COPIES : 10 | SOURCES : Instagram, Facebook
-       COMMENTAIRE : ننتظر إطلاق خدمة الانترنت منذ عدة ايام بعدما تم التوصيل رغم التقدم للوكالة التجا...
+  [13] NB COPIES : 11 | SOURCES : IdoomMarket, Facebook
+       COMMENTAIRE : غالي
        DÉTAIL :
-         • Source=Facebook        Date=27/12/2025 23:19          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=27/12/2025 23:15          Modérateur=Aimen NOURI
-         • Source=Instagram       Date=27/12/2025 22:49          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=26/12/2025 11:33          Modérateur=Mounira Rai
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Ilham BOSLI
+         • Source=IdoomMarket     Jour=2026-01-22 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2026-01-17 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Ines GUECHIDA
 
-  [16] NB COPIES : 8 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : Prix
+  [14] NB COPIES : 11 | SOURCES : IdoomMarket, Facebook
+       COMMENTAIRE : خردة
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 20:59          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=IdoomMarket     Date=26/11/2025 13:11          Modérateur=Nihad BOUBEKEUR
-         • Source=IdoomMarket     Date=25/11/2025 14:35          Modérateur=Nihed LEBCIR
-         • Source=IdoomMarket     Date=21/01/2026 13:27          Modérateur=Ines Ikram CHABBI
+         • Source=Facebook        Jour=2026-01-24 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2026-01-15 Modérateur=Romaissa ZEHIOUA
 
-  [17] NB COPIES : 8 | SOURCES : Facebook, IdoomMarket
+  [15] NB COPIES : 10 | SOURCES : Facebook, Instagram
+       COMMENTAIRE : ردو علينا في الخاص
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Hiba GUELLIL
+
+  [16] NB COPIES : 10 | SOURCES : Facebook, Instagram
+       COMMENTAIRE : اتصالات الجزائر لقد قام احد العاملين في السيبور بحجبي من الماسنجر لاني اقدم شكوى...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+
+  [17] NB COPIES : 10 | SOURCES : IdoomMarket, Facebook
+       COMMENTAIRE : كم السعر
+       DÉTAIL :
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Mounira Rai
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2025-11-17 Modérateur=Nihed LEBCIR
+
+  [18] NB COPIES : 10 | SOURCES : Facebook, Instagram
+       COMMENTAIRE : ننتظر إطلاق خدمة الانترنت منذ عدة ايام بعدما تم التوصيل. رغم التقدم للوكالة التج...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-27 Modérateur=Aimen NOURI
+         • Source=Facebook        Jour=2025-12-27 Modérateur=Aimen NOURI
+         • Source=Instagram       Jour=2025-12-27 Modérateur=Aimen NOURI
+         • Source=Facebook        Jour=2025-12-26 Modérateur=Mounira Rai
+
+  [19] NB COPIES : 9 | SOURCES : Facebook, Instagram
+       COMMENTAIRE : خطكم غير مؤهل للاستفادة من خدمة الألياف البصرية في الوقت الحالي. سنتصل بكم فور ت...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Romaissa ZEHIOUA
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-11 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-11 Modérateur=Nihad BOUBEKEUR
+
+  [20] NB COPIES : 8 | SOURCES : IdoomMarket, Facebook
        COMMENTAIRE : كم سعر
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 14:34          Modérateur=Ilham BOSLI
-         • Source=IdoomMarket     Date=30/12/2025 10:10          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=26/11/2025 18:03          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=22/11/2025 15:31          Modérateur=Ilham BOSLI
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Ilham BOSLI
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-22 Modérateur=Ilham BOSLI
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
 
-  [18] NB COPIES : 8 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : السعر من فضلك
-       DÉTAIL :
-         • Source=IdoomMarket     Date=26/11/2025 22:18          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=21/11/2025 19:00          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=21/11/2025 18:44          Modérateur=Nihad BOUBEKEUR
-         • Source=IdoomMarket     Date=21/11/2025 18:30          Modérateur=Mounira Rai
-
-  [19] NB COPIES : 8 | SOURCES : Instagram, Facebook
-       COMMENTAIRE : تطبيق فاشل
-       DÉTAIL :
-         • Source=Facebook        Date=20/01/2026 22:27          Modérateur=Riad DAHMOUN
-         • Source=Facebook        Date=19/01/2026 08:42          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=23/12/2025 16:27          Modérateur=Kenza Hoceini
-         • Source=Instagram       Date=19/12/2025 16:03          Modérateur=Sonia AITTAHAR
-
-  [20] NB COPIES : 7 | SOURCES : Facebook, IdoomMarket
-       COMMENTAIRE : شحال
-       DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 17:20          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=29/12/2025 14:43          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=06/01/2026 09:45          Modérateur=Ahlem Baroudi
-         • Source=IdoomMarket     Date=04/01/2026 17:32          Modérateur=Mounira Rai
-
-  ... et 116 autres groupes
+  ... et 119 autres groupes
 
 ======================================================================
-🔴 TYPE 2 — MÊME COMMENTAIRE, DATES DIFFÉRENTES
-   → Client qui répète sa plainte à des dates différentes
+🔴 TYPE 2 — MÊME TEXTE NORMALISÉ, JOURS DIFFÉRENTS
+   → Client qui répète sa plainte à des jours différents
    → Garder toutes les copies (utile pour analyse temporelle)
 ======================================================================
 
-  [1] NB COPIES : 79 | NB DATES : 76
+  [1] NB COPIES : 80 | NB JOURS : 32
        COMMENTAIRE : تطبيق my idoom يحتاج إلى خاصية توقيف مؤقت للأنترنات وإعادة تشغيلها عند الحاجة بد...
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 20:16          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 11:14          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=28/11/2025 10:45          Modérateur=Mounira Rai
-         • Source=Facebook        Date=27/11/2025 21:05          Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-28 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-27 Modérateur=MohamedAmine GHEBGHOUB
 
-  [2] NB COPIES : 29 | NB DATES : 7
-       COMMENTAIRE : 3ndi 2 mois w ping instable 200 300
-       DÉTAIL :
-         • Source=Facebook        Date=22/11/2025 08:47          Modérateur=Nihed LEBCIR
-         • Source=Facebook        Date=22/11/2025 08:46          Modérateur=Nihed LEBCIR
-         • Source=Facebook        Date=22/11/2025 08:46          Modérateur=Nihed LEBCIR
-         • Source=Facebook        Date=22/11/2025 08:46          Modérateur=Nihed LEBCIR
-
-  [3] NB COPIES : 27 | NB DATES : 3
-       COMMENTAIRE : كي يطلقولي الفيبر برك وساهل 20 يوم ملي ركبولي كلشي من هذاك النهار وانا طالع هابط...
-       DÉTAIL :
-         • Source=Facebook        Date=30/11/2025 21:38          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:29          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:27          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:27          Modérateur=MohamedAmine GHEBGHOUB
-
-  [4] NB COPIES : 24 | NB DATES : 23
-       COMMENTAIRE : السعر
-       DÉTAIL :
-         • Source=Facebook        Date=31/01/2026 08:26          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=28/11/2025 21:02          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 17:56          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=28/11/2025 17:46          Modérateur=Hiba GUELLIL
-
-  [5] NB COPIES : 22 | NB DATES : 16
+  [2] NB COPIES : 22 | NB JOURS : 7
        COMMENTAIRE : تم
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 14:34          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:58          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
 
-  [6] NB COPIES : 22 | NB DATES : 22
+  [3] NB COPIES : 21 | NB JOURS : 15
+       COMMENTAIRE : السعر
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Ines Ikram CHABBI
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+
+  [4] NB COPIES : 21 | NB JOURS : 17
        COMMENTAIRE : بالتوفيق
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 12:39          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=26/11/2025 13:05          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=26/11/2025 07:06          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=25/11/2025 17:55          Modérateur=Amel AISSOU
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-25 Modérateur=Amel AISSOU
 
-  [7] NB COPIES : 20 | NB DATES : 4
-       COMMENTAIRE : We need a Call of Duty Mobile server in Algeria سيد علي زروقي Sid Ali Zerrouki A...
+  [5] NB COPIES : 17 | NB JOURS : 6
+       COMMENTAIRE : للشّهر التّاسع على التوالي والانترنت مقطوعة عن الفيراي وحي الزهور وماجاورهما وال...
        DÉTAIL :
-         • Source=Facebook        Date=26/11/2025 11:58          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=26/11/2025 11:57          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=26/11/2025 11:57          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=26/11/2025 11:57          Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2026-01-25 Modérateur=Kenza Hoceini
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
 
-  [8] NB COPIES : 16 | NB DATES : 16
-       COMMENTAIRE : غالي بزاف
+  [6] NB COPIES : 16 | NB JOURS : 10
+       COMMENTAIRE : FixRoutingAT مشكل الروتنغ البينغ مرتفع PacketLoss GamingDZ Algérie Télécom اتصال...
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 11:45          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 11:44          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=19/01/2026 18:12          Modérateur=Kenza Hoceini
-         • Source=Facebook        Date=26/12/2025 18:48          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-16 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-05 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-12-27 Modérateur=Nihad BOUBEKEUR
 
-  [9] NB COPIES : 16 | NB DATES : 6
+  [7] NB COPIES : 16 | NB JOURS : 2
        COMMENTAIRE : والله ما تحشمو اسوء نت فالعالم
        DÉTAIL :
-         • Source=Instagram       Date=18/11/2025 12:52          Modérateur=Hiba GUELLIL
-         • Source=Instagram       Date=13/11/2025 08:16          Modérateur=Sonia AITTAHAR
-         • Source=Instagram       Date=13/11/2025 08:16          Modérateur=Sonia AITTAHAR
-         • Source=Instagram       Date=13/11/2025 08:15          Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-18 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
 
-  [10] NB COPIES : 16 | NB DATES : 14
+  [8] NB COPIES : 16 | NB JOURS : 5
        COMMENTAIRE : عندي مشكل داروهولي اتصلات جزائر بسكرة اليوم بدلت مودام فيبر ويفي 4 بالمودام جديد...
        DÉTAIL :
-         • Source=Instagram       Date=09/12/2025 20:29          Modérateur=Dalil ZERGOUG
-         • Source=Facebook        Date=09/12/2025 09:43          Modérateur=Nihad BOUBEKEUR
-         • Source=IdoomMarket     Date=09/12/2025 08:28          Modérateur=Rania KHIAR
-         • Source=Facebook        Date=08/12/2025 20:41          Modérateur=Aimen NOURI
+         • Source=Instagram       Jour=2025-12-09 Modérateur=Dalil ZERGOUG
+         • Source=Facebook        Jour=2025-12-09 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-09 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-12-08 Modérateur=Aimen NOURI
 
-  [11] NB COPIES : 14 | NB DATES : 14
+  [9] NB COPIES : 14 | NB JOURS : 13
        COMMENTAIRE : ربي يعونكم
        DÉTAIL :
-         • Source=Facebook        Date=26/01/2026 10:18          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=30/12/2025 18:32          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=26/11/2025 18:37          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=26/11/2025 17:10          Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2026-01-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
 
-  [12] NB COPIES : 13 | NB DATES : 13
+  [10] NB COPIES : 13 | NB JOURS : 12
+       COMMENTAIRE : غالي بزاف
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2026-01-19 Modérateur=Kenza Hoceini
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Aimen NOURI
+
+  [11] NB COPIES : 13 | NB JOURS : 10
        COMMENTAIRE : مهتم
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 09:00          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:59          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=26/11/2025 16:24          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/11/2025 08:19          Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [13] NB COPIES : 13 | NB DATES : 10
-       COMMENTAIRE : شركة فاشلة انترنت فاشلة معاملة فاشلة اوموا ريبونديو على للميساج تقييم 10 10 حبيب...
+  [12] NB COPIES : 13 | NB JOURS : 2
+       COMMENTAIRE : شركة فاشلة انترنت فاشلة معاملة فاشلة اوموا ريبونديو على للميساج تقييم -10/10 حبي...
        DÉTAIL :
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:19          Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
 
-  [14] NB COPIES : 13 | NB DATES : 2
-       COMMENTAIRE : كي يطلقولي الفيبر برك وساهل 20 يوم ملي ركبولي كلشي من هذاك النهار وانا طالع هابط...
-       DÉTAIL :
-         • Source=Instagram       Date=30/11/2025 21:33          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:30          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:30          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Instagram       Date=30/11/2025 21:30          Modérateur=MohamedAmine GHEBGHOUB
-
-  [15] NB COPIES : 12 | NB DATES : 12
-       COMMENTAIRE : ارجو الرد في الخاص
-       DÉTAIL :
-         • Source=Facebook        Date=30/12/2025 22:03          Modérateur=Riad DAHMOUN
-         • Source=Facebook        Date=23/11/2025 12:45          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=24/12/2025 13:23          Modérateur=Kenza Hoceini
-         • Source=Facebook        Date=21/12/2025 18:42          Modérateur=Ahlem Baroudi
-
-  [16] NB COPIES : 12 | NB DATES : 12
+  [13] NB COPIES : 12 | NB JOURS : 9
        COMMENTAIRE : سعر
        DÉTAIL :
-         • Source=IdoomMarket     Date=26/11/2025 20:29          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=IdoomMarket     Date=26/11/2025 16:22          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/01/2026 13:26          Modérateur=Ines Ikram CHABBI
-         • Source=IdoomMarket     Date=21/11/2025 08:04          Modérateur=Nihed LEBCIR
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2026-01-21 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [17] NB COPIES : 12 | NB DATES : 12
+  [14] NB COPIES : 12 | NB JOURS : 10
        COMMENTAIRE : يرجى الرد في الخاص
        DÉTAIL :
-         • Source=Facebook        Date=23/11/2025 22:46          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=22/12/2025 14:14          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=20/11/2025 14:40          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=18/11/2025 12:29          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-23 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-20 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-07 Modérateur=Aimen NOURI
 
-  [18] NB COPIES : 12 | NB DATES : 2
-       COMMENTAIRE : J ai à mon actif 5 réclamations sans intervention de votre part Numéros réclamat...
+  [15] NB COPIES : 12 | NB JOURS : 8
+       COMMENTAIRE : ارجو الرد في الخاص
        DÉTAIL :
-         • Source=Facebook        Date=06/11/2025 09:23          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=06/11/2025 09:23          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=06/11/2025 09:23          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=06/11/2025 09:23          Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-23 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-19 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-11 Modérateur=Mounira Rai
 
-  [19] NB COPIES : 11 | NB DATES : 11
-       COMMENTAIRE : ردو علينا في الخاص
+  [16] NB COPIES : 11 | NB JOURS : 11
+       COMMENTAIRE : ندعوكم للتواصل معنا عبر الخاص قصد تزويدنا بمعلومات أوفر فيما يخص انشغالكم لنتمكن...
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 18:03          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 14:54          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 11:48          Modérateur=Hiba GUELLIL
-         • Source=Instagram       Date=22/11/2025 09:59          Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Baya Benhagouga
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-19 Modérateur=Romaissa ZEHIOUA
 
-  [20] NB COPIES : 11 | NB DATES : 11
+  [17] NB COPIES : 11 | NB JOURS : 10
        COMMENTAIRE : غالي
        DÉTAIL :
-         • Source=IdoomMarket     Date=27/11/2025 14:36          Modérateur=Ilham BOSLI
-         • Source=IdoomMarket     Date=22/01/2026 13:49          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=26/12/2025 23:50          Modérateur=Aimen NOURI
-         • Source=IdoomMarket     Date=17/01/2026 19:51          Modérateur=Rania KHIAR
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Ilham BOSLI
+         • Source=IdoomMarket     Jour=2026-01-22 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2026-01-17 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Ines GUECHIDA
 
-  ... et 1010 autres groupes
+  [18] NB COPIES : 11 | NB JOURS : 9
+       COMMENTAIRE : خردة
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-24 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2026-01-15 Modérateur=Romaissa ZEHIOUA
+
+  [19] NB COPIES : 10 | NB JOURS : 9
+       COMMENTAIRE : ردو علينا في الخاص
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Hiba GUELLIL
+
+  [20] NB COPIES : 10 | NB JOURS : 8
+       COMMENTAIRE : ردو عليا في الخاص
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+         • Source=Facebook        Jour=2026-01-19 Modérateur=Aimen NOURI
+         • Source=Facebook        Jour=2026-01-17 Modérateur=Aimen NOURI
+
+  ... et 489 autres groupes
 
 ======================================================================
-🟣 TYPE 3 — MÊME COMMENTAIRE, MODÉRATEURS DIFFÉRENTS
+🟣 TYPE 3 — MÊME TEXTE NORMALISÉ, MODÉRATEURS DIFFÉRENTS
    → Commentaire traité par plusieurs modérateurs
    → Garder toutes les copies (utile pour analyse performance)
 ======================================================================
 
-  [1] NB COPIES : 79 | MODÉRATEURS : Nihed LEBCIR, Amel AISSOU, Manel ZERKHAF, Dalil ZERGOUG, Imene SAADI, Yasmine OULDMAHIEDDINE, Rania KHIAR, Romaissa ZEHIOUA, Mounira Rai, Nihad BOUBEKEUR, Ines GUECHIDA, Ines MOUSSAOUI, Hiba GUELLIL, Sonia AITTAHAR, MohamedAmine GHEBGHOUB
+  [1] NB COPIES : 80 | MODÉRATEURS : Dalil ZERGOUG, Ines GUECHIDA, Yasmine OULDMAHIEDDINE, Sonia AITTAHAR, Amel AISSOU, MohamedAmine GHEBGHOUB, Mounira Rai, Imene SAADI, Manel ZERKHAF, Ines MOUSSAOUI, Nihad BOUBEKEUR, Hiba GUELLIL, Nihed LEBCIR, Romaissa ZEHIOUA, Rania KHIAR
        COMMENTAIRE : تطبيق my idoom يحتاج إلى خاصية توقيف مؤقت للأنترنات وإعادة تشغيلها عند الحاجة بد...
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 20:16          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 11:14          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=28/11/2025 10:45          Modérateur=Mounira Rai
-         • Source=Facebook        Date=27/11/2025 21:05          Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-28 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-27 Modérateur=MohamedAmine GHEBGHOUB
 
-  [2] NB COPIES : 24 | MODÉRATEURS : Nihed LEBCIR, Amel AISSOU, Aimen NOURI, Dalil ZERGOUG, Mounira Rai, Nihad BOUBEKEUR, Ines GUECHIDA, Hiba GUELLIL, Ines Ikram CHABBI, Sonia AITTAHAR, MohamedAmine GHEBGHOUB
-       COMMENTAIRE : السعر
-       DÉTAIL :
-         • Source=Facebook        Date=31/01/2026 08:26          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=28/11/2025 21:02          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=28/11/2025 17:56          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=28/11/2025 17:46          Modérateur=Hiba GUELLIL
-
-  [3] NB COPIES : 22 | MODÉRATEURS : Hiba GUELLIL, Mounira Rai, Ines MOUSSAOUI, Rania KHIAR
+  [2] NB COPIES : 22 | MODÉRATEURS : Mounira Rai, Ines MOUSSAOUI, Hiba GUELLIL, Rania KHIAR
        COMMENTAIRE : تم
        DÉTAIL :
-         • Source=Facebook        Date=28/11/2025 14:34          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:58          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:55          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
 
-  [4] NB COPIES : 22 | MODÉRATEURS : Nihed LEBCIR, Amel AISSOU, Aimen NOURI, Rania KHIAR, Nihad BOUBEKEUR, Hiba GUELLIL, Kenza Hoceini, Sonia AITTAHAR, Amir MOUSSANEF
+  [3] NB COPIES : 21 | MODÉRATEURS : Aimen NOURI, Dalil ZERGOUG, Ines GUECHIDA, Amel AISSOU, MohamedAmine GHEBGHOUB, Mounira Rai, Nihad BOUBEKEUR, Hiba GUELLIL, Nihed LEBCIR, Ines Ikram CHABBI
+       COMMENTAIRE : السعر
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Ines Ikram CHABBI
+         • Source=Facebook        Jour=2025-11-28 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-28 Modérateur=Hiba GUELLIL
+
+  [4] NB COPIES : 21 | MODÉRATEURS : Aimen NOURI, Amir MOUSSANEF, Amel AISSOU, Sonia AITTAHAR, Kenza Hoceini, Nihad BOUBEKEUR, Hiba GUELLIL, Nihed LEBCIR, Rania KHIAR
        COMMENTAIRE : بالتوفيق
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 12:39          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=26/11/2025 13:05          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=26/11/2025 07:06          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=25/11/2025 17:55          Modérateur=Amel AISSOU
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-25 Modérateur=Amel AISSOU
 
-  [5] NB COPIES : 16 | MODÉRATEURS : Aimen NOURI, Dalil ZERGOUG, Imene SAADI, Mounira Rai, Nihad BOUBEKEUR, Ines MOUSSAOUI, Hiba GUELLIL, Kenza Hoceini
-       COMMENTAIRE : غالي بزاف
+  [5] NB COPIES : 17 | MODÉRATEURS : Aimen NOURI, Mounira Rai, Kenza Hoceini, Ahlem Baroudi, Baya Benhagouga, Ines Ikram CHABBI
+       COMMENTAIRE : للشّهر التّاسع على التوالي والانترنت مقطوعة عن الفيراي وحي الزهور وماجاورهما وال...
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 11:45          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 11:44          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=19/01/2026 18:12          Modérateur=Kenza Hoceini
-         • Source=Facebook        Date=26/12/2025 18:48          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-25 Modérateur=Kenza Hoceini
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-22 Modérateur=Mounira Rai
 
-  [6] NB COPIES : 16 | MODÉRATEURS : Hiba GUELLIL, Sonia AITTAHAR
+  [6] NB COPIES : 16 | MODÉRATEURS : Aimen NOURI, Amir MOUSSANEF, Sonia AITTAHAR, Kenza Hoceini, Nihad BOUBEKEUR, Ahlem Baroudi, Romaissa ZEHIOUA
+       COMMENTAIRE : FixRoutingAT مشكل الروتنغ البينغ مرتفع PacketLoss GamingDZ Algérie Télécom اتصال...
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-16 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-05 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-12-27 Modérateur=Nihad BOUBEKEUR
+
+  [7] NB COPIES : 16 | MODÉRATEURS : Sonia AITTAHAR, Hiba GUELLIL
        COMMENTAIRE : والله ما تحشمو اسوء نت فالعالم
        DÉTAIL :
-         • Source=Instagram       Date=18/11/2025 12:52          Modérateur=Hiba GUELLIL
-         • Source=Instagram       Date=13/11/2025 08:16          Modérateur=Sonia AITTAHAR
-         • Source=Instagram       Date=13/11/2025 08:16          Modérateur=Sonia AITTAHAR
-         • Source=Instagram       Date=13/11/2025 08:15          Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-18 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
+         • Source=Instagram       Jour=2025-11-13 Modérateur=Sonia AITTAHAR
 
-  [7] NB COPIES : 16 | MODÉRATEURS : Aimen NOURI, Dalil ZERGOUG, Rania KHIAR, Ines GUECHIDA, Nihad BOUBEKEUR, Manel ZERKHAF, Hiba GUELLIL, Sonia AITTAHAR
+  [8] NB COPIES : 16 | MODÉRATEURS : Aimen NOURI, Dalil ZERGOUG, Ines GUECHIDA, Sonia AITTAHAR, Manel ZERKHAF, Nihad BOUBEKEUR, Hiba GUELLIL, Rania KHIAR
        COMMENTAIRE : عندي مشكل داروهولي اتصلات جزائر بسكرة اليوم بدلت مودام فيبر ويفي 4 بالمودام جديد...
        DÉTAIL :
-         • Source=Instagram       Date=09/12/2025 20:29          Modérateur=Dalil ZERGOUG
-         • Source=Facebook        Date=09/12/2025 09:43          Modérateur=Nihad BOUBEKEUR
-         • Source=IdoomMarket     Date=09/12/2025 08:28          Modérateur=Rania KHIAR
-         • Source=Facebook        Date=08/12/2025 20:41          Modérateur=Aimen NOURI
+         • Source=Instagram       Jour=2025-12-09 Modérateur=Dalil ZERGOUG
+         • Source=Facebook        Jour=2025-12-09 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-09 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-12-08 Modérateur=Aimen NOURI
 
-  [8] NB COPIES : 14 | MODÉRATEURS : Nihed LEBCIR, Aimen NOURI, Ahlem Baroudi, Imene SAADI, Mounira Rai, Nihad BOUBEKEUR, Hiba GUELLIL, Sonia AITTAHAR
+  [9] NB COPIES : 14 | MODÉRATEURS : Aimen NOURI, Sonia AITTAHAR, Mounira Rai, Imene SAADI, Nihad BOUBEKEUR, Hiba GUELLIL, Nihed LEBCIR, Ahlem Baroudi
        COMMENTAIRE : ربي يعونكم
        DÉTAIL :
-         • Source=Facebook        Date=26/01/2026 10:18          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=30/12/2025 18:32          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=26/11/2025 18:37          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=26/11/2025 17:10          Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2026-01-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
 
-  [9] NB COPIES : 13 | MODÉRATEURS : Nihed LEBCIR, Manel ZERKHAF, Dalil ZERGOUG, Romaissa ZEHIOUA, Ines MOUSSAOUI, Hiba GUELLIL
+  [10] NB COPIES : 13 | MODÉRATEURS : Aimen NOURI, Kenza Hoceini, Imene SAADI, Ines MOUSSAOUI, Nihad BOUBEKEUR, Hiba GUELLIL
+       COMMENTAIRE : غالي بزاف
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2026-01-19 Modérateur=Kenza Hoceini
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Aimen NOURI
+
+  [11] NB COPIES : 13 | MODÉRATEURS : Dalil ZERGOUG, Manel ZERKHAF, Ines MOUSSAOUI, Hiba GUELLIL, Nihed LEBCIR, Romaissa ZEHIOUA
        COMMENTAIRE : مهتم
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 09:00          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=27/11/2025 08:59          Modérateur=Hiba GUELLIL
-         • Source=IdoomMarket     Date=26/11/2025 16:24          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/11/2025 08:19          Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [10] NB COPIES : 13 | MODÉRATEURS : Mounira Rai, Aimen NOURI
-       COMMENTAIRE : شركة فاشلة انترنت فاشلة معاملة فاشلة اوموا ريبونديو على للميساج تقييم 10 10 حبيب...
+  [12] NB COPIES : 13 | MODÉRATEURS : Aimen NOURI, Mounira Rai
+       COMMENTAIRE : شركة فاشلة انترنت فاشلة معاملة فاشلة اوموا ريبونديو على للميساج تقييم -10/10 حبي...
        DÉTAIL :
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:20          Modérateur=Mounira Rai
-         • Source=Facebook        Date=09/01/2026 09:19          Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-09 Modérateur=Mounira Rai
 
-  [11] NB COPIES : 12 | MODÉRATEURS : Ahlem Baroudi, Mounira Rai, Nihad BOUBEKEUR, Riad DAHMOUN, Hiba GUELLIL, Kenza Hoceini, Sonia AITTAHAR
-       COMMENTAIRE : ارجو الرد في الخاص
+  [13] NB COPIES : 13 | MODÉRATEURS : Mounira Rai, Nihad BOUBEKEUR
+       COMMENTAIRE : J'ai à mon actif 5 réclamations sans intervention de votre part Numéros réclamat...
        DÉTAIL :
-         • Source=Facebook        Date=30/12/2025 22:03          Modérateur=Riad DAHMOUN
-         • Source=Facebook        Date=23/11/2025 12:45          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=24/12/2025 13:23          Modérateur=Kenza Hoceini
-         • Source=Facebook        Date=21/12/2025 18:42          Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-06 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-06 Modérateur=Nihad BOUBEKEUR
 
-  [12] NB COPIES : 12 | MODÉRATEURS : Nihed LEBCIR, Dalil ZERGOUG, Romaissa ZEHIOUA, Ines GUECHIDA, Mounira Rai, Hiba GUELLIL, Ines Ikram CHABBI, Sonia AITTAHAR, MohamedAmine GHEBGHOUB
+  [14] NB COPIES : 12 | MODÉRATEURS : Dalil ZERGOUG, Ines GUECHIDA, Sonia AITTAHAR, MohamedAmine GHEBGHOUB, Mounira Rai, Ines Ikram CHABBI, Hiba GUELLIL, Nihed LEBCIR, Romaissa ZEHIOUA
        COMMENTAIRE : سعر
        DÉTAIL :
-         • Source=IdoomMarket     Date=26/11/2025 20:29          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=IdoomMarket     Date=26/11/2025 16:22          Modérateur=Romaissa ZEHIOUA
-         • Source=IdoomMarket     Date=21/01/2026 13:26          Modérateur=Ines Ikram CHABBI
-         • Source=IdoomMarket     Date=21/11/2025 08:04          Modérateur=Nihed LEBCIR
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=IdoomMarket     Jour=2025-11-26 Modérateur=Romaissa ZEHIOUA
+         • Source=IdoomMarket     Jour=2026-01-21 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Nihed LEBCIR
 
-  [13] NB COPIES : 12 | MODÉRATEURS : Amel AISSOU, Aimen NOURI, Ahlem Baroudi, Nihad BOUBEKEUR, Hiba GUELLIL, Sonia AITTAHAR, MohamedAmine GHEBGHOUB
+  [15] NB COPIES : 12 | MODÉRATEURS : Aimen NOURI, Amel AISSOU, Sonia AITTAHAR, MohamedAmine GHEBGHOUB, Nihad BOUBEKEUR, Hiba GUELLIL, Ahlem Baroudi
        COMMENTAIRE : يرجى الرد في الخاص
        DÉTAIL :
-         • Source=Facebook        Date=23/11/2025 22:46          Modérateur=MohamedAmine GHEBGHOUB
-         • Source=Facebook        Date=22/12/2025 14:14          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=20/11/2025 14:40          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=18/11/2025 12:29          Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-23 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-20 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-07 Modérateur=Aimen NOURI
 
-  [14] NB COPIES : 11 | MODÉRATEURS : Nihed LEBCIR, Aimen NOURI, Romaissa ZEHIOUA, Nihad BOUBEKEUR, Hiba GUELLIL
-       COMMENTAIRE : ردو علينا في الخاص
+  [16] NB COPIES : 12 | MODÉRATEURS : Sonia AITTAHAR, Mounira Rai, Kenza Hoceini, Riad DAHMOUN, Nihad BOUBEKEUR, Hiba GUELLIL, Ahlem Baroudi
+       COMMENTAIRE : ارجو الرد في الخاص
        DÉTAIL :
-         • Source=Facebook        Date=27/11/2025 18:03          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 14:54          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/11/2025 11:48          Modérateur=Hiba GUELLIL
-         • Source=Instagram       Date=22/11/2025 09:59          Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-23 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-19 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2026-01-11 Modérateur=Mounira Rai
 
-  [15] NB COPIES : 11 | MODÉRATEURS : Aimen NOURI, Manel ZERKHAF, Rania KHIAR, Ines GUECHIDA, Hiba GUELLIL, Ines Ikram CHABBI, Ilham BOSLI, MohamedAmine GHEBGHOUB
-       COMMENTAIRE : غالي
-       DÉTAIL :
-         • Source=IdoomMarket     Date=27/11/2025 14:36          Modérateur=Ilham BOSLI
-         • Source=IdoomMarket     Date=22/01/2026 13:49          Modérateur=Ines Ikram CHABBI
-         • Source=Facebook        Date=26/12/2025 23:50          Modérateur=Aimen NOURI
-         • Source=IdoomMarket     Date=17/01/2026 19:51          Modérateur=Rania KHIAR
-
-  [16] NB COPIES : 11 | MODÉRATEURS : Ahlem Baroudi, Romaissa ZEHIOUA, Mounira Rai, Nihad BOUBEKEUR, Ines GUECHIDA, Manel ZERKHAF, Sonia AITTAHAR
-       COMMENTAIRE : خردة
-       DÉTAIL :
-         • Source=Facebook        Date=24/01/2026 08:32          Modérateur=Ahlem Baroudi
-         • Source=Facebook        Date=29/12/2025 12:22          Modérateur=Sonia AITTAHAR
-         • Source=Facebook        Date=28/12/2025 09:45          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=27/12/2025 09:37          Modérateur=Nihad BOUBEKEUR
-
-  [17] NB COPIES : 11 | MODÉRATEURS : Nihed LEBCIR, Manel ZERKHAF, Dalil ZERGOUG, Mounira Rai, Ines GUECHIDA, Hiba GUELLIL
-       COMMENTAIRE : كم السعر
-       DÉTAIL :
-         • Source=Facebook        Date=26/12/2025 09:36          Modérateur=Mounira Rai
-         • Source=IdoomMarket     Date=21/11/2025 18:54          Modérateur=Mounira Rai
-         • Source=IdoomMarket     Date=21/11/2025 08:07          Modérateur=Nihed LEBCIR
-         • Source=IdoomMarket     Date=18/12/2025 19:39          Modérateur=Ines GUECHIDA
-
-  [18] NB COPIES : 10 | MODÉRATEURS : Baya Benhagouga, Ahlem Baroudi, Romaissa ZEHIOUA, Mounira Rai, Nihad BOUBEKEUR, Hiba GUELLIL, MohamedAmine GHEBGHOUB
+  [17] NB COPIES : 11 | MODÉRATEURS : Sonia AITTAHAR, MohamedAmine GHEBGHOUB, Mounira Rai, Nihad BOUBEKEUR, Hiba GUELLIL, Ahlem Baroudi, Baya Benhagouga, Romaissa ZEHIOUA
        COMMENTAIRE : ندعوكم للتواصل معنا عبر الخاص قصد تزويدنا بمعلومات أوفر فيما يخص انشغالكم لنتمكن...
        DÉTAIL :
-         • Source=Facebook        Date=31/01/2026 18:52          Modérateur=Baya Benhagouga
-         • Source=Facebook        Date=27/01/2026 15:39          Modérateur=Ahlem Baroudi
-         • Source=IdoomMarket     Date=27/11/2025 08:11          Modérateur=Hiba GUELLIL
-         • Source=Facebook        Date=30/12/2025 17:57          Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2026-01-31 Modérateur=Baya Benhagouga
+         • Source=Facebook        Jour=2026-01-27 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-19 Modérateur=Romaissa ZEHIOUA
 
-  [19] NB COPIES : 10 | MODÉRATEURS : Aimen NOURI, Ahlem Baroudi, Imene SAADI, Mounira Rai, Nihad BOUBEKEUR, Sonia AITTAHAR, MohamedAmine GHEBGHOUB
-       COMMENTAIRE : ردو عليا في الخاص
+  [18] NB COPIES : 11 | MODÉRATEURS : Aimen NOURI, Ines GUECHIDA, MohamedAmine GHEBGHOUB, Ilham BOSLI, Manel ZERKHAF, Hiba GUELLIL, Ines Ikram CHABBI, Rania KHIAR
+       COMMENTAIRE : غالي
        DÉTAIL :
-         • Source=Facebook        Date=26/11/2025 18:33          Modérateur=Nihad BOUBEKEUR
-         • Source=Facebook        Date=19/01/2026 20:13          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=17/01/2026 21:02          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=17/01/2026 17:53          Modérateur=Mounira Rai
+         • Source=IdoomMarket     Jour=2025-11-27 Modérateur=Ilham BOSLI
+         • Source=IdoomMarket     Jour=2026-01-22 Modérateur=Ines Ikram CHABBI
+         • Source=IdoomMarket     Jour=2026-01-17 Modérateur=Rania KHIAR
+         • Source=Facebook        Jour=2025-11-18 Modérateur=Ines GUECHIDA
 
-  [20] NB COPIES : 10 | MODÉRATEURS : Mounira Rai, Kenza Hoceini, Aimen NOURI, Sonia AITTAHAR
-       COMMENTAIRE : ننتظر إطلاق خدمة الانترنت منذ عدة ايام بعدما تم التوصيل رغم التقدم للوكالة التجا...
+  [19] NB COPIES : 11 | MODÉRATEURS : Ines GUECHIDA, Sonia AITTAHAR, Mounira Rai, Manel ZERKHAF, Nihad BOUBEKEUR, Ahlem Baroudi, Romaissa ZEHIOUA
+       COMMENTAIRE : خردة
        DÉTAIL :
-         • Source=Facebook        Date=27/12/2025 23:19          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=27/12/2025 23:15          Modérateur=Aimen NOURI
-         • Source=Instagram       Date=27/12/2025 22:49          Modérateur=Aimen NOURI
-         • Source=Facebook        Date=26/12/2025 11:33          Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-24 Modérateur=Ahlem Baroudi
+         • Source=IdoomMarket     Jour=2025-11-21 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2026-01-15 Modérateur=Romaissa ZEHIOUA
 
-  ... et 551 autres groupes
+  [20] NB COPIES : 10 | MODÉRATEURS : Aimen NOURI, Nihad BOUBEKEUR, Hiba GUELLIL, Nihed LEBCIR, Romaissa ZEHIOUA
+       COMMENTAIRE : ردو علينا في الخاص
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-27 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-21 Modérateur=Hiba GUELLIL
+
+  ... et 571 autres groupes
 
 ======================================================================
-✅ DÉCISIONS DE TRAITEMENT
+⚪ TYPE 4 — DOUBLONS PARFAITS
+   → Même texte normalisé, même jour, même source, même modérateur
+   → À SUPPRIMER (garder seulement 1 copie)
 ======================================================================
-   🔵 Sources différentes    → Garder 1 copie par source
-   🔴 Dates différentes      → Garder toutes (analyse temporelle)
-   🟣 Modérateurs différents → Garder toutes (analyse performance)
-   ❌ Même texte+jour+source → Supprimer toutes sauf la plus ancienne
+
+  [1] NB COPIES : 29 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : 3ndi 2 mois w ping instable 200 300
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+
+  [2] NB COPIES : 28 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : We need a Call of Duty Mobile server in Algeria سيد علي زروقي Sid Ali Zerrouki
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Sonia AITTAHAR
+
+  [3] NB COPIES : 11 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : هل راح تعوضولنا انقطاع الانترنت idoom4G ولا ربي يخلف علينا ؟
+       DÉTAIL :
+         • Source=Instagram       Jour=2025-11-21 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-21 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-21 Modérateur=Hiba GUELLIL
+         • Source=Instagram       Jour=2025-11-21 Modérateur=Hiba GUELLIL
+
+  [4] NB COPIES : 9 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : رانا بلا انترنت وماحبوش يجو يخدمولنا باطة تهميش
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-15 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-15 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-15 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-15 Modérateur=Hiba GUELLIL
+
+  [5] NB COPIES : 9 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : او رجعولي الانترنت قبل ما يفوت الماتش
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-12 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-12 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-12 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-12 Modérateur=Hiba GUELLIL
+
+  [6] NB COPIES : 7 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : عندي 15 ميقا سرعة انترنت في 2025 كاين وعندي تقنية الياف بصرية بلاد مزالها ب 15 م...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+
+  [7] NB COPIES : 6 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : الشعب يريد فتح المجال في قطاع الاتصال لشركات أخرى قادرة على تقديم خدمات جيدة وتخ...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+         • Source=Facebook        Jour=2025-11-26 Modérateur=Nihad BOUBEKEUR
+
+  [8] NB COPIES : 6 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : سينياليلي كوننكسيون انقطعت عندي بيها بلهاتف رقم 043544449
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-20 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-20 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-20 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-20 Modérateur=Mounira Rai
+
+  [9] NB COPIES : 6 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : متربصي اتصالات الجزائر قالمة ولاية قالمة متربصي اتصالات الجزائر Commercial حقنا ...
+       DÉTAIL :
+         • Source=IdoomMarket     Jour=2025-12-02 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-02 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-02 Modérateur=Nihad BOUBEKEUR
+         • Source=IdoomMarket     Jour=2025-12-02 Modérateur=Nihad BOUBEKEUR
+
+  [10] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : Je souhaite vous signaler une anomalie grave constatée lors de l’installation de...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-24 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-24 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-24 Modérateur=MohamedAmine GHEBGHOUB
+         • Source=Facebook        Jour=2025-11-24 Modérateur=MohamedAmine GHEBGHOUB
+
+  [11] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : نريد الاستفسار حول توقف مشروع FTTH في حي خبنة الصحن الطيبات ولاية تقرت للعلم الم...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Imene SAADI
+
+  [12] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : فعلونا انترنت من فضلكم ponثابت وتلفون يمشي وشاعلين 4ضواو ولنترنت متمشيش ريقليوها...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-22 Modérateur=Nihed LEBCIR
+
+  [13] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : ا قسم بالله كرهتولنا حياتنا من افريل لليوم مازال ماطلقتوليش الانترنيت من دوم الج...
+       DÉTAIL :
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2026-01-14 Modérateur=Mounira Rai
+
+  [14] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : حي لعرارسة سطيف كرهونا في الانترنت أكثر من شهر دون تحويل خط الانترنت في الهاتف ن...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-02 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-02 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-02 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-11-02 Modérateur=Hiba GUELLIL
+
+  [15] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : حي بن سمير 30 مسكن عين الترك ولاية وهران بعد الربط بشبكة الآلياف منذ شهر بدون تو...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-30 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-30 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-30 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-30 Modérateur=Ahlem Baroudi
+
+  [16] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : كأس أفريقيا برعاية اتصالات الجزائر تحيا اتصالات الجزائر يحيا الفريق الوطني
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-24 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-24 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-24 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-24 Modérateur=Mounira Rai
+
+  [17] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : je veux etre propriétaire de mon modem merci, de nous fournir le mot de passe ad...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-22 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-22 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-22 Modérateur=Ahlem Baroudi
+         • Source=Facebook        Jour=2025-12-22 Modérateur=Ahlem Baroudi
+
+  [18] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : عين البيضاء للشهر الثامن على التوالي، ما يزال حي الزهور وحي الفيراي يعانيان انقط...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-11 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-11 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-11 Modérateur=Mounira Rai
+         • Source=Facebook        Jour=2025-12-11 Modérateur=Mounira Rai
+
+  [19] NB COPIES : 5 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : قمنا بدفع الالكتروني بتاريخ 06 نوفمبر 2025 ولم استفيد حجم انترنت مهدى 20% اي ثلا...
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-12-07 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-07 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-07 Modérateur=Hiba GUELLIL
+         • Source=Facebook        Jour=2025-12-07 Modérateur=Hiba GUELLIL
+
+  [20] NB COPIES : 4 | MÊME SOURCE/MODÉRATEUR
+       COMMENTAIRE : Algérie Télécom إتصالات الجزائر internet en dérangement
+       DÉTAIL :
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
+         • Source=Facebook        Jour=2025-11-24 Modérateur=Nihed LEBCIR
+
+  ... et 487 autres groupes
+
+======================================================================
+📊 STATISTIQUES FINALES
+======================================================================
+   Total groupes de doublons              : 1172
+   Total documents dans doublons          : 3436
+   Documents en double (à supprimer)      : 2264
+   Taux de doublons                       : 8.52%
 
 ======================================================================
 FIN DU RAPPORT

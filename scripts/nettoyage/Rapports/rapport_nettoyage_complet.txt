@@ -1,34 +1,70 @@
+======================================================================
+🔍 NETTOYAGE COMPLET v1.7 — URLs + @ + # + Ponctuations
+   Date : 2026-03-15 16:11:57
+   Mode : Spark 4.1.1 | mapPartitions | 3 Workers → MongoDB direct
+======================================================================
+
+📊 AVANT NETTOYAGE :
+   ┌────────────────────────────────────────────┐
+   │ Total documents         : 26576           │
+   │ Avec URLs               : 23              │
+   │ Avec @                  : 74              │
+   │ Avec #                  : 174             │
+   │ Avec ponctuations       : 8152            │
+   │ Avec heures (HH:MM)     : 75              │
+   │ Avec Wi-Fi              : 31              │
+   │ Avec dates (DD/MM+)     : 90              │
+   │ % ponctuations          : 30.67         % │
+   └────────────────────────────────────────────┘
+
+💾 NETTOYAGE + ÉCRITURE DISTRIBUÉE...
+✅ 26565 documents écrits en 6.61s
+🗑️  11 lignes vides ignorées (non insérées)
+
+🔎 VÉRIFICATION FINALE...
+   • Documents en destination  : 26565
+   • URLs restantes            : 0
+   • @ restants                : 0
+   • # restants                : 0
+   • Lignes vides restantes    : 0
+   • Dates cassées  (FIX-C7)   : 0  ✅
+   • Wi-Fi cassé    (FIX-C6)   : 0  ✅
+   ✅ SUCCÈS TOTAL !
 
 ======================================================================
-RAPPORT — NETTOYAGE COMPLET (URLs + @ + # + Ponctuations + Lignes vides)
+📊 RÉSUMÉ FINAL
 ======================================================================
-Date   : 2026-03-08 01:01:23
-Mode   : Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
+📥 Documents source        : 26576
+📤 Documents insérés       : 26565
+🗑️  Lignes vides ignorées   : 11
+✅ Heures préservées (C4)   : 75
+✅ Dates préservées  (C7)   : 90
+✅ Wi-Fi protégé    (C6)    : 31
+⏱️  Temps total             : 43.00s
+🚀 Vitesse                 : 618 docs/s
+📁 Collection source       : telecom_algerie.commentaires_bruts
+📁 Collection dest.        : telecom_algerie.commentaires_sans_urls_arobase
+======================================================================
+   Statut : ✅ SUCCÈS
+======================================================================
 
-⏱️  TEMPS:
-   • Connexion Spark  : 11.07s
-   • Chargement       : 15.81s
-   • Analyse          : 6.09s
-   • Nettoyage        : 2.61s
-   • Écriture MongoDB : 1.43s
-   • TOTAL            : 37.27s (713 doc/s)
+PONCTUATION GARDÉE (1 seule) : ؟  !  .  ،  ؛  /  ?  '
+PONCTUATION SUPPRIMÉE        : " « » ( ) [ ] { }
+                               ~ ` ^ * + = < > | \ _
+                               tirets non numériques
 
-📊 RÉSULTATS:
-   • Total source       : 26576 documents
-   • URLs supprimées    : 23 (100.0%)
-   • @ supprimés        : 74 (100.0%)
-   • # supprimés        : 174 (100.0%)  # ✅ AJOUTÉ
-   • Ponct. supprimées  : 8152 (100.0%)
-   • Lignes vides       : 25 ignorées (non insérées)
-   • Total inséré       : 26551 documents
+CORRECTIONS APPLIQUÉES :
+   FIX-C4  : Heures préservées (18:00, 23:00)          — 75 cas
+   FIX-C6  : Wi-Fi → wifi                              — 31 cas
+   FIX-C7  : Dates préservées (DD/MM/YY, DD-MM-YYYY)   — 90 cas
+   FIX-C7c : DD\MM\YYYY → DD/MM/YYYY
+   FIX-C7d : 'من 18 10 2025' → 'من 18/10/2025'
+   FIX-C8  : Ponctuation répétée réduite à 1
 
-🧹 PONCTUATIONS SUPPRIMÉES:
-   • Latines  : . , ! ? ; : " ' « » ( ) [ ] { }
-   • Arabes   : ؟ ، ؛
-   • Symboles : … – — ~ ` ^ * + = < > | \ / _
-
-📁 STOCKAGE:
-   • Source      : telecom_algerie.commentaires_bruts
-   • Destination : telecom_algerie.commentaires_sans_urls_arobase
-   • Insérés     : 26551
-   • Statut      : ✅ SUCCÈS
+⏱️  TEMPS DÉTAILLÉ :
+   • Connexion Spark  : 15.30s
+   • Chargement       : 17.89s
+   • Analyse          : 2.45s
+   • Écriture MongoDB : 6.61s
+   • TOTAL            : 43.00s (618 doc/s)
+======================================================================

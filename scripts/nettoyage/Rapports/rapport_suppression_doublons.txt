@@ -1,29 +1,42 @@
-
 ======================================================================
-RAPPORT — SUPPRESSION INTELLIGENTE DES DOUBLONS
+🔁 SUPPRESSION INTELLIGENTE DES DOUBLONS
+   Date : 2026-03-15 22:27:43
+   Mode : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
 ======================================================================
-Date       : 2026-03-11 22:25:00
-Mode       : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
-Collection : telecom_algerie.commentaires_sans_urls_arobase → commentaires_sans_doublons
 
 RÈGLES APPLIQUÉES :
    ❌ R1 : même texte(60c) + même jour + même source + même mod → garder 1
    ✅ R2 : même texte(60c) + même jour + source diff            → 1 par source
    ✅ R3 : même texte(60c) + jours différents                   → 1 par jour
    ✅ R4 : même texte(60c) + même jour + mod diff               → 1 par modérateur
-   ✅ R5 : texte tronqué vs complet → garder le plus long (complet)
+   ✅ R5 : texte tronqué vs complet → garder le plus long
+   🔧 Passe finale Python → correction doublons inter-partitions
 
-RÉSULTATS :
-   • Documents source          : 26551
-   • Documents supprimés       : 1095
-   • Documents gardés          : 25456
-   • Taux de réduction         : 4.12%
+📊 RÉSULTATS :
+   ┌────────────────────────────────────────────┐
+   │ Documents source          : 26565           │
+   │ Documents supprimés       : 1092            │
+   │ Documents gardés          : 25473           │
+   │ Taux de réduction         : 4.11          % │
+   │ Doublons R1 résiduels     : 2               │
+   └────────────────────────────────────────────┘
 
-TEMPS :
-   • Total                     : 33.83s
-   • Vitesse                   : 785 docs/s
+🔎 VÉRIFICATION DES RÈGLES R1 → R5 :
+   ┌───────┬────────────────────────────────┬───────────────┐
+   │ RÈGLE │ DESCRIPTION                    │ RÉSULTAT      │
+   ├───────┼────────────────────────────────┼───────────────┤
+   │  R1   │ Doublons parfaits restants     │ 0     ✅         │
+   │  R2   │ Groupes multi-sources gardés   │ 84    ✅ normal    │
+   │  R3   │ Groupes multi-jours gardés     │ 509   ✅ normal    │
+   │  R4   │ Groupes multi-mods gardés      │ 192   ✅ normal    │
+   │  R5   │ Textes tronqués vs complets    │ 64    ⚠️          │
+   └───────┴────────────────────────────────┴───────────────┘
 
-STOCKAGE :
+⏱️  TEMPS :
+   • Total    : 53.68s
+   • Vitesse  : 495 docs/s
+
+📁 STOCKAGE :
    • Source      : telecom_algerie.commentaires_sans_urls_arobase
    • Destination : telecom_algerie.commentaires_sans_doublons
    • Statut      : ✅ SUCCÈS
