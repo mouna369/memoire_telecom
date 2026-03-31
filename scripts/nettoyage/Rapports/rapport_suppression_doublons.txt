@@ -1,6 +1,6 @@
 ======================================================================
 🔁 SUPPRESSION INTELLIGENTE DES DOUBLONS
-   Date : 2026-03-15 22:27:43
+   Date : 2026-03-22 20:29:59
    Mode : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
 ======================================================================
 
@@ -33,8 +33,8 @@ RÈGLES APPLIQUÉES :
    └───────┴────────────────────────────────┴───────────────┘
 
 ⏱️  TEMPS :
-   • Total    : 53.68s
-   • Vitesse  : 495 docs/s
+   • Total    : 29.51s
+   • Vitesse  : 900 docs/s
 
 📁 STOCKAGE :
    • Source      : telecom_algerie.commentaires_sans_urls_arobase

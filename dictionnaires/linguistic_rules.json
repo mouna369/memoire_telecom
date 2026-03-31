@@ -1,22 +1,15 @@
 {
   "_metadata": {
-    "version": "1.4",
+    "version": "1.6",
     "changelog": [
-      "v1.4 FIX-31: 'mais' retiré de stopwords.francais, ajouté dans dialect_keep.francais_garde (connecteur logique d'opposition — vérification qualitative N°50)",
-      "v1.3 FIX-Q1: dialect_keep.connecteurs_logiques — لكن/حيث/كما/مثل/ولا/كيف/حول/رغم/حتى",
-      "v1.3 FIX-Q2: dialect_keep.quantitatifs_nombres — خمس/عشرين/مئة/مية/متيني/فقط/كثير/قليل/أكثر/أقل",
-      "v1.3 FIX-Q3: dialect_keep.temporels_gardes — اليوم/الآن/درك/بكري/منذ/أمس/غدا",
-      "v1.3 FIX-Q4: dialect_keep.contextuels — علم/نعم/هذا/هذه/ذلك/جدا/هنا/هناك/أيضا/كيف/أين",
-      "v1.3 FIX-Q4: stopwords.arabe_standard — 35 mots retirés (porteurs de sens → dialect_keep)",
-      "v1.3 FIX-Q4: stopwords.francais — 21 mots retirés (prépositions/adverbes → dialect_keep)",
-      "v1.3 FIX-Q5: arabizi_words — baridimo/baridimob/baridicash/myidoom/hty ajoutés",
-      "v1.2 FIX-23: protected_words — bonus/marques(nokia/tenda/google/starlink)/apps",
-      "v1.2 FIX-24: stopwords anglais — retrait we/get/want/good/bad/very/all/so",
-      "v1.2 FIX-25: dialect_keep — واشمن/شحال/négations composées arabes",
-      "v1.2 FIX-26: intentional_repeats.francais — mm",
-      "v1.1 FIX-16: intentional_repeats — ajout جد",
-      "v1.1 FIX-17: protected_words.streaming — prime/netflix/fortnite/twinbox/ram/heures",
-      "v1.1 FIX-18: tech_tokens.gaming_materiel — 4k/hd/ram/android/serveur"
+      "v1.6: Ajout des acronymes techniques (QoE, Speedtest, Traffic Shaping, Backbone, Throughput, Routing, Peering, CDN, OLT, QoS, Jitter, Core Network, GPON) dans tech_tokens.acronymes et protected_words.termes_techniques",
+      "v1.6: Ajout de 'myidoom' dans protected_words.apps_algerie",
+      "v1.6: Ajout de '4k', '8k', '2k' dans tech_tokens.unites",
+      "v1.5 BUG-4: 'my' retiré de stopwords.anglais — causait la suppression de 'my idoom' en mode full",
+      "v1.5 BUG-5: 'يوم' retiré de stopwords.arabe_standard + ajouté dans dialect_keep.temporels_gardes — causait '11 يوم' → '11'",
+      "v1.5 BUG-6: 'دون' ajouté dans dialect_keep.prepositions — préposition de sens fort (= sans) ne doit pas être supprimée",
+      "v1.4 FIX-31: 'mais' retiré de stopwords.francais, ajouté dans dialect_keep.francais_garde",
+      "v1.3: Enrichissement dialect_keep et ajustements stopwords"
     ]
   },
   "negations": {
@@ -120,7 +113,8 @@
       "نحو",
       "رغم",
       "ضد",
-      "بدون"
+      "بدون",
+      "دون"
     ],
     "francais_garde": [
       "ya",
@@ -162,6 +156,7 @@
       "ne",
       "mais"
     ],
+     "commandes": [ "reset", "re-provision", "reprovision" ] ,
     "negations_composees": [
       "ماجازش",
       "ماسمعناش",
@@ -208,7 +203,17 @@
       "دائما",
       "أحيانا",
       "أبدا",
-      "مرة"
+      "مرة",
+      "يوم",
+      "أيام",
+      "ساعة",
+      "ساعات",
+      "دقيقة",
+      "دقائق",
+      "شهر",
+      "أشهر",
+      "سنة",
+      "سنوات"
     ],
     "contextuels_importants": [
       "علم",
@@ -298,7 +303,10 @@
       "mo",
       "go",
       "ko",
-      "mbs"
+      "mbs",
+      "4k",
+      "8k",
+      "2k"
     ],
     "operateurs": [
       "idoom",
@@ -331,6 +339,22 @@
       "ios",
       "serveur",
       "server"
+    ],
+    "acronymes": [
+      "QoE",
+      "Speedtest",
+      "Traffic Shaping",
+      "Backbone",
+      "Throughput",
+      "Routing",
+      "Peering",
+      "CDN",
+      "CDNs",
+      "OLT",
+      "QoS",
+      "Jitter",
+      "Core Network",
+      "GPON"
     ]
   },
   "arabic_prefixes": {
@@ -351,17 +375,17 @@
   "contractions": {
     "francais": {
       "j'ai": "je ai",
-      "j’ai": "je ai",
+      "j\u2019ai": "je ai",
       "c'est": "ce est",
-      "c’est": "ce est",
+      "c\u2019est": "ce est",
       "n'est": "ne est",
-      "n’est": "ne est",
+      "n\u2019est": "ne est",
       "n'a": "ne a",
-      "n’a": "ne a",
+      "n\u2019a": "ne a",
       "qu'il": "que il",
-      "qu’il": "que il",
+      "qu\u2019il": "que il",
       "qu'on": "que on",
-      "qu’on": "que on",
+      "qu\u2019on": "que on",
       "l'internet": "le internet",
       "d'internet": "de internet",
       "s'il": "si il",
@@ -401,7 +425,6 @@
       "شخص",
       "ناس",
       "وقت",
-      "يوم",
       "نحو",
       "ضد"
     ],
@@ -465,7 +488,6 @@
     ],
     "anglais": [
       "i",
-      "my",
       "our",
       "you",
       "your",
@@ -522,6 +544,9 @@
   },
   "protected_words": {
     "termes_fr_gardes": [
+      "code",
+      "client",
+      "clients",
       "internet",
       "connexion",
       "problème",
@@ -551,7 +576,28 @@
       "vraiment",
       "lente",
       "mois",
-      "plusieurs"
+      "plusieurs",
+      "no transaction",
+      "no transction"
+    ],
+    "termes_techniques": [
+      "QoE",
+      "Speedtest",
+      "Traffic Shaping",
+      "Backbone",
+      "Throughput",
+      "Routing",
+      "Peering",
+      "CDN",
+      "CDNs",
+      "OLT",
+      "QoS",
+      "Jitter",
+      "Core Network",
+      "GPON",
+       "reset",
+    "re-provision",
+    "reprovision"
     ],
     "reseaux_sociaux": [
       "facebook",
@@ -630,12 +676,19 @@
       "ip80"
     ],
     "apps_algerie": [
+      "aadl",
+      "aadl2",
       "baridimob",
       "baridicash",
       "ccp",
       "idoom",
       "idoom fiber",
-      "idoom adsl"
+      "idoom adsl",
+      "my idoom",
+      "my ooredoo",
+      "my djezzy",
+      "my mobilis",
+      "myidoom"
     ]
   }
 }

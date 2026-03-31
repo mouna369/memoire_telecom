@@ -1,0 +1,32 @@
+================================================================================
+RAPPORT COMPARAISON : DziriBERT | AraBERT | CAMeL Tools
+================================================================================
+Date : 2026-03-24 17:29:12
+
+PERFORMANCES :
+
+DZIRI:
+   Temps moyen : 1945 ms
+   Confiance moyenne : 87.57%
+   POSITIF: 0/20 (0.0%)
+   NEGATIF: 10/20 (50.0%)
+   NEUTRE : 10/20 (50.0%)
+
+ARABERT:
+   Temps moyen : 1408 ms
+   Confiance moyenne : 49.42%
+   POSITIF: 1/20 (5.0%)
+   NEGATIF: 3/20 (15.0%)
+   NEUTRE : 16/20 (80.0%)
+
+CAMEL:
+   Temps moyen : 0 ms
+   Confiance moyenne : 50.00%
+   POSITIF: 0/20 (0.0%)
+   NEGATIF: 0/20 (0.0%)
+   NEUTRE : 20/20 (100.0%)
+
+TAUX D'ACCORD :
+   DziriBERT vs AraBERT : 8/20 (40.0%)
+   DziriBERT vs CAMeL   : 10/20 (50.0%)
+   AraBERT vs CAMeL     : 16/20 (80.0%)

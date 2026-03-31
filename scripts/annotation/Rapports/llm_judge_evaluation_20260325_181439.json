@@ -1,0 +1,29 @@
+{
+  "methode": "LLM-as-a-Judge",
+  "modele_evalue": "alger-ia/dziribert_sentiment",
+  "modele_juge": "llama3",
+  "date": "2026-03-25 18:14:39",
+  "n_commentaires": 20,
+  "correct": 7,
+  "incorrect": 13,
+  "accuracy": 0.35,
+  "temps_minutes": 12.71,
+  "validation": "⚠️ À AMÉLIORER",
+  "performance_par_sentiment": {
+    "Positif": {
+      "total": 1,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "Négatif": {
+      "total": 9,
+      "correct": 7,
+      "accuracy": 0.7778
+    },
+    "Neutre": {
+      "total": 10,
+      "correct": 0,
+      "accuracy": 0.0
+    }
+  }
+}

@@ -1,0 +1,37 @@
+======================================================================
+🔤 NORMALISATION MULTI-NŒUDS v3.9.5
+   Date : 2026-03-25 20:58:54
+   Mode : Spark 4.1.1 | 3 Workers | MongoDB direct
+======================================================================
+
+CORRECTIFS APPLIQUÉS :
+   FIX-38 : ms protégé comme unité de latence
+   FIX-39 : my idoom/djezzy/mobilis/ooredoo protégé
+   FIX-40 : بروموسيو → promotion conservé
+   FIX-41 : noms propres latins préservés
+   FIX-42 : wifi5/wifi6/wifi7 protégé
+   FIX-43 : XG-SPON protégé
+   FIX-44 : arabizi hybride/pur converti (n9drou, nkhlsou...)
+   FIX-45 : arabizi manquants (bdlna, khalso, draham...)
+   FIX-46 : correction الgaming → الألعاب
+   FIX-47 : preserve_latin_darja = True
+
+📊 RÉSULTATS :
+   ┌────────────────────────────────────────────┐
+   │ Documents source          : 25473           │
+   │ Documents normalisés      : 25444           │
+   │ Documents hors scope      : 29              │
+   │ Taux de succès            : 99.89         % │
+   └────────────────────────────────────────────┘
+
+⏱️  TEMPS :
+   • Connexion Spark  : 13.08s
+   • Chargement       : 13.64s
+   • Normalisation    : 13.89s
+   • TOTAL            : 42.66s (597 doc/s)
+
+📁 STOCKAGE :
+   • Source      : telecom_algerie.commentaires_sans_emojis
+   • Destination : telecom_algerie.commentaires_normalises
+   • Statut      : ✅ SUCCÈS
+======================================================================

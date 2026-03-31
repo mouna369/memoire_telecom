@@ -1,0 +1,9 @@
+a regles 
+"69b57936f12ca6f5a3120e72","نسالكم 150 الف بلا سماح","neutre","0.00","0.50","demande d'information"
+"69b57931f12ca6f5a311dc71","YADRA CHEKON MOL HADI EL MINNASSA BACH ALGERIE TELECOM TKON FIHA","negatif","-0.80","0.90","manque de professionnalisme"
+"69b57931f12ca6f5a311dc72","نحتاج رقم الزبون عندي مودم 4G idoom","neutre","0.00","0.50","demande de numéro client"
+"69b57936f12ca6f5a31217bb","طزطزطزطزطزط","neutre","0.0","0.50","commentaire neutre"
+"69b57936f12ca6f5a3121872","مهمه تهفو 3 ملاين مشترك","neutre","0.0","0.5","remarque sur le nombre de clients"
+"69b57936f12ca6f5a3121854","متنساوش تكثرو كوابل النحاس الطريق راهي بعيده وتاكل","neutre","0.0","0.5","remarque sur les câbles"
+"69b57934f12ca6f5a312002f","ارفعوا لنا سرعه","neutre","0.05","0.80","demande d'augmentation de la vitesse""69b57934f12ca6f5a3120028","قومو برد على الخاص الامر ضروري","neutre","0.00","0.90","demande de contact privé urgente"
+"69b57934f12ca6f5a3120352","ياودي فوتولنا لخيطان ومنبعد ساهل","neutre","0.00","0.85","demande de raccordement physique"
