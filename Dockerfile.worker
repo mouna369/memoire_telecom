@@ -1,0 +1,12 @@
+FROM apache/spark:latest
+
+USER root
+
+RUN pip install --no-cache-dir \
+    torch \
+    transformers \
+    pymongo \
+    safetensors \
+    sentencepiece
+
+USER spark

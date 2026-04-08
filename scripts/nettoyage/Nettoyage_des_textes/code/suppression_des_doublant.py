@@ -549,18 +549,20 @@ from datetime import datetime
 from collections import defaultdict
 import os, time, math, json, re
 
+
+
 # ============================================================
 # CONFIGURATION
 # ============================================================
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_urls_arobase"
-COLLECTION_DEST   = "commentaires_sans_doublons"
+COLLECTION_SOURCE = "commentaires_sans_urls_arobase2"
+COLLECTION_DEST   = "commentaires_sans_doublons2"
 NB_WORKERS        = 2
 SPARK_MASTER      = "spark://spark-master:7077"
 RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_suppression_doublons.txt"
-
+STATS_FILE        = "/tmp/spark_stats.json"   # ← AJOUT : fichier partagé avec le dashboard
 NB_CHARS_COMPARAISON = 60
 
 # ============================================================

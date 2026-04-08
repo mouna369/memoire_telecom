@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark Live Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a; --bg2: #111827; --bg3: #1a2235;
+  --border: #1e2d45;
+  --accent: #0ea5e9; --accent2: #10b981; --accent3: #f59e0b; --danger: #ef4444;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #475569;
+  --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; min-height: 100vh; padding: 1.5rem; }
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(14,165,233,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* HEADER */
+.header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+.header-tag { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+.header-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.header-sub { font-size: 12px; color: var(--text2); font-weight: 300; margin-top: 2px; }
+
+/* STATUS BADGE */
+.status-badge { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 6px; font-family: var(--mono); font-size: 11px; transition: all 0.4s; }
+.status-badge.waiting  { background: rgba(71,85,105,0.2); border:1px solid rgba(71,85,105,0.4); color: var(--text3); }
+.status-badge.running  { background: rgba(14,165,233,0.1); border:1px solid rgba(14,165,233,0.3); color: var(--accent); }
+.status-badge.done     { background: rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); color: var(--accent2); }
+.status-badge.error    { background: rgba(239,68,68,0.1);  border:1px solid rgba(239,68,68,0.3);  color: var(--danger); }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; }
+.status-badge.waiting  .status-dot { background: var(--text3); }
+.status-badge.running  .status-dot { background: var(--accent);  animation: pulse 1s ease-in-out infinite; }
+.status-badge.done     .status-dot { background: var(--accent2); }
+.status-badge.error    .status-dot { background: var(--danger);  animation: pulse 0.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* REFRESH indicator */
+.refresh-row { display: flex; justify-content: flex-end; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 1rem; }
+.refresh-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent2); animation: pulse 1s linear infinite; }
+
+/* METRIC CARDS */
+.metrics-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.5rem; }
+.metric-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; position: relative; overflow: hidden; transition: border-color 0.4s; }
+.metric-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; transition: background 0.4s; }
+.metric-card.blue::before  { background: var(--accent); }
+.metric-card.green::before { background: var(--accent2); }
+.metric-card.amber::before { background: var(--accent3); }
+.metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.metric-value { font-family: var(--mono); font-size: 26px; font-weight: 600; line-height: 1; transition: color 0.4s; }
+.metric-value.blue  { color: var(--accent); }
+.metric-value.green { color: var(--accent2); }
+.metric-value.amber { color: var(--accent3); }
+.metric-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
+/* SECTION LABEL */
+.section-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* PIPELINE */
+.pipeline { display: flex; align-items: center; margin-bottom: 1.5rem; gap: 0; overflow-x: auto; }
+.pipe-step { flex: 1; min-width: 100px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 8px; text-align: center; transition: border-color 0.4s, background 0.4s; }
+.pipe-step.active { border-color: var(--accent); background: rgba(14,165,233,0.06); }
+.pipe-step.done   { border-color: var(--accent2); background: rgba(16,185,129,0.05); }
+.pipe-arrow { color: var(--text3); padding: 0 4px; font-size: 14px; flex-shrink: 0; }
+.pipe-icon { font-size: 16px; margin-bottom: 3px; }
+.pipe-label { font-size: 10px; color: var(--text2); font-weight: 500; }
+.pipe-time  { font-family: var(--mono); font-size: 10px; color: var(--accent); margin-top: 2px; min-height: 14px; }
+
+/* TWO / THREE COL */
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 1.5rem; }
+
+.panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.panel-title { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.panel-title .dot { width:6px;height:6px;border-radius:50%; }
+
+/* WORKER CARDS */
+.worker-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; transition: border-color 0.4s; }
+.worker-card.active { border-color: rgba(14,165,233,0.4); }
+.worker-card.done   { border-color: rgba(16,185,129,0.4); }
+.worker-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.worker-name { font-family: var(--mono); font-size: 12px; font-weight: 600; }
+.worker-addr { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 1px; }
+.alive-tag { font-family: var(--mono); font-size: 10px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: var(--accent2); padding: 2px 7px; border-radius: 4px; }
+.wait-tag  { font-family: var(--mono); font-size: 10px; background: rgba(71,85,105,0.2); border: 1px solid rgba(71,85,105,0.3); color: var(--text3); padding: 2px 7px; border-radius: 4px; }
+
+.bar-row { margin-bottom: 7px; }
+.bar-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-bottom: 3px; }
+.bar-track { height: 5px; background: var(--bg); border-radius: 3px; overflow:hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+.bar-fill.blue  { background: var(--accent); }
+.bar-fill.green { background: var(--accent2); }
+.worker-docs { margin-top: 8px; font-family: var(--mono); font-size: 10px; color: var(--accent); background: rgba(14,165,233,0.05); border: 1px solid rgba(14,165,233,0.15); padding: 4px 7px; border-radius: 4px; min-height: 26px; transition: all 0.4s; }
+
+/* BENCHMARK */
+.speedup-display { display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px; }
+.speedup-num { font-family: var(--mono); font-size: 48px; font-weight: 600; color: var(--accent2); line-height: 1; transition: color 0.4s; }
+.speedup-x   { font-family: var(--mono); font-size: 22px; color: var(--text3); }
+.speedup-desc { font-size: 11px; color: var(--text3); margin-bottom: 16px; }
+.bench-bar-row { margin-bottom: 8px; }
+.bench-bar-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--text2); margin-bottom: 4px; }
+.bench-track { height: 24px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.bench-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; transition: width 1s ease; }
+.bench-fill span { font-family: var(--mono); font-size: 10px; color: #fff; font-weight: 500; }
+.bench-fill.seq { background: rgba(239,68,68,0.65); }
+.bench-fill.par { background: rgba(14,165,233,0.65); }
+
+/* STATS GRID */
+.clean-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.clean-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg3); border-radius: 4px; padding: 6px 9px; font-size: 11px; }
+.clean-key { color: var(--text3); }
+.clean-val { font-family: var(--mono); font-weight: 500; transition: color 0.4s; }
+.clean-val.ok      { color: var(--accent2); }
+.clean-val.neutral { color: var(--text); }
+.clean-val.pending { color: var(--text3); }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 8px; }
+.tl-row { display: flex; align-items: center; gap: 8px; }
+.tl-label { font-size: 11px; color: var(--text2); width: 130px; flex-shrink: 0; }
+.tl-bar-track { flex: 1; height: 18px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.tl-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 6px; font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.7); transition: width 1s ease; min-width: 0; }
+
+/* LOG STREAM */
+.log-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; font-family: var(--mono); font-size: 11px; color: var(--text2); min-height: 60px; max-height: 120px; overflow-y: auto; line-height: 1.7; }
+.log-line { display: flex; gap: 10px; }
+.log-time { color: var(--text3); flex-shrink: 0; }
+.log-msg  { color: var(--accent2); }
+
+/* FOOTER */
+.footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--text3); }
+
+/* WAITING OVERLAY */
+#waiting-overlay { display: none; }
+#waiting-overlay.show { display: flex; flex-direction: column; align-items: center; justify-content: center; position: fixed; inset: 0; background: rgba(10,14,26,0.92); z-index: 100; gap: 16px; }
+.waiting-spinner { width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.waiting-text { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+.waiting-sub  { font-size: 12px; color: var(--text3); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- WAITING OVERLAY -->
+  <div id="waiting-overlay">
+    <div class="waiting-spinner"></div>
+    <div class="waiting-text">En attente du démarrage Spark...</div>
+    <div class="waiting-sub">Lancez votre script : python3 suppression_urls.py</div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-tag">// Live · Spark 4.1.1 · Nettoyage_Complet_MultiNode_v7</div>
+      <div class="header-title">Dashboard Parallélisme Temps Réel</div>
+      <div class="header-sub">Mémoire de fin d'études — NLP + Big Data · Télécom Algérie</div>
+    </div>
+    <div id="status-badge" class="status-badge waiting">
+      <div class="status-dot"></div>
+      <span id="status-text">En attente...</span>
+    </div>
+  </div>
+
+  <div class="refresh-row">
+    <div class="refresh-dot"></div>
+    <span>Actualisation automatique toutes les secondes</span>
+    <span id="elapsed-global" style="margin-left:8px;"></span>
+  </div>
+
+  <!-- METRIC CARDS -->
+  <div class="section-label">métriques globales</div>
+  <div class="metrics-row">
+    <div class="metric-card blue">
+      <div class="metric-label">Documents traités</div>
+      <div class="metric-value blue" id="m-docs">—</div>
+      <div class="metric-sub" id="m-docs-sub">—</div>
+    </div>
+    <div class="metric-card green">
+      <div class="metric-label">Speedup mesuré</div>
+      <div class="metric-value green" id="m-speedup">—</div>
+      <div class="metric-sub">1 worker vs 3 workers</div>
+    </div>
+    <div class="metric-card amber">
+      <div class="metric-label">Débit</div>
+      <div class="metric-value amber" id="m-vitesse">—</div>
+      <div class="metric-sub">documents / seconde</div>
+    </div>
+    <div class="metric-card blue">
+      <div class="metric-label">Temps écoulé</div>
+      <div class="metric-value blue" id="m-elapsed">0s</div>
+      <div class="metric-sub">depuis le démarrage</div>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="section-label">pipeline distribué</div>
+  <div class="pipeline">
+    <div class="pipe-step" id="pipe-0">
+      <div class="pipe-icon">🗄️</div>
+      <div class="pipe-label">MongoDB Source</div>
+      <div class="pipe-time" id="pipe-0-time">—</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipe-1">
+      <div class="pipe-icon">⚡</div>
+      <div class="pipe-label">Spark Master</div>
+      <div class="pipe-time" id="pipe-1-time">—</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipe-2">
+      <div class="pipe-icon">🖥️</div>
+      <div class="pipe-label">Worker 1</div>
+      <div class="pipe-time" id="pipe-2-time">—</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipe-3">
+      <div class="pipe-icon">🖥️</div>
+      <div class="pipe-label">Worker 2</div>
+      <div class="pipe-time" id="pipe-3-time">—</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipe-4">
+      <div class="pipe-icon">🖥️</div>
+      <div class="pipe-label">Worker 3</div>
+      <div class="pipe-time" id="pipe-4-time">—</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipe-5">
+      <div class="pipe-icon">✅</div>
+      <div class="pipe-label">MongoDB Dest.</div>
+      <div class="pipe-time" id="pipe-5-time">—</div>
+    </div>
+  </div>
+
+  <!-- WORKERS -->
+  <div class="section-label">workers spark — alive</div>
+  <div class="three-col">
+    <div class="worker-card" id="worker-0">
+      <div class="worker-top">
+        <div>
+          <div class="worker-name">Worker 1</div>
+          <div class="worker-addr">172.20.0.2:37909</div>
+        </div>
+        <div class="wait-tag" id="w0-tag">WAITING</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Cores</span><span>6 / 12</span></div>
+        <div class="bar-track"><div class="bar-fill blue" id="w0-cores" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Mémoire</span><span>6.0 / 6.4 GiB</span></div>
+        <div class="bar-track"><div class="bar-fill green" id="w0-mem" style="width:0%"></div></div>
+      </div>
+      <div class="worker-docs" id="w0-docs">skip=0, limit=8 859 docs · en attente...</div>
+    </div>
+    <div class="worker-card" id="worker-1">
+      <div class="worker-top">
+        <div>
+          <div class="worker-name">Worker 2</div>
+          <div class="worker-addr">172.20.0.4:44669</div>
+        </div>
+        <div class="wait-tag" id="w1-tag">WAITING</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Cores</span><span>6 / 12</span></div>
+        <div class="bar-track"><div class="bar-fill blue" id="w1-cores" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Mémoire</span><span>6.0 / 6.4 GiB</span></div>
+        <div class="bar-track"><div class="bar-fill green" id="w1-mem" style="width:0%"></div></div>
+      </div>
+      <div class="worker-docs" id="w1-docs">skip=8 859, limit=8 859 docs · en attente...</div>
+    </div>
+    <div class="worker-card" id="worker-2">
+      <div class="worker-top">
+        <div>
+          <div class="worker-name">Worker 3</div>
+          <div class="worker-addr">172.20.0.6:40081</div>
+        </div>
+        <div class="wait-tag" id="w2-tag">WAITING</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Cores</span><span>6 / 12</span></div>
+        <div class="bar-track"><div class="bar-fill blue" id="w2-cores" style="width:0%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-meta"><span>Mémoire</span><span>6.0 / 6.4 GiB</span></div>
+        <div class="bar-track"><div class="bar-fill green" id="w2-mem" style="width:0%"></div></div>
+      </div>
+      <div class="worker-docs" id="w2-docs">skip=17 718, limit=8 858 docs · en attente...</div>
+    </div>
+  </div>
+
+  <!-- BENCHMARK + CLEANING -->
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title"><div class="dot" style="background:var(--accent2)"></div>Benchmark parallélisme</div>
+      <div class="speedup-display">
+        <div class="speedup-num" id="speedup-num">—</div>
+        <div class="speedup-x">×</div>
+      </div>
+      <div class="speedup-desc" id="speedup-desc">En attente du benchmark...</div>
+      <div class="bench-bar-row">
+        <div class="bench-bar-meta"><span>1 worker (séquentiel)</span><span id="bench-1-label">—</span></div>
+        <div class="bench-track">
+          <div class="bench-fill seq" id="bench-1-bar" style="width:0%"><span id="bench-1-text"></span></div>
+        </div>
+      </div>
+      <div class="bench-bar-row">
+        <div class="bench-bar-meta"><span>3 workers (parallèle)</span><span id="bench-3-label">—</span></div>
+        <div class="bench-track">
+          <div class="bench-fill par" id="bench-3-bar" style="width:0%"><span id="bench-3-text"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title"><div class="dot" style="background:var(--accent)"></div>Résultats du nettoyage</div>
+      <div class="clean-grid">
+        <div class="clean-item"><span class="clean-key">Source</span><span class="clean-val neutral" id="cl-source">—</span></div>
+        <div class="clean-item"><span class="clean-key">Insérés</span><span class="clean-val neutral" id="cl-inseres">—</span></div>
+        <div class="clean-item"><span class="clean-key">Lignes vides</span><span class="clean-val neutral" id="cl-vides">—</span></div>
+        <div class="clean-item"><span class="clean-key">Écriture</span><span class="clean-val neutral" id="cl-write">—</span></div>
+        <div class="clean-item"><span class="clean-key">URLs restantes</span><span class="clean-val pending" id="cl-urls">—</span></div>
+        <div class="clean-item"><span class="clean-key">@ restants</span><span class="clean-val pending" id="cl-at">—</span></div>
+        <div class="clean-item"><span class="clean-key">Dates préservées</span><span class="clean-val pending" id="cl-dates">—</span></div>
+        <div class="clean-item"><span class="clean-key">Heures préservées</span><span class="clean-val pending" id="cl-heures">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-label">temps détaillé du pipeline</div>
+  <div class="panel" style="margin-bottom:1.5rem;">
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-label">Connexion Spark</div>
+        <div class="tl-bar-track"><div class="tl-bar" id="tl-spark" style="width:0%;background:rgba(14,165,233,0.4)"></div></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);width:50px;text-align:right;" id="tl-spark-val">—</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Chargement (3W)</div>
+        <div class="tl-bar-track"><div class="tl-bar" id="tl-load" style="width:0%;background:rgba(14,165,233,0.55)"></div></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);width:50px;text-align:right;" id="tl-load-val">—</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Analyse Spark SQL</div>
+        <div class="tl-bar-track"><div class="tl-bar" id="tl-analyse" style="width:0%;background:rgba(245,158,11,0.5)"></div></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);width:50px;text-align:right;" id="tl-analyse-val">—</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-label">Écriture MongoDB</div>
+        <div class="tl-bar-track"><div class="tl-bar" id="tl-write" style="width:0%;background:rgba(16,185,129,0.5)"></div></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);width:50px;text-align:right;" id="tl-write-val">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG STREAM -->
+  <div class="section-label">journal des événements</div>
+  <div class="log-box" id="log-box">
+    <div class="log-line"><span class="log-time">00:00</span><span class="log-msg">Dashboard démarré — en attente du script Spark...</span></div>
+  </div>
+
+  <div class="footer">
+    <span>Système d'analyse des interactions clients · Réseaux sociaux · Télécom Algérie</span>
+    <span>Spark 4.1.1 / Scala 2.13 / Java 21 · MongoDB · Docker</span>
+  </div>
+</div>
+
+<script>
+const POLL_MS = 1000;
+let lastPhase = null;
+let logs = [];
+let startTs = null;
+
+function fmt(n) { return n !== undefined && n !== null ? n.toLocaleString('fr-FR') : '—'; }
+function fmts(s) { return s !== undefined && s !== null ? s + 's' : '—'; }
+
+function addLog(msg) {
+  const now = new Date();
+  const t = String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+  logs.push({t, msg});
+  if (logs.length > 30) logs.shift();
+  const box = document.getElementById('log-box');
+  box.innerHTML = logs.map(l =>
+    `<div class="log-line"><span class="log-time">${l.t}</span><span class="log-msg">${l.msg}</span></div>`
+  ).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+function setStatus(type, text) {
+  const badge = document.getElementById('status-badge');
+  badge.className = 'status-badge ' + type;
+  document.getElementById('status-text').textContent = text;
+}
+
+function setWorkerActive(idx) {
+  const wc = document.getElementById('worker-' + idx);
+  const tag = document.getElementById('w' + idx + '-tag');
+  wc.className = 'worker-card active';
+  tag.className = 'alive-tag';
+  tag.textContent = '● ALIVE';
+  document.getElementById('w' + idx + '-cores').style.width = '50%';
+  document.getElementById('w' + idx + '-mem').style.width = '94%';
+}
+
+function setPipeActive(idx) {
+  document.getElementById('pipe-' + idx).className = 'pipe-step active';
+}
+function setPipeDone(idx, label) {
+  document.getElementById('pipe-' + idx).className = 'pipe-step done';
+  document.getElementById('pipe-' + idx + '-time').textContent = label;
+}
+
+function applyStats(d) {
+  const phase = d.phase || 'waiting';
+
+  // elapsed
+  if (d.elapsed !== undefined) {
+    document.getElementById('m-elapsed').textContent = d.elapsed + 's';
+  }
+
+  // STATUS BADGE
+  if (phase === 'waiting' || phase === 'starting') {
+    setStatus('waiting', 'En attente...');
+    document.getElementById('waiting-overlay').className = phase === 'waiting' ? 'show' : '';
+  } else if (phase === 'done') {
+    setStatus('done', '✅ Pipeline terminé !');
+    document.getElementById('waiting-overlay').className = '';
+  } else {
+    setStatus('running', d.message || 'En cours...');
+    document.getElementById('waiting-overlay').className = '';
+  }
+
+  // LOG new phase
+  if (phase !== lastPhase) {
+    addLog(d.message || phase);
+    lastPhase = phase;
+  }
+
+  // TOTAL DOCS
+  if (d.total_docs) {
+    document.getElementById('m-docs').textContent = fmt(d.total_inseres || d.total_docs);
+    document.getElementById('m-docs-sub').textContent = 'sur ' + fmt(d.total_docs) + ' en source';
+    document.getElementById('cl-source').textContent = fmt(d.total_docs);
+    document.getElementById('pipe-0').className = 'pipe-step done';
+    document.getElementById('pipe-0-time').textContent = fmt(d.total_docs) + ' docs';
+  }
+
+  // SPARK CONNECTED
+  if (['spark_connected','loading_done','analyse_done','writing_done','benchmark_done','done'].includes(phase)) {
+    setPipeDone(1, 'spark://172.20.0.3:7077');
+    setWorkerActive(0); setWorkerActive(1); setWorkerActive(2);
+    setPipeActive(2); setPipeActive(3); setPipeActive(4);
+  }
+
+  // LOADING DONE
+  if (['loading_done','analyse_done','writing_done','benchmark_done','done'].includes(phase)) {
+    if (d.total_lignes) {
+      setPipeDone(2, '~' + fmt(Math.ceil(d.total_lignes/3)) + ' docs');
+      setPipeDone(3, '~' + fmt(Math.ceil(d.total_lignes/3)) + ' docs');
+      setPipeDone(4, '~' + fmt(d.total_lignes - 2*Math.ceil(d.total_lignes/3)) + ' docs');
+    }
+  }
+
+  // WORKERS docs from reporter
+  if (d.workers && d.workers.length > 0) {
+    d.workers.forEach((w, i) => {
+      const el = document.getElementById('w' + i + '-docs');
+      if (el) el.textContent = w.hostname + ' → ' + fmt(w.docs_traites) + ' traités, ' + fmt(w.docs_vides) + ' vides';
+    });
+  }
+
+  // STATS AVANT
+  if (d.stats_avant && d.stats_avant.total) {
+    const s = d.stats_avant;
+  }
+
+  // WRITING DONE
+  if (['writing_done','benchmark_done','done'].includes(phase)) {
+    setPipeDone(5, fmt(d.total_inseres) + ' insérés');
+    if (d.total_inseres) {
+      document.getElementById('m-docs').textContent = fmt(d.total_inseres);
+      document.getElementById('cl-inseres').textContent = fmt(d.total_inseres);
+    }
+    if (d.total_vides !== undefined) document.getElementById('cl-vides').textContent = d.total_vides + ' ignorées';
+    if (d.timeline && d.timeline.ecriture_mongodb) {
+      document.getElementById('cl-write').textContent = d.timeline.ecriture_mongodb + 's';
+    }
+  }
+
+  // BENCHMARK
+  if (d.benchmark && d.benchmark.speedup) {
+    const b = d.benchmark;
+    document.getElementById('speedup-num').textContent = b.speedup;
+    document.getElementById('speedup-desc').textContent = 'gain avec 3 workers parallèles';
+    document.getElementById('m-speedup').textContent = b.speedup + '×';
+    document.getElementById('bench-1-label').textContent = b.temps_1_worker + 's · ' + fmt(b.docs_1_worker) + ' docs';
+    document.getElementById('bench-3-label').textContent = b.temps_3_workers + 's · ' + fmt(b.docs_3_workers) + ' docs';
+    document.getElementById('bench-1-bar').style.width = '100%';
+    document.getElementById('bench-1-text').textContent = b.temps_1_worker + 's';
+    const pct = Math.round((b.temps_3_workers / b.temps_1_worker) * 100);
+    document.getElementById('bench-3-bar').style.width = pct + '%';
+    document.getElementById('bench-3-text').textContent = b.temps_3_workers + 's';
+  }
+
+  // VITESSE + FINAL STATS
+  if (d.vitesse) document.getElementById('m-vitesse').textContent = fmt(d.vitesse);
+
+  if (d.stats_apres) {
+    const s = d.stats_apres;
+    document.getElementById('cl-urls').textContent    = (s.urls_restantes === 0 ? '0 ✓' : s.urls_restantes);
+    document.getElementById('cl-urls').className      = 'clean-val ' + (s.urls_restantes === 0 ? 'ok' : 'neutral');
+    document.getElementById('cl-at').textContent      = (s.at_restants === 0 ? '0 ✓' : s.at_restants);
+    document.getElementById('cl-at').className        = 'clean-val ' + (s.at_restants === 0 ? 'ok' : 'neutral');
+    document.getElementById('cl-dates').textContent   = fmt(s.avec_dates) + ' cas';
+    document.getElementById('cl-dates').className     = 'clean-val ok';
+    document.getElementById('cl-heures').textContent  = fmt(s.avec_heures) + ' cas';
+    document.getElementById('cl-heures').className    = 'clean-val ok';
+  }
+
+  // TIMELINE BARS — max = total elapsed
+  if (d.timeline && d.elapsed) {
+    const tl = d.timeline;
+    const total = d.elapsed || 33;
+    const bars = [
+      ['tl-spark',   tl.connexion_spark],
+      ['tl-load',    tl.chargement],
+      ['tl-analyse', tl.analyse],
+      ['tl-write',   tl.ecriture_mongodb],
+    ];
+    bars.forEach(([id, val]) => {
+      if (val !== undefined) {
+        const pct = Math.min(100, Math.round((val / total) * 100));
+        document.getElementById(id).style.width = pct + '%';
+        document.getElementById(id).textContent = val + 's';
+        document.getElementById(id + '-val').textContent = val + 's';
+      }
+    });
+  }
+}
+
+async function poll() {
+  try {
+    const res = await fetch('/api/stats');
+    if (!res.ok) throw new Error('no data');
+    const data = await res.json();
+    applyStats(data);
+  } catch(e) {
+    setStatus('waiting', 'Serveur non connecté');
+  }
+}
+
+// INITIAL
+addLog('Dashboard démarré — en attente du script Spark...');
+poll();
+setInterval(poll, POLL_MS);
+
+// Live elapsed counter
+setInterval(() => {
+  const el = document.getElementById('m-elapsed');
+  const cur = parseFloat(el.textContent) || 0;
+  // only tick if running
+  const badge = document.getElementById('status-badge');
+  if (badge.classList.contains('running')) {
+    el.textContent = (cur + 1).toFixed(0) + 's';
+  }
+}, 1000);
+</script>
+</body>
+</html>

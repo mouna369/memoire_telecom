@@ -1,6 +1,6 @@
 ======================================================================
 🔍 NETTOYAGE COMPLET v1.7 — URLs + @ + # + Ponctuations
-   Date : 2026-03-15 16:11:57
+   Date : 2026-04-07 16:48:53
    Mode : Spark 4.1.1 | mapPartitions | 3 Workers → MongoDB direct
 ======================================================================
 
@@ -18,7 +18,7 @@
    └────────────────────────────────────────────┘
 
 💾 NETTOYAGE + ÉCRITURE DISTRIBUÉE...
-✅ 26565 documents écrits en 6.61s
+✅ 26565 documents écrits en 8.39s
 🗑️  11 lignes vides ignorées (non insérées)
 
 🔎 VÉRIFICATION FINALE...
@@ -40,10 +40,10 @@
 ✅ Heures préservées (C4)   : 75
 ✅ Dates préservées  (C7)   : 90
 ✅ Wi-Fi protégé    (C6)    : 31
-⏱️  Temps total             : 43.00s
-🚀 Vitesse                 : 618 docs/s
+⏱️  Temps total             : 53.33s
+🚀 Vitesse                 : 498 docs/s
 📁 Collection source       : telecom_algerie.commentaires_bruts
-📁 Collection dest.        : telecom_algerie.commentaires_sans_urls_arobase
+📁 Collection dest.        : telecom_algerie.commentaires_sans_urls_arobase2
 ======================================================================
    Statut : ✅ SUCCÈS
 ======================================================================
@@ -62,9 +62,9 @@ CORRECTIONS APPLIQUÉES :
    FIX-C8  : Ponctuation répétée réduite à 1
 
 ⏱️  TEMPS DÉTAILLÉ :
-   • Connexion Spark  : 15.30s
-   • Chargement       : 17.89s
-   • Analyse          : 2.45s
-   • Écriture MongoDB : 6.61s
-   • TOTAL            : 43.00s (618 doc/s)
+   • Connexion Spark  : 14.11s
+   • Chargement       : 22.60s
+   • Analyse          : 7.83s
+   • Écriture MongoDB : 8.39s
+   • TOTAL            : 53.33s (498 doc/s)
 ======================================================================
