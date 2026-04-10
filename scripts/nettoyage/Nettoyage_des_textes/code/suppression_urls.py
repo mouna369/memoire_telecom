@@ -642,7 +642,7 @@ import os, time, math
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_bruts"
+COLLECTION_SOURCE = "commentaires_bruts2"
 COLLECTION_DEST   = "commentaires_sans_urls_arobase2"
 NB_WORKERS        = 3
 SPARK_MASTER      = "spark://spark-master:7077"

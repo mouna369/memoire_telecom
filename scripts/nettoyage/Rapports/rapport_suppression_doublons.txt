@@ -1,6 +1,6 @@
 ======================================================================
 🔁 SUPPRESSION INTELLIGENTE DES DOUBLONS
-   Date : 2026-03-22 20:29:59
+   Date : 2026-04-10 02:48:22
    Mode : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
 ======================================================================
 
@@ -18,26 +18,18 @@ RÈGLES APPLIQUÉES :
    │ Documents supprimés       : 1092            │
    │ Documents gardés          : 25473           │
    │ Taux de réduction         : 4.11          % │
-   │ Doublons R1 résiduels     : 2               │
+   │ Doublons R1 résiduels     : 1               │
    └────────────────────────────────────────────┘
 
 🔎 VÉRIFICATION DES RÈGLES R1 → R5 :
-   ┌───────┬────────────────────────────────┬───────────────┐
-   │ RÈGLE │ DESCRIPTION                    │ RÉSULTAT      │
-   ├───────┼────────────────────────────────┼───────────────┤
-   │  R1   │ Doublons parfaits restants     │ 0     ✅         │
-   │  R2   │ Groupes multi-sources gardés   │ 84    ✅ normal    │
-   │  R3   │ Groupes multi-jours gardés     │ 509   ✅ normal    │
-   │  R4   │ Groupes multi-mods gardés      │ 192   ✅ normal    │
-   │  R5   │ Textes tronqués vs complets    │ 64    ⚠️          │
-   └───────┴────────────────────────────────┴───────────────┘
+   (Vérification optionnelle, non bloquante)
 
 ⏱️  TEMPS :
-   • Total    : 29.51s
-   • Vitesse  : 900 docs/s
+   • Total    : 50.85s
+   • Vitesse  : 522 docs/s
 
 📁 STOCKAGE :
-   • Source      : telecom_algerie.commentaires_sans_urls_arobase
-   • Destination : telecom_algerie.commentaires_sans_doublons
+   • Source      : telecom_algerie.commentaires_sans_urls_arobase2
+   • Destination : telecom_algerie.commentaires_sans_doublons2
    • Statut      : ✅ SUCCÈS
 ======================================================================

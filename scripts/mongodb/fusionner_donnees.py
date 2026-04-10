@@ -10,7 +10,7 @@ from configuration import MONGO_URI, DB_NAME_ATLAS  # ← Importer seulement ce 
 import sys
 
 # ═══════════════════════════════════════════════════════════════════════════
-# CONFIGURATION
+# CONFIGURATI1  QON
 # ═══════════════════════════════════════════════════════════════════════════
 
 # Noms des collections

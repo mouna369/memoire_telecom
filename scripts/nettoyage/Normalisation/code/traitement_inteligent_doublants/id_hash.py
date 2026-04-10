@@ -16,7 +16,7 @@ print("="*60)
 # ============================================================
 
 print("\n📝 Traitement de l'ancienne collection...")
-ancienne = db["dataset_unifie_copie"]
+ancienne = db["dataset_unifie"]
 
 total = ancienne.count_documents({})
 print(f"   {total} documents trouvés")
