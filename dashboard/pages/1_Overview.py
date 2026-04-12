@@ -29,7 +29,7 @@ if client is None:
     st.stop()
 
 db = client["telecom_algerie"]
-collection = db["dataset_unifie_sans_doublons"]
+collection = db["dataset_unifie"]
 
 st.title("📊 Vue d'ensemble - Analyse des sentiments")
 

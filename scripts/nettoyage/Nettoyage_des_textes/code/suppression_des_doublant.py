@@ -1167,8 +1167,8 @@ import os, time, math, json, re
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_urls_arobase2"
-COLLECTION_DEST   = "commentaires_sans_doublons2"
+COLLECTION_SOURCE = "commentaires_sans_urls_arobase"
+COLLECTION_DEST   = "commentaires_sans_doublons"
 NB_WORKERS        = 2
 SPARK_MASTER      = "spark://spark-master:7077"
 RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_suppression_doublons.txt"
@@ -1324,7 +1324,7 @@ def lire_partition_depuis_mongo(partition_info):
         client     = MongoClient("mongodb://mongodb_pfe:27017/",
                                  serverSelectionTimeoutMS=5000)
         db         = client["telecom_algerie"]
-        collection = db["commentaires_sans_urls_arobase2"]
+        collection = db["commentaires_sans_urls_arobase"]
         curseur = collection.find(
             {},
             {"_id": 1, "Commentaire_Client": 1, "commentaire_moderateur": 1,
@@ -1412,7 +1412,7 @@ def deduplication_partition(partition):
         client     = MongoClient("mongodb://mongodb_pfe:27017/",
                                  serverSelectionTimeoutMS=5000)
         db         = client["telecom_algerie"]
-        collection = db["commentaires_sans_doublons2"]
+        collection = db["commentaires_sans_doublons"]
     except Exception as e:
         yield {"_erreur": str(e), "statut": "connexion_failed"}
         return
@@ -1707,6 +1707,7 @@ lignes_rapport.append(f"   │ Documents source          : {total_lignes:<15} �
 lignes_rapport.append(f"   │ Documents supprimés       : {total_supprimes:<15} │")
 lignes_rapport.append(f"   │ Documents gardés          : {total_en_dest:<15} │")
 lignes_rapport.append(f"   │ Taux de réduction         : {total_supprimes/total_lignes*100:<14.2f}% │")
+
 lignes_rapport.append(f"   │ Doublons R1 résiduels     : {nb_R1_residuels:<15} │")
 lignes_rapport.append(f"   └────────────────────────────────────────────┘")
 lignes_rapport.append(f"\n🔎 VÉRIFICATION DES RÈGLES R1 → R5 :")

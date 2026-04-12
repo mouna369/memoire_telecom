@@ -533,7 +533,7 @@ SCRIPTS = {
     "etape_2": os.path.join(BASE_DIR, "Nettoyage_des_textes/code/suppression_des_doublant.py"),
     "etape_3": os.path.join(BASE_DIR, "Nettoyage_des_textes/code/extraire_emojis_multinode.py"),
     "etape_4": os.path.join(BASE_DIR, "Normalisation/code/normalisation_multinode.py"),
-    "etape_5": os.path.join(BASE_DIR, "Nettoyage_des_textes/code/corriger_structure_emojis.py"),
+   
 }
 
 # Collections correspondantes
@@ -583,7 +583,7 @@ def compter_docs(collection_name, query=None):
 def inserer_commentaire_test():
     """Insère un commentaire de test avec traite=false et date au bon type"""
     commentaires_test = [
-        "#ntouma 00000 3lablkom ?/?//% !!! 😡😡😡"
+        "#ntouma 00000 3lablkom wlh ?/?//% !!! 😡😡😡"
     ]
     texte = random.choice(commentaires_test)
     
@@ -762,30 +762,6 @@ def task_etape_4():
     print(f"✅ Terminé en {duree:.1f}s")
     return {"apres": apres}
 
-@task(name="Étape 5 — Correction structure emojis", retries=1)
-def task_etape_5():
-    print("\n" + "="*60)
-    print("🔹 ÉTAPE 5 — Correction structure des emojis (modifie en place)")
-    print("="*60)
-    
-    send_kafka_message("etape_5_debut", {})
-    
-    script = SCRIPTS["etape_5"]
-    debut = time.time()
-    result = subprocess.run(["python3", script], capture_output=True, text=True)
-    duree = time.time() - debut
-    
-    if result.returncode != 0:
-        print("❌ Erreur:", result.stderr)
-        send_kafka_message("etape_5_erreur", {"error": result.stderr[-200:]})
-        raise Exception("Étape 5 échouée")
-    
-    # On compte les documents dans la collection finale (commentaires_normalises)
-    apres = compter_docs(COLLECTIONS["etape_4"])
-    send_kafka_message("etape_5_fin", {"apres": apres, "duree": duree})
-    print(f"✅ Terminé en {duree:.1f}s")
-    return {"apres": apres}
-
 # ============================================================
 # FLOW PRINCIPAL
 # ============================================================
@@ -802,12 +778,12 @@ def pipeline_complet():
     # 1. Insérer un commentaire test
     task_inserer_commentaire()
     
-    # 2. Exécuter les 5 étapes
+    # 2. Exécuter les 4 étapes
     task_etape_1()
     task_etape_2()
     task_etape_3()
     task_etape_4()
-    task_etape_5()
+ 
     
     send_kafka_message("pipeline_fin", {"message": "Pipeline terminé"})
     

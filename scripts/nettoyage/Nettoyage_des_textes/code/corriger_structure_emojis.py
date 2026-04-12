@@ -1133,7 +1133,7 @@ import os, time, math, json, re
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_emojis"      # Source (à corriger)
+COLLECTION_SOURCE = "commentaires_normalises"      # Source (à corriger)
 COLLECTION_TEMP   = "_temp_emojis_correction"       # Collection temporaire
 NB_WORKERS        = 3
 SPARK_MASTER      = "spark://spark-master:7077"

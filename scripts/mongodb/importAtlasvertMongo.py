@@ -7,11 +7,11 @@ import sys
 # ============================================================
 ATLAS_URI = "mongodb+srv://yousrahadjabderrahmane_db_user:C8wjIvWqOBUjK66u@ac-1ksfahb-shard-00-00.gejzu4a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 ATLAS_DB = "telecom_algerie_new"
-ATLAS_COLL = "dataset_unifie_sans_doublons"
+ATLAS_COLL = "dataset_unifie"
 
 LOCAL_URI = "mongodb://localhost:27018/"
 LOCAL_DB = "telecom_algerie"
-LOCAL_COLL = "dataset_unifie_sans_doublons"
+LOCAL_COLL = "dataset_unifie_label"
 
 BATCH_SIZE = 5000
 

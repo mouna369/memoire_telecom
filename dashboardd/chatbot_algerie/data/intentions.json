@@ -1,0 +1,130 @@
+{
+  "intentions": [
+    {
+      "tag": "salutation",
+      "patterns": [
+        "bonjour", "salam", "ahla", "wach rak", "bonsoir", "coucou", "salut",
+        "salam 3likom", "hi", "wach nta labas", "labas", "kifak", "kif rak",
+        "صباح الخير", "سلام", "واش راك", "لاباس"
+      ],
+      "responses": [
+        "Bonjour ! Comment puis-je vous aider ?",
+        "Salam ! Chnou ndir lik ?",
+        "Ahla ! Je suis là pour vous aider.",
+        "Wa 3likom salam ! Kifach nkhedmek ?"
+      ]
+    },
+    {
+      "tag": "au_revoir",
+      "patterns": [
+        "au revoir", "bye", "bslama", "à bientôt", "ma3 slama",
+        "nrouh", "yallah bye", "بوداعا", "مع السلامة"
+      ],
+      "responses": [
+        "Au revoir ! Bonne journée.",
+        "Bslama ! N'hésitez pas à revenir.",
+        "Ma3 slama ! Rabi ysalmek."
+      ]
+    },
+    {
+      "tag": "probleme_reseau",
+      "patterns": [
+        "internet ne marche pas", "3ndi problème réseau", "ma kaynach connexion",
+        "la 4G katqet", "réseau faible", "signal machi mzyan", "pas de signal",
+        "3G machi tayi3a", "wifi machi tayi3",
+        "عندي مشكلة في النت", "الأنترنت ما تمشيش", "ما كاينش سيغنال"
+      ],
+      "responses": [
+        "Désolé pour ce problème réseau. Wach opérateur rak t3amel ? Djezzy, Mobilis wala Ooredoo ?",
+        "Pour les problèmes de connexion, essayez de redémarrer votre téléphone.",
+        "Pouvez-vous préciser votre wilaya ? Le réseau peut varier selon la région."
+      ]
+    },
+    {
+      "tag": "recharge",
+      "patterns": [
+        "recharger mon forfait", "kif ncharg", "recharge", "comment recharger",
+        "code recharge", "solde épuisé", "charg telephone", "kifach ncharg",
+        "كيفاش نشارج", "ما عنديش كريدي", "الرصيد خلص"
+      ],
+      "responses": [
+        "Pour recharger : composez *555# puis validez. Wach 3ndek la carte de recharge ?",
+        "Vous pouvez recharger via l'application ou en composant *100*CODE#.",
+        "Kif ncharg : *100*CODE_RECHARGE# puis appuyez sur appel."
+      ]
+    },
+    {
+      "tag": "offre_forfait",
+      "patterns": [
+        "offres disponibles", "forfaits internet", "chnou les offres", "prix forfait",
+        "meilleur forfait", "4G illimité", "forfait mensuel", "wach 3ndkom offre",
+        "شنو العروض", "باغي فورفي", "عروض الأنترنت"
+      ],
+      "responses": [
+        "Nous avons plusieurs offres : Journalier 50DA, Hebdo 200DA, Mensuel 700DA.",
+        "Choisissez selon vos besoins : offre sociale, classique ou premium.",
+        "Pour les offres actuelles, consultez notre site ou composez le 555."
+      ]
+    },
+    {
+      "tag": "facture",
+      "patterns": [
+        "ma facture", "facture élevée", "montant facture", "payer facture",
+        "wach bghit nkhlas", "kif nkhlas", "paiement", "3ndi facture kbira",
+        "الفاتورة", "كيفاش نخلص", "الفاتورة غالية"
+      ],
+      "responses": [
+        "Pour consulter votre facture, connectez-vous à votre espace client ou composez le 333.",
+        "Votre facture peut être consultée sur l'application.",
+        "Pour contester une facture, merci de nous contacter au service client."
+      ]
+    },
+    {
+      "tag": "probleme_appel",
+      "patterns": [
+        "je n'arrive pas à appeler", "appel ne passe pas", "machi tayi3 nkdem",
+        "voix coupée", "echo dans appel", "appel katqet", "son mauvais",
+        "ما نقدرش نعيط", "الصوت مقطوع"
+      ],
+      "responses": [
+        "Pour les problèmes d'appel, vérifiez votre signal. Wach 3ndek bari barres ?",
+        "Essayez de redémarrer votre téléphone et retirez/réinsérez votre SIM.",
+        "Si le problème persiste, il peut s'agir d'une panne locale."
+      ]
+    },
+    {
+      "tag": "reclamation",
+      "patterns": [
+        "je veux faire une réclamation", "plainte", "service nul", "3ndi chikaya",
+        "bghit nchki", "pas satisfait", "problème non résolu",
+        "عندي شكاية", "الخدمة رديئة", "باغي نشكي"
+      ],
+      "responses": [
+        "Je suis désolé pour cette expérience. Pouvez-vous me décrire votre problème ?",
+        "Votre réclamation sera enregistrée. Chnou le problème exactement ?",
+        "Numéro réclamation : composez le 700."
+      ]
+    },
+    {
+      "tag": "merci",
+      "patterns": [
+        "merci", "choukran", "merci beaucoup", "barak allah fik", "3aychek",
+        "شكرا", "بارك الله فيك", "عيشك"
+      ],
+      "responses": [
+        "De rien ! N'hésitez pas si vous avez d'autres questions.",
+        "3afwan ! Rani hna ila 3ndek shi haja.",
+        "Avec plaisir ! Bonne continuation."
+      ]
+    },
+    {
+      "tag": "incompris",
+      "patterns": [],
+      "responses": [
+        "Je n'ai pas bien compris. Pouvez-vous reformuler ?",
+        "Ma fhemtch mzyan. Momkin t3awd ?",
+        "Désolé, pourriez-vous préciser votre demande ?"
+      ]
+    }
+  ]
+}

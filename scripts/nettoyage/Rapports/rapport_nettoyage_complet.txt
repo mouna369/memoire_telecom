@@ -1,28 +1,28 @@
 ======================================================================
 🔍 NETTOYAGE COMPLET v1.7 — URLs + @ + # + Ponctuations
-   Date : 2026-04-10 02:30:45
+   Date : 2026-04-11 22:52:51
    Mode : Spark 4.1.1 | mapPartitions | 3 Workers → MongoDB direct
 ======================================================================
 
 📊 AVANT NETTOYAGE :
    ┌────────────────────────────────────────────┐
-   │ Total documents         : 26576           │
+   │ Total documents         : 26577           │
    │ Avec URLs               : 23              │
    │ Avec @                  : 74              │
-   │ Avec #                  : 174             │
-   │ Avec ponctuations       : 8152            │
+   │ Avec #                  : 175             │
+   │ Avec ponctuations       : 8153            │
    │ Avec heures (HH:MM)     : 75              │
    │ Avec Wi-Fi              : 31              │
    │ Avec dates (DD/MM+)     : 90              │
-   │ % ponctuations          : 30.67         % │
+   │ % ponctuations          : 30.68         % │
    └────────────────────────────────────────────┘
 
 💾 NETTOYAGE + ÉCRITURE DISTRIBUÉE...
-✅ 26565 documents écrits en 5.52s
+✅ 26566 documents écrits en 6.22s
 🗑️  11 lignes vides ignorées (non insérées)
 
 🔎 VÉRIFICATION FINALE...
-   • Documents en destination  : 26565
+   • Documents en destination  : 26566
    • URLs restantes            : 0
    • @ restants                : 0
    • # restants                : 0
@@ -34,16 +34,16 @@
 ======================================================================
 📊 RÉSUMÉ FINAL
 ======================================================================
-📥 Documents source        : 26576
-📤 Documents insérés       : 26565
+📥 Documents source        : 26577
+📤 Documents insérés       : 26566
 🗑️  Lignes vides ignorées   : 11
 ✅ Heures préservées (C4)   : 75
 ✅ Dates préservées  (C7)   : 90
 ✅ Wi-Fi protégé    (C6)    : 31
-⏱️  Temps total             : 107.86s
-🚀 Vitesse                 : 246 docs/s
-📁 Collection source       : telecom_algerie.commentaires_bruts2
-📁 Collection dest.        : telecom_algerie.commentaires_sans_urls_arobase2
+⏱️  Temps total             : 38.90s
+🚀 Vitesse                 : 683 docs/s
+📁 Collection source       : telecom_algerie.commentaires_bruts
+📁 Collection dest.        : telecom_algerie.commentaires_sans_urls_arobase_v2
 ======================================================================
    Statut : ✅ SUCCÈS
 ======================================================================
@@ -62,9 +62,9 @@ CORRECTIONS APPLIQUÉES :
    FIX-C8  : Ponctuation répétée réduite à 1
 
 ⏱️  TEMPS DÉTAILLÉ :
-   • Connexion Spark  : 11.94s
-   • Chargement       : 18.01s
-   • Analyse          : 72.08s
-   • Écriture MongoDB : 5.52s
-   • TOTAL            : 107.86s (246 doc/s)
+   • Connexion Spark  : 10.97s
+   • Chargement       : 14.11s
+   • Analyse          : 7.26s
+   • Écriture MongoDB : 6.22s
+   • TOTAL            : 38.90s (683 doc/s)
 ======================================================================

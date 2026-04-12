@@ -5,3 +5,13 @@ bach n9der ndir spark-master : sudo nano /etc/hosts  / 127.0.0.1   spark-master 
 
 remarque 2 : mon API cloud 
 AIzaSyAqwBb6cJVtzpVedVSDNG97a8N0kWmsa5g
+
+
+
+
+Outil	URL	Contenu
+Kafka UI	http://localhost:8088	Messages temps réel
+Spark UI	http://localhost:8080	État des workers
+MongoDB	via commande	Données
+Streamlit	http://localhost:8501	Dashboard final
+Prefect	http://localhost:4200	Orchestration

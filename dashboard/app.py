@@ -23,6 +23,7 @@ Ce dashboard vous permet d'analyser les commentaires clients des opérateurs té
 | **Analyse** | Analyse approfondie des données (évolutions, distributions) |
 | **Commentaires** | Exploration détaillée des commentaires clients |
 | **Statistiques** | Analyses statistiques avancées (tests, corrélations) |
+| **🤖 ChatBot IA** | Conversation intelligente + analyse de vos données |
 
 ### 🚀 Fonctionnalités
 
@@ -31,6 +32,7 @@ Ce dashboard vous permet d'analyser les commentaires clients des opérateurs té
 - ✅ Filtres dynamiques
 - ✅ Export des données (CSV)
 - ✅ Mise à jour en temps réel
+- ✅ ChatBot IA (Ollama · Mistral 7B)
 
 ### 📊 Sources de données
 
@@ -42,6 +44,5 @@ Ce dashboard vous permet d'analyser les commentaires clients des opérateurs té
 *Dernière mise à jour : Avril 2026*
 """)
 
-# Afficher des stats rapides dans la sidebar
 st.sidebar.success("✅ Dashboard prêt !")
 st.sidebar.info("Utilisez le menu à gauche pour naviguer entre les pages")

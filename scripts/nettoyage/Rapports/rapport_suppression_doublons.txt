@@ -1,6 +1,6 @@
 ======================================================================
 🔁 SUPPRESSION INTELLIGENTE DES DOUBLONS
-   Date : 2026-04-10 02:48:22
+   Date : 2026-04-11 22:51:03
    Mode : Spark 4.1.1 | Multi-Node | Workers → MongoDB direct
 ======================================================================
 
@@ -14,22 +14,22 @@ RÈGLES APPLIQUÉES :
 
 📊 RÉSULTATS :
    ┌────────────────────────────────────────────┐
-   │ Documents source          : 26565           │
+   │ Documents source          : 26566           │
    │ Documents supprimés       : 1092            │
-   │ Documents gardés          : 25473           │
+   │ Documents gardés          : 25474           │
    │ Taux de réduction         : 4.11          % │
-   │ Doublons R1 résiduels     : 1               │
+   │ Doublons R1 résiduels     : 3               │
    └────────────────────────────────────────────┘
 
 🔎 VÉRIFICATION DES RÈGLES R1 → R5 :
    (Vérification optionnelle, non bloquante)
 
 ⏱️  TEMPS :
-   • Total    : 50.85s
-   • Vitesse  : 522 docs/s
+   • Total    : 38.00s
+   • Vitesse  : 699 docs/s
 
 📁 STOCKAGE :
-   • Source      : telecom_algerie.commentaires_sans_urls_arobase2
-   • Destination : telecom_algerie.commentaires_sans_doublons2
+   • Source      : telecom_algerie.commentaires_sans_urls_arobase
+   • Destination : telecom_algerie.commentaires_sans_doublons
    • Statut      : ✅ SUCCÈS
 ======================================================================

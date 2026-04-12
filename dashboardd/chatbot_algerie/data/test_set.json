@@ -1,0 +1,20 @@
+[
+  {"texte": "salam, wach rak ?", "intention": "salutation"},
+  {"texte": "bonjour, j'ai besoin d'aide", "intention": "salutation"},
+  {"texte": "ma kaynach connexion 4G", "intention": "probleme_reseau"},
+  {"texte": "internet ne marche pas", "intention": "probleme_reseau"},
+  {"texte": "kif ncharg mon crédit ?", "intention": "recharge"},
+  {"texte": "comment recharger mon forfait", "intention": "recharge"},
+  {"texte": "chnou les offres disponibles", "intention": "offre_forfait"},
+  {"texte": "bghit forfait mensuel", "intention": "offre_forfait"},
+  {"texte": "ma facture est trop élevée", "intention": "facture"},
+  {"texte": "kif nkhlas la facture", "intention": "facture"},
+  {"texte": "appel katqet", "intention": "probleme_appel"},
+  {"texte": "je n'arrive pas à appeler", "intention": "probleme_appel"},
+  {"texte": "3ndi chikaya", "intention": "reclamation"},
+  {"texte": "je veux faire une réclamation", "intention": "reclamation"},
+  {"texte": "choukran bezzaf", "intention": "merci"},
+  {"texte": "merci pour votre aide", "intention": "merci"},
+  {"texte": "bslama", "intention": "au_revoir"},
+  {"texte": "au revoir bonne journée", "intention": "au_revoir"}
+]

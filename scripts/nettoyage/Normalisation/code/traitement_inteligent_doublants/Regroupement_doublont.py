@@ -240,7 +240,7 @@ for texte, groupe in groupes:
     sources = groupe['source'].unique().tolist() if 'source' in df.columns else []
     moderateurs = groupe['moderateur'].unique().tolist() if 'moderateur' in df.columns else []
     labels = groupe['label'].tolist() if 'label' in df.columns else []
-
+    commentaire_client_original = get_first_value(groupe['Commentaire_Client_Original'].tolist()) if 'Commentaire_Client_Original' in df.columns else None
     commentaire_moderateur = get_first_value(groupe['commentaire_moderateur'].tolist()) if 'commentaire_moderateur' in df.columns else None
     statut = get_first_value(groupe['statut'].tolist()) if 'statut' in df.columns else None
     commentaire_client = get_first_value(groupe['Commentaire_Client'].tolist()) if 'Commentaire_Client' in df.columns else None
@@ -272,6 +272,7 @@ for texte, groupe in groupes:
         '_id': first_id,   # ← identifiant string original
         'Group_ID': f"groupe_{group_id:04d}",
         'nb_occurrences': len(groupe),
+        'Commentaire_Client_Original': commentaire_client_original,
         'commentaire_moderateur': commentaire_moderateur,
         'statut': statut,
         'Commentaire_Client': commentaire_client,
