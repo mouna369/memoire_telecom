@@ -3251,8 +3251,8 @@ from typing import Dict, List, Optional, Set, Tuple
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_emojis"   
-COLLECTION_DEST   = "commentaires_normalises"
+COLLECTION_SOURCE = "commentaires_sans_emojis_tfidf"   
+COLLECTION_DEST   = "commentaires_normalises_tfidf"
 BATCH_SIZE        = 1000
 NB_WORKERS        = 3
 SPARK_MASTER      = "spark://spark-master:7077"

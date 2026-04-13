@@ -2,9 +2,9 @@
 ======================================================================
 RAPPORT — CORRECTION DES EMOJIS (Multi-Node Spark) — REMPLACEMENT SOURCE
 ======================================================================
-Date        : 2026-04-11 17:37:21
+Date        : 2026-04-14 00:04:45
 Spark 4.1.1 | Multi-Node | 3 Workers
-Collection  : telecom_algerie.commentaires_normalises (remplacée)
+Collection  : telecom_algerie.commentaires_normalises_tfidf (remplacée)
 
 TRAITEMENT :
    • Conversion '[]' → [] dans emojis_originaux / emojis_sentiment
@@ -12,15 +12,15 @@ TRAITEMENT :
    • Suppression des emojis dans les champs texte
 
 RÉSULTATS :
-   • Total source originaux : 25444
-   • Total finaux           : 25444
-   • Documents modifiés     : 440
+   • Total source originaux : 24302
+   • Total finaux           : 24302
+   • Documents modifiés     : 393
 
 TEMPS :
-   • Total    : 28.85s
-   • Vitesse  : 882 docs/s
+   • Total    : 28.74s
+   • Vitesse  : 846 docs/s
 
 STOCKAGE :
-   • Collection finale : telecom_algerie.commentaires_normalises
+   • Collection finale : telecom_algerie.commentaires_normalises_tfidf
    • Statut           : ✅ SUCCÈS
 ======================================================================

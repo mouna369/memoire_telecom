@@ -307,7 +307,7 @@ except Exception as e:
 
 # 2. Créer la base et la collection
 db = client['telecom_algerie']
-collection = db['commentaires_bruts2']   # nom de la collection
+collection = db['commentaires_bruts']   # nom de la collection
 
 # 3. Chercher les fichiers Excel
 print("\n🔍 Recherche des fichiers Excel...")
@@ -371,5 +371,5 @@ print("\n" + "="*60)
 print("📊 RÉSUMÉ FINAL")
 print("="*60)
 print(f"✅ Total importé: {total} commentaires")
-print(f"📁 Dans MongoDB: telecom_algerie.commentaires_bruts2")
+print(f"📁 Dans MongoDB: telecom_algerie.commentaires_bruts")
 print("="*60)

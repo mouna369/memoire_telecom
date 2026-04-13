@@ -1,5 +1,507 @@
 
 
+# # # # services:
+# # # #   mongodb:
+# # # #     image: mongo:latest
+# # # #     container_name: mongodb_pfe
+# # # #     ports:
+# # # #       - "27018:27017"
+# # # #     volumes:
+# # # #       - mongodb-data:/data/db
+# # # #     networks:
+# # # #       - spark_network
+# # # #     restart: always
+
+# # # #   spark-master:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: spark_master_pfe
+# # # #     environment:
+# # # #       - SPARK_MODE=master
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     ports:
+# # # #       - "8080:8080"
+# # # #       - "7077:7077"
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
+# # # #     networks:
+# # # #       - spark_network
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+# # # #     restart: always
+
+# # # #   spark-worker-1:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_1_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # #   spark-worker-2:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_2_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # #   spark-worker-3:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_3_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # # volumes:
+# # # #   spark-data:
+# # # #   mongodb-data:
+
+# # # # networks:
+# # # #   spark_network:
+# # # #     driver: bridge
+
+# # # # services:
+# # # #   mongodb:
+# # # #     image: mongo:latest
+# # # #     container_name: mongodb_pfe
+# # # #     ports:
+# # # #       - "27018:27017"  # Hôte:27018 → Conteneur:27017
+# # # #     volumes:
+# # # #       - mongodb-data:/data/db
+# # # #     networks:
+# # # #       - spark_network
+# # # #     restart: always
+
+# # # #   spark-master:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: spark_master_pfe
+# # # #     environment:
+# # # #       - SPARK_MODE=master
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     ports:
+# # # #       - "8080:8080"
+# # # #       - "7077:7077"
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # # #     networks:
+# # # #       - spark_network
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+# # # #     restart: always
+
+# # # #   spark-worker-1:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_1_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # #   spark-worker-2:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_2_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # #   spark-worker-3:
+# # # #     build:
+# # # #       context: .
+# # # #       dockerfile: Dockerfile.worker
+# # # #     container_name: worker_3_pfe
+# # # #     dns:
+# # # #       - 8.8.8.8
+# # # #       - 8.8.4.4
+# # # #     environment:
+# # # #       - SPARK_MODE=worker
+# # # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # # #       - PYTHONPATH=/opt/pymongo_libs
+# # # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # # #       - HF_HOME=/opt/huggingface
+# # # #     volumes:
+# # # #       - spark-data:/data
+# # # #       - ./data/results:/opt/data
+# # # #       - ./pymongo_libs:/opt/pymongo_libs
+# # # #       - ./dictionnaires:/opt/dictionnaires
+# # # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # # #     networks:
+# # # #       - spark_network
+# # # #     depends_on:
+# # # #       - spark-master
+# # # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # # #     restart: always
+
+# # # #   # COLLECTEUR DE TWEETS (CORRIGÉ)
+# # # #   collector:
+# # # #     image: python:3.10-slim
+# # # #     container_name: twitter_collector
+# # # #     working_dir: /app
+# # # #     volumes:
+# # # #       - ./collector:/app
+# # # #       - ./data:/data
+# # # #     environment:
+# # # #       - MONGO_URI=mongodb://mongodb:27017  # ← CHANGÉ : port interne 27017
+# # # #       - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+# # # #     command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
+# # # #     depends_on:
+# # # #       - mongodb
+# # # #     networks:
+# # # #       - spark_network
+# # # #     restart: unless-stopped
+
+# # # #   # DASHBOARD STREAMLIT (CORRIGÉ)
+# # # #   dashboard:
+# # # #     image: python:3.10-slim
+# # # #     container_name: sentiment_dashboard
+# # # #     working_dir: /app
+# # # #     ports:
+# # # #       - "8501:8501"
+# # # #     volumes:
+# # # #       - ./dashboard:/app
+# # # #       - ./data:/data
+# # # #     environment:
+# # # #       - MONGO_URI=mongodb://mongodb:27017  # ← CHANGÉ : port interne 27017
+# # # #     command: bash -c "pip install streamlit pymongo pandas plotly && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+# # # #     depends_on:
+# # # #       - mongodb
+# # # #     networks:
+# # # #       - spark_network
+# # # #     restart: unless-stopped
+
+# # # # volumes:
+# # # #   spark-data:
+# # # #   mongodb-data:
+
+# # # # networks:
+# # # #   spark_network:
+# # # #     driver: bridge
+# # # services:
+# # #   mongodb:
+# # #     image: mongo:latest
+# # #     container_name: mongodb_pfe
+# # #     ports:
+# # #       - "27018:27017"
+# # #     volumes:
+# # #       - mongodb-data:/data/db
+# # #     networks:
+# # #       - spark_network
+# # #     restart: always
+
+# # #   zookeeper:
+# # #     image: confluentinc/cp-zookeeper:7.5.0
+# # #     container_name: zookeeper_pfe
+# # #     environment:
+# # #       ZOOKEEPER_CLIENT_PORT: 2181
+# # #       ZOOKEEPER_TICK_TIME: 2000
+# # #       KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok,srvr,stat"
+# # #     ports:
+# # #       - "2181:2181"
+# # #     networks:
+# # #       - spark_network
+# # #     restart: always
+# # #     healthcheck:
+# # #       test: ["CMD", "bash", "-c", "echo srvr | nc -w 2 localhost 2181 | grep -q Mode"]
+# # #       interval: 10s
+# # #       timeout: 10s
+# # #       retries: 15
+# # #       start_period: 20s
+
+# # #   kafka:
+# # #     image: confluentinc/cp-kafka:7.5.0
+# # #     container_name: kafka_pfe
+# # #     depends_on:
+# # #       zookeeper:
+# # #         condition: service_healthy
+# # #     ports:
+# # #       - "9092:9092"
+# # #       - "29092:29092"
+# # #     environment:
+# # #       KAFKA_BROKER_ID: 1
+# # #       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+# # #       KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_EXTERNAL://0.0.0.0:9092
+# # #       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:29092,PLAINTEXT_EXTERNAL://localhost:9092
+# # #       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+# # #       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+# # #       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+# # #       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+# # #       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+# # #     networks:
+# # #       - spark_network
+# # #     restart: always
+
+# # #   kafka-ui:
+# # #     image: provectuslabs/kafka-ui:latest
+# # #     container_name: kafka_ui_pfe
+# # #     depends_on:
+# # #       - kafka
+# # #     environment:
+# # #       KAFKA_CLUSTERS_0_NAME: local
+# # #       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+# # #     ports:
+# # #       - "8088:8080"
+# # #     networks:
+# # #       - spark_network
+# # #     restart: always
+
+# # #   spark-master:
+# # #     build:
+# # #       context: .
+# # #       dockerfile: Dockerfile.worker
+# # #     container_name: spark_master_pfe
+# # #     environment:
+# # #       - SPARK_MODE=master
+# # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # #       - HF_HOME=/opt/huggingface
+# # #     ports:
+# # #       - "8080:8080"
+# # #       - "7077:7077"
+# # #     volumes:
+# # #       - spark-data:/data
+# # #       - ./data/results:/opt/data
+# # #       - ./pymongo_libs:/opt/pymongo_libs
+# # #       - ./dictionnaires:/opt/dictionnaires
+# # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # #     networks:
+# # #       - spark_network
+# # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+# # #     restart: always
+
+# # #   spark-worker-1:
+# # #     build:
+# # #       context: .
+# # #       dockerfile: Dockerfile.worker
+# # #     container_name: worker_1_pfe
+# # #     dns:
+# # #       - 8.8.8.8
+# # #       - 8.8.4.4
+# # #     environment:
+# # #       - SPARK_MODE=worker
+# # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # #       - PYTHONPATH=/opt/pymongo_libs
+# # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # #       - HF_HOME=/opt/huggingface
+# # #     volumes:
+# # #       - spark-data:/data
+# # #       - ./data/results:/opt/data
+# # #       - ./pymongo_libs:/opt/pymongo_libs
+# # #       - ./dictionnaires:/opt/dictionnaires
+# # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # #     networks:
+# # #       - spark_network
+# # #     depends_on:
+# # #       - spark-master
+# # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # #     restart: always
+
+# # #   spark-worker-2:
+# # #     build:
+# # #       context: .
+# # #       dockerfile: Dockerfile.worker
+# # #     container_name: worker_2_pfe
+# # #     dns:
+# # #       - 8.8.8.8
+# # #       - 8.8.4.4
+# # #     environment:
+# # #       - SPARK_MODE=worker
+# # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # #       - PYTHONPATH=/opt/pymongo_libs
+# # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # #       - HF_HOME=/opt/huggingface
+# # #     volumes:
+# # #       - spark-data:/data
+# # #       - ./data/results:/opt/data
+# # #       - ./pymongo_libs:/opt/pymongo_libs
+# # #       - ./dictionnaires:/opt/dictionnaires
+# # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # #     networks:
+# # #       - spark_network
+# # #     depends_on:
+# # #       - spark-master
+# # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # #     restart: always
+
+# # #   spark-worker-3:
+# # #     build:
+# # #       context: .
+# # #       dockerfile: Dockerfile.worker
+# # #     container_name: worker_3_pfe
+# # #     dns:
+# # #       - 8.8.8.8
+# # #       - 8.8.4.4
+# # #     environment:
+# # #       - SPARK_MODE=worker
+# # #       - SPARK_MASTER_URL=spark://spark-master:7077
+# # #       - PYTHONPATH=/opt/pymongo_libs
+# # #       - TRANSFORMERS_CACHE=/opt/huggingface
+# # #       - HF_HOME=/opt/huggingface
+# # #     volumes:
+# # #       - spark-data:/data
+# # #       - ./data/results:/opt/data
+# # #       - ./pymongo_libs:/opt/pymongo_libs
+# # #       - ./dictionnaires:/opt/dictionnaires
+# # #       - /home/mouna/.cache/huggingface:/opt/huggingface
+# # #     networks:
+# # #       - spark_network
+# # #     depends_on:
+# # #       - spark-master
+# # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+# # #     restart: always
+
+# # #   collector:
+# # #     image: python:3.10-slim
+# # #     container_name: twitter_collector
+# # #     working_dir: /app
+# # #     volumes:
+# # #       - ./collector:/app
+# # #       - ./data:/data
+# # #     environment:
+# # #       - MONGO_URI=mongodb://mongodb:27017
+# # #       - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+# # #     command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
+# # #     depends_on:
+# # #       - mongodb
+# # #     networks:
+# # #       - spark_network
+# # #     restart: unless-stopped
+
+# # #   dashboard:
+# # #     image: python:3.10-slim
+# # #     container_name: sentiment_dashboard
+# # #     working_dir: /app
+# # #     ports:
+# # #       - "8501:8501"
+# # #     volumes:
+# # #       - ./dashboard:/app
+# # #       - ./data:/data
+# # #     environment:
+# # #       - MONGO_URI=mongodb://mongodb:27017
+# # #       - OLLAMA_HOST=http://host.docker.internal:11434
+# # #     command: bash -c "pip install streamlit pymongo pandas plotly && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+# # #     depends_on:
+# # #       - mongodb
+# # #     networks:
+# # #       - spark_network
+# # #     restart: unless-stopped
+
+# # # volumes:
+# # #   spark-data:
+# # #   mongodb-data:
+
+# # # networks:
+# # #   spark_network:
+# # #     driver: bridge
+
+
+# # #code cloude 
 # # services:
 # #   mongodb:
 # #     image: mongo:latest
@@ -12,126 +514,58 @@
 # #       - spark_network
 # #     restart: always
 
-# #   spark-master:
-# #     build:
-# #       context: .
-# #       dockerfile: Dockerfile.worker
-# #     container_name: spark_master_pfe
+# #   zookeeper:
+# #     image: confluentinc/cp-zookeeper:7.5.0
+# #     container_name: zookeeper_pfe
 # #     environment:
-# #       - SPARK_MODE=master
-# #       - TRANSFORMERS_CACHE=/opt/huggingface
-# #       - HF_HOME=/opt/huggingface
+# #       ZOOKEEPER_CLIENT_PORT: 2181
+# #       ZOOKEEPER_TICK_TIME: 2000
+# #       KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=ruok,srvr,stat"
 # #     ports:
-# #       - "8080:8080"
-# #       - "7077:7077"
-# #     volumes:
-# #       - spark-data:/data
-# #       - ./data/results:/opt/data
-# #       - ./pymongo_libs:/opt/pymongo_libs
-# #       - ./dictionnaires:/opt/dictionnaires
-# #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
+# #       - "2181:2181"
 # #     networks:
 # #       - spark_network
-# #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
 # #     restart: always
+# #     healthcheck:
+# #       test: ["CMD", "bash", "-c", "echo srvr | nc -w 2 localhost 2181 | grep -q Mode"]
+# #       interval: 10s
+# #       timeout: 10s
+# #       retries: 15
+# #       start_period: 20s
 
-# #   spark-worker-1:
-# #     build:
-# #       context: .
-# #       dockerfile: Dockerfile.worker
-# #     container_name: worker_1_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
-# #     environment:
-# #       - SPARK_MODE=worker
-# #       - SPARK_MASTER_URL=spark://spark-master:7077
-# #       - PYTHONPATH=/opt/pymongo_libs
-# #       - TRANSFORMERS_CACHE=/opt/huggingface
-# #       - HF_HOME=/opt/huggingface
-# #     volumes:
-# #       - spark-data:/data
-# #       - ./data/results:/opt/data
-# #       - ./pymongo_libs:/opt/pymongo_libs
-# #       - ./dictionnaires:/opt/dictionnaires
-# #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
-# #     networks:
-# #       - spark_network
+# #   kafka:
+# #     image: confluentinc/cp-kafka:7.5.0
+# #     container_name: kafka_pfe
 # #     depends_on:
-# #       - spark-master
-# #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-# #     restart: always
-
-# #   spark-worker-2:
-# #     build:
-# #       context: .
-# #       dockerfile: Dockerfile.worker
-# #     container_name: worker_2_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
-# #     environment:
-# #       - SPARK_MODE=worker
-# #       - SPARK_MASTER_URL=spark://spark-master:7077
-# #       - PYTHONPATH=/opt/pymongo_libs
-# #       - TRANSFORMERS_CACHE=/opt/huggingface
-# #       - HF_HOME=/opt/huggingface
-# #     volumes:
-# #       - spark-data:/data
-# #       - ./data/results:/opt/data
-# #       - ./pymongo_libs:/opt/pymongo_libs
-# #       - ./dictionnaires:/opt/dictionnaires
-# #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
-# #     networks:
-# #       - spark_network
-# #     depends_on:
-# #       - spark-master
-# #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-# #     restart: always
-
-# #   spark-worker-3:
-# #     build:
-# #       context: .
-# #       dockerfile: Dockerfile.worker
-# #     container_name: worker_3_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
-# #     environment:
-# #       - SPARK_MODE=worker
-# #       - SPARK_MASTER_URL=spark://spark-master:7077
-# #       - PYTHONPATH=/opt/pymongo_libs
-# #       - TRANSFORMERS_CACHE=/opt/huggingface
-# #       - HF_HOME=/opt/huggingface
-# #     volumes:
-# #       - spark-data:/data
-# #       - ./data/results:/opt/data
-# #       - ./pymongo_libs:/opt/pymongo_libs
-# #       - ./dictionnaires:/opt/dictionnaires
-# #       - /home/mouna/.cache/huggingface:/opt/huggingface  # ✅ modèle MarBERT accessible par spark
-# #     networks:
-# #       - spark_network
-# #     depends_on:
-# #       - spark-master
-# #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-# #     restart: always
-
-# # volumes:
-# #   spark-data:
-# #   mongodb-data:
-
-# # networks:
-# #   spark_network:
-# #     driver: bridge
-
-# # services:
-# #   mongodb:
-# #     image: mongo:latest
-# #     container_name: mongodb_pfe
+# #       zookeeper:
+# #         condition: service_healthy
 # #     ports:
-# #       - "27018:27017"  # Hôte:27018 → Conteneur:27017
-# #     volumes:
-# #       - mongodb-data:/data/db
+# #       - "9092:9092"
+# #       - "29092:29092"
+# #     environment:
+# #       KAFKA_BROKER_ID: 1
+# #       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+# #       KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:29092,PLAINTEXT_EXTERNAL://0.0.0.0:9092
+# #       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:29092,PLAINTEXT_EXTERNAL://localhost:9092
+# #       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+# #       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+# #       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+# #       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+# #       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+# #     networks:
+# #       - spark_network
+# #     restart: always
+
+# #   kafka-ui:
+# #     image: provectuslabs/kafka-ui:latest
+# #     container_name: kafka_ui_pfe
+# #     depends_on:
+# #       - kafka
+# #     environment:
+# #       KAFKA_CLUSTERS_0_NAME: local
+# #       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+# #     ports:
+# #       - "8088:8080"
 # #     networks:
 # #       - spark_network
 # #     restart: always
@@ -164,9 +598,7 @@
 # #       context: .
 # #       dockerfile: Dockerfile.worker
 # #     container_name: worker_1_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
+# #     dns: [8.8.8.8, 8.8.4.4]
 # #     environment:
 # #       - SPARK_MODE=worker
 # #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -191,9 +623,7 @@
 # #       context: .
 # #       dockerfile: Dockerfile.worker
 # #     container_name: worker_2_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
+# #     dns: [8.8.8.8, 8.8.4.4]
 # #     environment:
 # #       - SPARK_MODE=worker
 # #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -218,9 +648,7 @@
 # #       context: .
 # #       dockerfile: Dockerfile.worker
 # #     container_name: worker_3_pfe
-# #     dns:
-# #       - 8.8.8.8
-# #       - 8.8.4.4
+# #     dns: [8.8.8.8, 8.8.4.4]
 # #     environment:
 # #       - SPARK_MODE=worker
 # #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -240,7 +668,6 @@
 # #     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
 # #     restart: always
 
-# #   # COLLECTEUR DE TWEETS (CORRIGÉ)
 # #   collector:
 # #     image: python:3.10-slim
 # #     container_name: twitter_collector
@@ -249,7 +676,7 @@
 # #       - ./collector:/app
 # #       - ./data:/data
 # #     environment:
-# #       - MONGO_URI=mongodb://mongodb:27017  # ← CHANGÉ : port interne 27017
+# #       - MONGO_URI=mongodb://mongodb:27017
 # #       - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
 # #     command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
 # #     depends_on:
@@ -258,7 +685,7 @@
 # #       - spark_network
 # #     restart: unless-stopped
 
-# #   # DASHBOARD STREAMLIT (CORRIGÉ)
+# #   # ── DASHBOARD CORRIGÉ ──────────────────────────────────────────
 # #   dashboard:
 # #     image: python:3.10-slim
 # #     container_name: sentiment_dashboard
@@ -269,10 +696,18 @@
 # #       - ./dashboard:/app
 # #       - ./data:/data
 # #     environment:
-# #       - MONGO_URI=mongodb://mongodb:27017  # ← CHANGÉ : port interne 27017
-# #     command: bash -c "pip install streamlit pymongo pandas plotly && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+# #       # MongoDB : nom du service Docker (pas localhost)
+# #       - MONGO_URI=mongodb://mongodb_pfe:27017/
+# #       # Ollama : sur ta machine host (hors Docker)
+# #       - OLLAMA_HOST=http://host.docker.internal:11434
+# #     # ⬇️ CORRIGÉ : ajoute ollama et langdetect
+# #     command: 
+# #       bash -c "pip install streamlit pymongo pandas plotly ollama langdetect && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
 # #     depends_on:
 # #       - mongodb
+# #     # ⬇️ IMPORTANT : permet d'atteindre host.docker.internal sur Linux
+# #     extra_hosts:
+# #       - "host.docker.internal:host-gateway"
 # #     networks:
 # #       - spark_network
 # #     restart: unless-stopped
@@ -284,6 +719,9 @@
 # # networks:
 # #   spark_network:
 # #     driver: bridge
+
+
+# # #code corrige cloud prblm mongo e ollama :
 # services:
 #   mongodb:
 #     image: mongo:latest
@@ -380,9 +818,7 @@
 #       context: .
 #       dockerfile: Dockerfile.worker
 #     container_name: worker_1_pfe
-#     dns:
-#       - 8.8.8.8
-#       - 8.8.4.4
+#     dns: [8.8.8.8, 8.8.4.4]
 #     environment:
 #       - SPARK_MODE=worker
 #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -407,9 +843,7 @@
 #       context: .
 #       dockerfile: Dockerfile.worker
 #     container_name: worker_2_pfe
-#     dns:
-#       - 8.8.8.8
-#       - 8.8.4.4
+#     dns: [8.8.8.8, 8.8.4.4]
 #     environment:
 #       - SPARK_MODE=worker
 #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -434,9 +868,7 @@
 #       context: .
 #       dockerfile: Dockerfile.worker
 #     container_name: worker_3_pfe
-#     dns:
-#       - 8.8.8.8
-#       - 8.8.4.4
+#     dns: [8.8.8.8, 8.8.4.4]
 #     environment:
 #       - SPARK_MODE=worker
 #       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -464,7 +896,7 @@
 #       - ./collector:/app
 #       - ./data:/data
 #     environment:
-#       - MONGO_URI=mongodb://mongodb:27017
+#       - MONGO_URI=mongodb://mongodb:27017    # ← nom SERVICE pas container
 #       - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
 #     command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
 #     depends_on:
@@ -483,11 +915,17 @@
 #       - ./dashboard:/app
 #       - ./data:/data
 #     environment:
-#       - MONGO_URI=mongodb://mongodb:27017
-#       - OLLAMA_HOST=http://host.docker.internal:11434
-#     command: bash -c "pip install streamlit pymongo pandas plotly && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+#       # ✅ FIX 1 : "mongodb" = nom du SERVICE (pas mongodb_pfe)
+#       - MONGO_URI=mongodb://mongodb:27017/
+#       # ✅ FIX 2 : IP docker bridge + fallback host.docker.internal
+#       - OLLAMA_HOST=http://172.17.0.1:11434
+#     command: >
+#       bash -c "pip install streamlit pymongo pandas plotly ollama langdetect &&
+#                streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
 #     depends_on:
 #       - mongodb
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
 #     networks:
 #       - spark_network
 #     restart: unless-stopped
@@ -500,8 +938,6 @@
 #   spark_network:
 #     driver: bridge
 
-
-#code cloude 
 services:
   mongodb:
     image: mongo:latest
@@ -668,24 +1104,23 @@ services:
     command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     restart: always
 
-  collector:
-    image: python:3.10-slim
-    container_name: twitter_collector
-    working_dir: /app
-    volumes:
-      - ./collector:/app
-      - ./data:/data
-    environment:
-      - MONGO_URI=mongodb://mongodb:27017
-      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
-    command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
-    depends_on:
-      - mongodb
-    networks:
-      - spark_network
-    restart: unless-stopped
+  # collector:
+  #   image: python:3.10-slim
+  #   container_name: twitter_collector
+  #   working_dir: /app
+  #   volumes:
+  #     - ./collector:/app
+  #     - ./data:/data
+  #   environment:
+  #     - MONGO_URI=mongodb://mongodb:27017
+  #     - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+  #   command: bash -c "pip install pymongo tweepy python-dotenv && python collector.py"
+  #   depends_on:
+  #     - mongodb
+  #   networks:
+  #     - spark_network
+  #   restart: unless-stopped
 
-  # ── DASHBOARD CORRIGÉ ──────────────────────────────────────────
   dashboard:
     image: python:3.10-slim
     container_name: sentiment_dashboard
@@ -696,18 +1131,14 @@ services:
       - ./dashboard:/app
       - ./data:/data
     environment:
-      # MongoDB : nom du service Docker (pas localhost)
-      - MONGO_URI=mongodb://mongodb_pfe:27017/
-      # Ollama : sur ta machine host (hors Docker)
-      - OLLAMA_HOST=http://host.docker.internal:11434
-    # ⬇️ CORRIGÉ : ajoute ollama et langdetect
-    command: 
-      bash -c "pip install streamlit pymongo pandas plotly ollama langdetect && streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
+      - MONGO_URI=mongodb://mongodb:27017/ 
+      # ✅ Mets ta clé Groq ici
+      - GROQ_API_KEY=
+    command: >
+      bash -c "pip install streamlit pymongo pandas plotly groq langdetect &&
+               streamlit run app.py --server.port=8501 --server.address=0.0.0.0"
     depends_on:
       - mongodb
-    # ⬇️ IMPORTANT : permet d'atteindre host.docker.internal sur Linux
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - spark_network
     restart: unless-stopped

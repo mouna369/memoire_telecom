@@ -359,8 +359,8 @@ from datetime import datetime
 # ============================================================
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_doublons"
-COLLECTION_DEST   = "commentaires_sans_emojis"
+COLLECTION_SOURCE = "commentaires_sans_doublons_tfidf"
+COLLECTION_DEST   = "commentaires_sans_emojis_tfidf"
 NB_WORKERS        = 3
 SPARK_MASTER      = "spark://spark-master:7077"
 DICT_PATH         = "/opt/dictionnaires/master_dict.json"
@@ -415,7 +415,7 @@ def traiter_partition(partition):
         client = MongoClient("mongodb://mongodb_pfe:27017/",
                              serverSelectionTimeoutMS=5000)
         db = client["telecom_algerie"]
-        collection = db["commentaires_sans_emojis"]
+        collection = db["commentaires_sans_emojis_tfidf"]
     except Exception as e:
         yield {"_erreur": str(e), "statut": "connexion_failed"}
         return
@@ -501,7 +501,7 @@ def lire_partition_depuis_mongo(partition_info):
         client = MongoClient("mongodb://mongodb_pfe:27017/",
                              serverSelectionTimeoutMS=5000)
         db = client["telecom_algerie"]
-        collection = db["commentaires_sans_doublons"]
+        collection = db["commentaires_sans_doublons_tfidf"]
 
         curseur = collection.find(
             {},

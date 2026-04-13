@@ -1428,7 +1428,7 @@ if __name__ == "__main__":
     mongo.close()
     print(f"Collections disponibles : {collections}")
 
-    target = "dataset_unifie"
+    target = "commentaires_normalises_tfidf"
     print(f"Traitement : '{target}'  (limite {LIMIT} docs)\n")
 
     # Test rapide sur 20 docs
