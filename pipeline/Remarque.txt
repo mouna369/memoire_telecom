@@ -1,0 +1,38 @@
+Étape 1 : Ouvrir crontab   : crontab -e
+
+Étape 2 : Ajouter la ligne (choisir l'éditeur nano) : @reboot /home/mouna/projet_telecom/start_pipeline.sh
+
+Étape 3 : Sauvegarder et quitter
+
+Étape 4 : Vérifier que c'est bien ajouté : crontab -l
+
+
+
+Quand	Exemple
+Au démarrage	@reboot → lancer ton pipeline
+Toutes les heures	0 * * * * → vérifier les nouveaux commentaires
+Tous les jours à 2h	0 2 * * * → faire une sauvegarde
+Toutes les 5 minutes	*/5 * * * * → mettre à jour le dashboard
+
+┌───────────── minute (0 - 59)
+│ ┌───────────── heure (0 - 23)
+│ │ ┌───────────── jour du mois (1 - 31)
+│ │ │ ┌───────────── mois (1 - 12)
+│ │ │ │ ┌───────────── jour de semaine (0 - 6, 0=dimanche)
+│ │ │ │ │
+│ │ │ │ │
+* * * * * commande à exécuter
+
+
+
+# Toutes les heures
+0 * * * * python3 script.py
+
+# Tous les jours à 2h du matin
+0 2 * * * python3 backup.py
+
+# Toutes les 5 minutes
+*/5 * * * * python3 check.py
+
+# Au démarrage
+@reboot python3 start_pipeline.py
