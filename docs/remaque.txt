@@ -15,3 +15,35 @@ Spark UI	http://localhost:8080	État des workers
 MongoDB	via commande	Données
 Streamlit	http://localhost:8501	Dashboard final
 Prefect	http://localhost:4200	Orchestration
+
+
+# 1. Se connecter à MongoDB
+mongosh "mongodb://localhost:27018/"
+
+# 2. Sélectionner la base de données
+use telecom_algerie
+
+# 3. Mettre à jour tous les documents (traite = false)
+db.commentaires_sans_urls_arobase.updateMany({}, {$set: {traite: false}})
+
+# 4. Vérifier le résultat
+db.commentaires_sans_urls_arobase.countDocuments({traite: false})
+
+
+
+
+
+
+
+
+
+
+# Créer le topic pour les commentaires
+docker exec kafka_pfe kafka-topics --create \
+  --topic commentaires_bruts \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 \
+  --replication-factor 1
+
+# Vérifier que le topic a été créé
+docker exec kafka_pfe kafka-topics --list --bootstrap-server localhost:9092

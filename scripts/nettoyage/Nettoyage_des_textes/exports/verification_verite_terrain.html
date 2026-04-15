@@ -1,0 +1,597 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Vérification Vérité Terrain - Doublons Identifiés</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+            h1 { color: #333; }
+            .summary { background: #4CAF50; color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+            .doublon-card { background: white; border: 1px solid #ddd; border-radius: 8px; margin: 15px 0; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .original { border-left: 5px solid #4CAF50; padding-left: 15px; margin: 10px 0; }
+            .doublon { border-left: 5px solid #FF9800; padding-left: 15px; margin: 10px 0; }
+            .similarite { background: #f0f0f0; padding: 8px; border-radius: 4px; font-family: monospace; margin-top: 10px; }
+            .badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 12px; margin: 2px; }
+            .badge-source { background: #2196F3; color: white; }
+            .footer { margin-top: 30px; text-align: center; color: #666; font-size: 12px; }
+        </style>
+    </head>
+    <body>
+        <h1>🔍 Vérification de la Vérité Terrain</h1>
+    
+        <div class="summary">
+            <h2>📊 Résumé</h2>
+            <p>✅ 33 paires de doublons identifiées</p>
+            <p>📝 Vérifiez manuellement que chaque paire est bien un vrai doublon</p>
+            <p>🎯 Seuil utilisé : 99.5% de similarité caractères</p>
+        </div>
+    
+        <div class="doublon-card">
+            <h3>🔹 Doublon #1</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 115) :</strong><br>
+                ندفع اشتراك 600 ميغا Gamer، ومع ذلك من المستحيل تمامًا اللعب عبر الإنترنت بسبب اتصال غير مستقر، ضعيف ومخزٍ لا يليق بهذه الخدمة. الشكاوى لا فائدة منها إطلاقًا، رغم أن آلاف المشتركين يشتكون من نفس المشكلة. يبيعون لنا سرعة عالية، لكن الواقع كارثي. بصراحة تعبنا من هذا الفشل وهذا المستوى المتدني، الذي للأسف لا يقتصر على الإنترنت فقط بل يشمل كل المجالات.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 117) :</strong><br>
+                ندفع اشتراك 600 ميغا Gamer، ومع ذلك من المستحيل تمامًا اللعب عبر الإنترنت بسبب اتصال غير مستقر، ضعيف ومخزٍ لا يليق بهذه الخدمة. الشكاوى لا فائدة منها إطلاقًا، رغم أن آلاف المشتركين يشتكون من نفس المشكلة. يبيعون لنا سرعة عالية، لكن الواقع كارثي. بصراحة تعبنا من هذا الفشل وهذا المستوى المتدني، الذي للأسف لا يقتصر على الإنترنت فقط بل يشمل كل المجالات.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #2</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 135) :</strong><br>
+                رد علي ف الخاص خويا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 136) :</strong><br>
+                رد علي ف الخاص خويا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #3</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 140) :</strong><br>
+                رانا مسددين المستحقات بقات عليكم وفرونا الخدمة رانا 5 أيام بدون انترنات . الفشل بأم عينه<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 141) :</strong><br>
+                رانا مسددين المستحقات بقات عليكم وفرونا الخدمة رانا 5 أيام بدون انترنات . الفشل بأم عينه<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #4</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 260) :</strong><br>
+                رقم هاتف هوا رقم فيكس ولا وينو<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 261) :</strong><br>
+                رقم هاتف هوا رقم فيكس ولا وينو<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #5</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 288) :</strong><br>
+                لاكن تدفق كارثي 2G<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 289) :</strong><br>
+                لاكن تدفق كارثي 2G<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #6</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 298) :</strong><br>
+                سرعة انترنت ضعيف جدآ او تدفق<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 299) :</strong><br>
+                سرعة انترنت ضعيف جدآ او تدفق<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #7</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 302) :</strong><br>
+                كل ما يجي الضباب و لا تكون شتاء يولي 1G<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 303) :</strong><br>
+                كل ما يجي الضباب و لا تكون شتاء يولي 1G<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #8</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 311) :</strong><br>
+                عندي الانترنت شبه متوقف، اتصلت بكم 15 مرة، اي مند شهر وان اتصل بكم، ولم تحركوا ساكنا، اسوا شركة لا اتكلم عنها كموسسة وانما كاشخاص مصيبه ان تكون موسسة دولة بهدا السوء، المصيبة اني استعملها للتدريس عن بعد،<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 312) :</strong><br>
+                عندي الانترنت شبه متوقف، اتصلت بكم 15 مرة، اي مند شهر وان اتصل بكم، ولم تحركوا ساكنا، اسوا شركة لا اتكلم عنها كموسسة وانما كاشخاص مصيبه ان تكون موسسة دولة بهدا السوء، المصيبة اني استعملها للتدريس عن بعد،<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #9</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 313) :</strong><br>
+                حابة نفهم حاجة كونكس 3 ايام مكاش من نهار قالو رياح نحيتوها ماحابينش ترجعوها و مبعد كي يلحق لوقت تخلاص روحو اجرو نحوها و ماتعاودوش ترجعولنا ليامات يلي قطعتوها<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 314) :</strong><br>
+                حابة نفهم حاجة كونكس 3 ايام مكاش من نهار قالو رياح نحيتوها ماحابينش ترجعوها و مبعد كي يلحق لوقت تخلاص روحو اجرو نحوها و ماتعاودوش ترجعولنا ليامات يلي قطعتوها<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #10</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 320) :</strong><br>
+                هل هو متوفر<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 328) :</strong><br>
+                هل هو متوفر<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #11</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 347) :</strong><br>
+                انترنت طلع ضغط الدم<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 348) :</strong><br>
+                انترنت طلع ضغط الدم<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #12</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 518) :</strong><br>
+                الانترنت راهي كارثة.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 519) :</strong><br>
+                الانترنت راهي كارثة.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #13</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 549) :</strong><br>
+                إلى اتصالات الجزائر ولاية الجزائر بي تقصراين حي مقنوش الموضوع / تظلم وشكوى وتوقفكم عن المشروع 🚨 يؤسفنا أن نبلغكم أن اتصالات الجزائر في الجزائر عاجزة عن تكملة الفيبر لمواطن في تقصراين الجزائرتخسر ملايير كوابل وخدمات وتجهيزات وتحفر الأخضر واليابس ويد عاملة ومديريات ومهندسين وووووو،سبحان الله وعاجزة عن تكملة الانترنيت والمشكل كابل اتصالات الجزائر يمر أمام المنزل بي 200 متر ، عجب، مدير اتصالات الجزائر من فضلك تعال وركبلي الفيبر بنفسك مادام كل هذه من أجل المواطن،وهذا المنشور لأني حضرت عندكم وبلغت بدون جدوى . في انتظار ردكم الجميل بحل ماشكلنا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 550) :</strong><br>
+                إلى اتصالات الجزائر ولاية الجزائر بي تقصراين حي مقنوش الموضوع / تظلم وشكوى وتوقفكم عن المشروع 🚨 يؤسفنا أن نبلغكم أن اتصالات الجزائر في الجزائر عاجزة عن تكملة الفيبر لمواطن في تقصراين الجزائرتخسر ملايير كوابل وخدمات وتجهيزات وتحفر الأخضر واليابس ويد عاملة ومديريات ومهندسين وووووو،سبحان الله وعاجزة عن تكملة الانترنيت والمشكل كابل اتصالات الجزائر يمر أمام المنزل بي 200 متر ، عجب، مدير اتصالات الجزائر من فضلك تعال وركبلي الفيبر بنفسك مادام كل هذه من أجل المواطن،وهذا المنشور لأني حضرت عندكم وبلغت بدون جدوى . في انتظار ردكم الجميل بحل ماشكلنا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #14</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 221) :</strong><br>
+                🔔 SARL MAXIM poursuit ses entretiens de recrutement 📍 hashtagBéjaïa & hashtagOran et alentours. Nous recrutons des Technico-Commercial e véhiculé e Obligatoire ✨ Pourquoi nous rejoindre ? Une rémunération attractive avec de fortes primes pour valoriser votre performance 💰 💫 Envoyez votre CV ⤵️ maximrecrutementgmail.com hashtagemploi hashtagwork hashtagdz hashtagalgérie hashtagalgérienne hashtagcommercial<br>
+                <span class="badge badge-source">Source: LinkedIn</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 565) :</strong><br>
+                🔔 SARL MAXIM poursuit ses entretiens de recrutement 📍 hashtagBéjaïa & hashtagOran et aux alentours. Nous recrutons des Technico-Commercial e véhiculé e Obligatoire ✨ Pourquoi nous rejoindre ? Une rémunération attractive avec de fortes primes pour valoriser votre performance 💰 💫 Envoyez votre CV ⤵️ maximrecrutementgmail.com hashtagemploi hashtagwork hashtagdz hashtagalgérie hashtagalgérienne hashtagcommercial<br>
+                <span class="badge badge-source">Source: LinkedIn</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #15</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 553) :</strong><br>
+                انشات حسابا في فضاء الزبون لكني لم اتلق رسلة التاكيد وبعدها تعذر علي اعدة انشاء الحساب فما العمل<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 566) :</strong><br>
+                انشات حسابا في فضاء الزبون لكني لم اتلق رسلة التاكيد وبعدها تعذر علي اعدة انشاء الحساب فما العمل<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #16</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 548) :</strong><br>
+                كمونديت مودام 5 ج راني في شهرين مبان والو علاه<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 573) :</strong><br>
+                كمونديت مودام 5 ج راني في شهرين مبان والو علاه<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #17</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 592) :</strong><br>
+                الرجاء الرد في الخاص<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 599) :</strong><br>
+                الرجاء الرد في الخاص<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #18</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 650) :</strong><br>
+                ورقم الزبون Adsl, ?<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 652) :</strong><br>
+                ورقم الزبون Adsl, ?<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #19</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 708) :</strong><br>
+                Aucune réponse, aucune intervention, aucune solution. Plus d’un mois de réclamations et de signalements, et toujours rien. C’est une négligence totale envers les clients. On continue à payer un abonnement pour un service inexistant, sans le moindre respect ni suivi. Ce silence et ce manque de professionnalisme sont inacceptables. Nous exigeons une intervention immédiate et une résolution définitive du problème. Trop, c’est trop.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 709) :</strong><br>
+                Aucune réponse, aucune intervention, aucune solution. Plus d’un mois de réclamations et de signalements, et toujours rien. C’est une négligence totale envers les clients. On continue à payer un abonnement pour un service inexistant, sans le moindre respect ni suivi. Ce silence et ce manque de professionnalisme sont inacceptables. Nous exigeons une intervention immédiate et une résolution définitive du problème. Trop, c’est trop.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #20</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 714) :</strong><br>
+                هل يدعم adsl<br>
+                <span class="badge badge-source">Source: IdoomMarket</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 716) :</strong><br>
+                هل يدعم adsL<br>
+                <span class="badge badge-source">Source: IdoomMarket</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #21</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 729) :</strong><br>
+                و هذا ردي على ردكم التجاري بخصوص تدهور جودة الخدمة QoE خلل منظومة وليس حالة فردية بناءً على طلبكم الأخير بإجراء فحص عبر الكابل، أؤكد لكم أن المشكلة تجاوزت مرحلة التجارب البدائية . نحن نتحدث عن خلل بنيوي في المنظومة الوطنية شمالاً، جنوباً، شرقاً، وغرباً ، وإليكم الرد التقني القاطع عبثية أرقام السرعة وصول السرعة إلى 99% في منصات القياس Speedtest مع وجود Buffering حاد في منصات Meta وYouTube هو الدليل التقني الأكبر على وجود Traffic Shaping تضييق متعمد أو سوء إدارة في الـ Backbone. السرعة الخام Bandwidth لا تعني شيئاً إذا كان الـ Throughput الفعلي لبروتوكولات الفيديو مخنوقاً. تجاوز فرضية العتاد الإشارة لدي هي -20dBm مثالية ، والتجهيزات wifi 7 و Dual Connection. طلبكم بفحص الكابل هو محاولة لربح الوقت؛ فالخلل ليس في المتر الأخير Last Mile بل في مسارات الـ Routing والـ Peering مع الـ CDNs العالمية. طبيعة الخلل التقني المسكوت عنه المشكلة تكمن في Oversubscription حاد على مستوى الـ OLT، وفشل في سياسات الـ QoS، مما يؤدي إلى ارتفاع الـ Jitter وانهيار استقرار التدفق المستمر. نحن ندفع ثمن كمية أرقام وهمية بينما نفتقر إلى نوعية الخدمة. المطلب التقني وليس التجاري لا أحتاج لـ إكرام أو غيرها لفتح تذكرة دعم نمطية. المطلوب هو تدخل مهندسي الشبكات على مستوى الـ Core Network لتصحيح مسارات التوجيه، وتقليل حدة الـ Contention Ratio في تقنية الـ GPON التي تعاملونها وكأنها ADSL قديم. خلاصة القول إذا كانت مؤسستكم عاجزة عن ضمان استقرار تدفق فيديو بدقة بسيطة على اشتراك 600 ميجا، فنحن أمام احتيال تقني ممنهج. توقفوا عن إرسال الردود المعلبة، ومرروا هذا الملف إلى القسم التقني العالي Level 3 Support لأن المشكلة وطنية وليست كيبل موصول بحاسوب . بانتظار رد تقني يشرح أسباب تدهور الـ Peering، وليس نصيحة بإعادة تشغيل المودم.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 732) :</strong><br>
+                بخصوص تدهور جودة الخدمة QoE خلل منظومة وليس حالة فردية بناءً على طلبكم الأخير بإجراء فحص عبر الكابل، أؤكد لكم أن المشكلة تجاوزت مرحلة التجارب البدائية . نحن نتحدث عن خلل بنيوي في المنظومة الوطنية شمالاً، جنوباً، شرقاً، وغرباً ، وإليكم الرد التقني القاطع عبثية أرقام السرعة وصول السرعة إلى 99% في منصات القياس Speedtest مع وجود Buffering حاد في منصات Meta وYouTube هو الدليل التقني الأكبر على وجود Traffic Shaping تضييق متعمد أو سوء إدارة في الـ Backbone. السرعة الخام Bandwidth لا تعني شيئاً إذا كان الـ Throughput الفعلي لبروتوكولات الفيديو مخنوقاً. تجاوز فرضية العتاد الإشارة لدي هي -20dBm مثالية ، والتجهيزات wifi 7 و Dual Connection. طلبكم بفحص الكابل هو محاولة لربح الوقت؛ فالخلل ليس في المتر الأخير Last Mile بل في مسارات الـ Routing والـ Peering مع الـ CDNs العالمية. طبيعة الخلل التقني المسكوت عنه المشكلة تكمن في Oversubscription حاد على مستوى الـ OLT، وفشل في سياسات الـ QoS، مما يؤدي إلى ارتفاع الـ Jitter وانهيار استقرار التدفق المستمر. نحن ندفع ثمن كمية أرقام وهمية بينما نفتقر إلى نوعية الخدمة. المطلب التقني وليس التجاري لا أحتاج لـ إكرام أو غيرها لفتح تذكرة دعم نمطية. المطلوب هو تدخل مهندسي الشبكات على مستوى الـ Core Network لتصحيح مسارات التوجيه، وتقليل حدة الـ Contention Ratio في تقنية الـ GPON التي تعاملونها وكأنها ADSL قديم. خلاصة القول إذا كانت مؤسستكم عاجزة عن ضمان استقرار تدفق فيديو بدقة بسيطة على اشتراك 600 ميجا، فنحن أمام احتيال تقني ممنهج. توقفوا عن إرسال الردود المعلبة، ومرروا هذا الملف إلى القسم التقني العالي Level 3 Support لأن المشكلة وطنية وليست كيبل موصول بحاسوب . بانتظار رد تقني يشرح أسباب تدهور الـ Peering، وليس نصيحة بإعادة تشغيل المودم.<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #22</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 736) :</strong><br>
+                6 شكاوى ولم يصلح الخلل اكثر من شهر عن أي منصة تتحدثون<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 739) :</strong><br>
+                6 شكاوى ولم يصلح الخلل اكثر من شهر عن أي منصة تتحدثون<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #23</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 726) :</strong><br>
+                ياخرا النت ضعيف<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 741) :</strong><br>
+                ياخرا النت ضعيف<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #24</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 782) :</strong><br>
+                ركبولي ليوم مودام فيبر لكن عندي خطأ في العنوان<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 784) :</strong><br>
+                ركبولي ليوم مودام فيبر لكن عندي خطأ في العنوان<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #25</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 622) :</strong><br>
+                ممكن استفسار<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 798) :</strong><br>
+                ممكن استفسار<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #26</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 725) :</strong><br>
+                ياو عندنا عام بلا انترنت خافو ربي .<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 809) :</strong><br>
+                ياو عندنا عام بلا انترنت خافو ربي .<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #27</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 174) :</strong><br>
+                08 شكاوي مكان والو<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 867) :</strong><br>
+                08 شكاوي مكان والو<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #28</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 50) :</strong><br>
+                ندعوكم للتواصل معنا عبر الخاص قصد تزويدنا بمعلومات أوفر فيما يخص انشغالكم لنتمكن من تقديم المساعدة 🙏<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 898) :</strong><br>
+                ندعوكم للتواصل معنا عبر الخاص قصد تزويدنا بمعلومات أوفر فيما يخص انشغالكم لنتمكن من تقديم المساعدة 🙏<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #29</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 842) :</strong><br>
+                رانا في اكثر من شهر نستناو وينتا يجيبو المودام وكل ما نروحلهم اصبرو<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 904) :</strong><br>
+                رانا في اكثر من شهر نستناو وينتا يجيبو المودام وكل ما نروحلهم اصبرو<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #30</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 905) :</strong><br>
+                6 شكاوى بدون جتى فائدة فرع بشار<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 906) :</strong><br>
+                6 شكاوى بدون جتى فائدة فرع بشار<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #31</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 858) :</strong><br>
+                معلومات صحيحة ويقولي خطا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 916) :</strong><br>
+                معلومات صحيحة ويقولي خطا<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #32</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 806) :</strong><br>
+                بعثتلك في خاص<br>
+                <span class="badge badge-source">Source: Instagram</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 957) :</strong><br>
+                بعثتلك في خاص<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="doublon-card">
+            <h3>🔹 Doublon #33</h3>
+            <div class="original">
+                <strong>📄 ORIGINAL (Index 774) :</strong><br>
+                💚 دائما أقرب<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="doublon">
+                <strong>🔄 DOUBLON (Index 996) :</strong><br>
+                💚 دائما أقرب<br>
+                <span class="badge badge-source">Source: Facebook</span>
+            </div>
+            <div class="similarite">
+                📊 Similarité: N/A
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Généré automatiquement par comparaison_complete_6_methodes.py</p>
+            <p>✅ Vérifiez manuellement que tous ces doublons sont corrects</p>
+        </div>
+    </body>
+    </html>
+    

@@ -72,7 +72,7 @@ import csv
 MONGO_URI    = "mongodb://localhost:27018/"
 DB_NAME      = "telecom_algerie"
 SOURCE_COLL  = "dataset_unifie_sans_doublons"   # contient les scores
-TARGET_COLL  = "commentaires_normalises_tfidf"                 # à mettre à jour
+TARGET_COLL  = "commentaires_normalises"                 # à mettre à jour
 OUTPUT_FILE  = "sans_correspondance.csv"
 
 FIELDS_TO_COPY = ["score", "confidence", "reason", "annoté",

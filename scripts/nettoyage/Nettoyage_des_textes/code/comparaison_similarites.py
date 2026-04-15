@@ -15,7 +15,7 @@ from pymongo import MongoClient
 MONGO_URI        = "mongodb://localhost:27018/"
 DB_NAME          = "telecom_algerie"
 COLLECTION       = "commentaires_sans_urls_arobase"
-NB_DOCS          = 500
+NB_DOCS          = 100
 SEUIL_EDIT       = 0.85   # Edit Distance
 SEUIL_GOWER      = 0.15   # Gower (distance, pas similarité)
 SEUIL_TFIDF      = 0.85   # Cosine TF-IDF
