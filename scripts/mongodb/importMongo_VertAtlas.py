@@ -11,7 +11,7 @@ LOCAL_COLL = "commentaires_normalises"          # ← source : ta collection loc
 
 ATLAS_URI  = "mongodb+srv://yousrahadjabderrahmane_db_user:C8wjIvWqOBUjK66u@ac-1ksfahb-shard-00-00.gejzu4a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 ATLAS_DB   = "telecom_algerie_new"
-ATLAS_COLL = "commentaires_normalises_combine"           # ← destination : Atlas
+ATLAS_COLL = "commentaires_normalises_final"           # ← destination : Atlas
 
 BATCH_SIZE = 5000
 

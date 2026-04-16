@@ -2,9 +2,9 @@
 ======================================================================
 RAPPORT — EXTRACTION + CORRECTION EMOJIS (Multi-Node Spark)
 ======================================================================
-Date        : 2026-04-14 00:01:19
+Date        : 2026-04-16 13:11:06
 Spark 4.1.1 | Multi-Node | 3 Workers
-Collection  : telecom_algerie.commentaires_sans_doublons_tfidf → commentaires_sans_emojis_tfidf
+Collection  : telecom_algerie.commentaires_sans_doublons_combinision → commentaires_sans_emojis_combinision
 Dict        : /opt/dictionnaires/master_dict.json
 
 CORRECTION PRÉALABLE :
@@ -16,17 +16,17 @@ TRAITEMENT :
    • Suppression emojis → Commentaire_Client propre
 
 RÉSULTATS :
-   • Total source           : 24324
-   • Total inséré           : 24324
-   • Docs avec emojis       : 1076
-   • Docs sans emojis       : 23248
-   • Pourcentage avec emojis: 4.4%
+   • Total source           : 24505
+   • Total inséré           : 24505
+   • Docs avec emojis       : 1126
+   • Docs sans emojis       : 23379
+   • Pourcentage avec emojis: 4.6%
 
 TEMPS :
-   • Total               : 25.31s
-   • Vitesse             : 961 docs/s
+   • Total               : 27.54s
+   • Vitesse             : 890 docs/s
 
 STOCKAGE :
-   • Source      : telecom_algerie.commentaires_sans_doublons_tfidf
-   • Destination : telecom_algerie.commentaires_sans_emojis_tfidf
+   • Source      : telecom_algerie.commentaires_sans_doublons_combinision
+   • Destination : telecom_algerie.commentaires_sans_emojis_combinision
 ======================================================================

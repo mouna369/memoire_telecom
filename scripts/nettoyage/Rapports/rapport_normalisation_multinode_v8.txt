@@ -1,31 +1,30 @@
 ======================================================================
-🔤 NORMALISATION MULTI-NŒUDS v3.9.5 (avec flag traite)
-   Date : 2026-04-14 18:01:21
+🔤 NORMALISATION MULTI-NŒUDS v3.9.5
+   Date : 2026-04-16 14:42:24
    Mode : Spark 4.1.1 | 3 Workers | MongoDB direct
    Colonnes générées : normalized_arabert, normalized_full
    ✅ Conservation de TOUTES les colonnes originales
    ✅ Mots religieux CONVERTIS (nchallah, wlh, svp, etc.)
    ✅ Darja latine PRÉSERVÉE (khouya, sahbi, etc.)
-   ✅ Gestion flag traite
    ✅ Hors scope sauvegardé dans : /home/mouna/projet_telecom/scripts/nettoyage/Rapports/hors_scope_comments.json
 ======================================================================
 
 📊 RÉSULTATS :
    ┌────────────────────────────────────────────┐
-   │ Documents source (traités) : 24504           │
-   │ Documents normalisés      : 0               │
-   │ Documents hors scope      : 0               │
-   │ Taux de succès            : 0.00          % │
+   │ Documents source          : 24505           │
+   │ Documents normalisés      : 24484           │
+   │ Documents hors scope      : 21              │
+   │ Taux de succès            : 99.91         % │
    └────────────────────────────────────────────┘
 
 ⏱️  TEMPS :
-   • Connexion Spark  : 15.30s
-   • Chargement       : 32.82s
-   • Normalisation    : 9.35s
-   • TOTAL            : 59.47s (412 doc/s)
+   • Connexion Spark  : 11.63s
+   • Chargement       : 22.55s
+   • Normalisation    : 19.27s
+   • TOTAL            : 54.68s (448 doc/s)
 
 📁 STOCKAGE :
-   • Source      : telecom_algerie.commentaires_sans_emojis
+   • Source      : telecom_algerie.commentaires_sans_emojis_combinision
    • Destination : telecom_algerie.commentaires_normalises
    • Hors scope  : /home/mouna/projet_telecom/scripts/nettoyage/Rapports/hors_scope_comments.json
    • Statut      : ✅ SUCCÈS

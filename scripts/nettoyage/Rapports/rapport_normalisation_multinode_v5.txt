@@ -1,6 +1,6 @@
 ======================================================================
 🔤 NORMALISATION MULTI-NŒUDS v3.9.5
-   Date : 2026-03-25 20:58:54
+   Date : 2026-04-16 11:12:48
    Mode : Spark 4.1.1 | 3 Workers | MongoDB direct
 ======================================================================
 
@@ -18,17 +18,17 @@ CORRECTIFS APPLIQUÉS :
 
 📊 RÉSULTATS :
    ┌────────────────────────────────────────────┐
-   │ Documents source          : 25473           │
-   │ Documents normalisés      : 25444           │
-   │ Documents hors scope      : 29              │
-   │ Taux de succès            : 99.89         % │
+   │ Documents source          : 24505           │
+   │ Documents normalisés      : 24484           │
+   │ Documents hors scope      : 21              │
+   │ Taux de succès            : 99.91         % │
    └────────────────────────────────────────────┘
 
 ⏱️  TEMPS :
-   • Connexion Spark  : 13.08s
-   • Chargement       : 13.64s
-   • Normalisation    : 13.89s
-   • TOTAL            : 42.66s (597 doc/s)
+   • Connexion Spark  : 19.66s
+   • Chargement       : 33.39s
+   • Normalisation    : 24.74s
+   • TOTAL            : 79.41s (309 doc/s)
 
 📁 STOCKAGE :
    • Source      : telecom_algerie.commentaires_sans_emojis

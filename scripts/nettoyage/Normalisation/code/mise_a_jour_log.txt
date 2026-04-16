@@ -1,0 +1,9 @@
+Mise à jour effectuée le 2026-04-16 15:17:56.940336
+Total CSV: 195
+Mis à jour: 195
+Non trouvés: 0
+Positifs: 22
+Négatifs: 86
+Neutres: 81
+annoté=True: 0
+annoté=False: 0

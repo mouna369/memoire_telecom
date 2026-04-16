@@ -1,406 +1,41 @@
-# # #!/usr/bin/env python3
-# # # -*- coding: utf-8 -*-
-
-# # # extraire_emojis_multinode.py
-# # # Extraction emojis → colonnes séparées
-# # # SOURCE      : commentaires_sans_doublons
-# # # DESTINATION : commentaires_sans_emojis
-# # # Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
-
-# # from pymongo import MongoClient
-# # import os, time, math, json
-
-# # # ============================================================
-# # # CONFIGURATION
-# # # ============================================================
-# # MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
-# # DB_NAME           = "telecom_algerie"
-# # COLLECTION_SOURCE = "commentaires_sans_doublons"
-# # COLLECTION_DEST   = "commentaires_sans_emojis"
-# # NB_WORKERS        = 3
-# # SPARK_MASTER      = "spark://spark-master:7077"
-# # DICT_PATH         = "/opt/dictionnaires/master_dict.json"
-# # RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_emojis.txt"
-
-# # # ============================================================
-# # # FONCTION WORKER
-# # # ============================================================
-# # def traiter_partition(partition):
-# #     """
-# #     Chaque Worker :
-# #     1. Charge le dictionnaire emojis depuis master_dict.json
-# #     2. Pour chaque document :
-# #        - Extrait les emojis → emojis_originaux
-# #        - Traduit en arabe  → emojis_sentiment
-# #        - Supprime les emojis du texte
-# #     3. Écrit dans MongoDB
-# #     """
-# #     import sys, json
-# #     sys.path.insert(0, '/opt/pymongo_libs')
-# #     from pymongo import MongoClient, InsertOne
-# #     from pymongo.errors import BulkWriteError
-
-# #     # ── Charger dictionnaire emojis ──────────────────────────
-# #     with open(DICT_PATH, encoding="utf-8") as f:
-# #         d = json.load(f)
-# #     emojis_dict = d["emojis"]  # {"😠": "غضب شديد", "👍": "اعجاب", ...}
-
-# #     # ── Connexion MongoDB Worker ─────────────────────────────
-# #     try:
-# #         client     = MongoClient("mongodb://mongodb_pfe:27017/",
-# #                                  serverSelectionTimeoutMS=5000)
-# #         db         = client["telecom_algerie"]
-# #         collection = db["commentaires_sans_emojis"]
-# #     except Exception as e:
-# #         yield {"_erreur": str(e), "statut": "connexion_failed"}
-# #         return
-
-# #     # ── Fonction extraction emojis ───────────────────────────
-# #     def extraire_emojis(texte):
-# #         """
-# #         Retourne :
-# #            emojis_originaux  : ["😠", "😠", "👎"]
-# #            emojis_sentiment  : ["غضب شديد", "غضب شديد", "عدم رضا"]
-# #            texte_propre      : texte sans emojis
-# #         """
-# #         if not isinstance(texte, str) or not texte.strip():
-# #             return [], [], texte or ""
-
-# #         originaux  = []
-# #         sentiments = []
-# #         texte_propre = texte
-
-# #         for emoji, sentiment in emojis_dict.items():
-# #             if emoji in texte_propre:
-# #                 # Compter combien de fois cet emoji apparaît
-# #                 count = texte_propre.count(emoji)
-# #                 for _ in range(count):
-# #                     originaux.append(emoji)
-# #                     sentiments.append(sentiment)
-# #                 # Supprimer l'emoji du texte
-# #                 texte_propre = texte_propre.replace(emoji, " ")
-
-# #         # Nettoyer les espaces multiples
-# #         import re
-# #         texte_propre = re.sub(r'\s+', ' ', texte_propre).strip()
-
-# #         return originaux, sentiments, texte_propre
-
-# #     # ── Traitement + écriture ────────────────────────────────
-# #     batch         = []
-# #     docs_traites  = 0
-# #     docs_avec_emojis = 0
-
-# #     for row in partition:
-# #         commentaire_original = row.get("Commentaire_Client", "") or ""
-
-# #         # Extraire emojis
-# #         originaux, sentiments, texte_propre = extraire_emojis(commentaire_original)
-
-# #         if originaux:
-# #             docs_avec_emojis += 1
-
-# #         doc = {
-# #             "_id"                   : row.get("_id"),
-# #             "Commentaire_Client"    : texte_propre,
-# #             "emojis_originaux"      : originaux,
-# #             "emojis_sentiment"      : sentiments,
-# #             "commentaire_moderateur": row.get("commentaire_moderateur"),
-# #             "date"                  : row.get("date"),
-# #             "source"                : row.get("source"),
-# #             "moderateur"            : row.get("moderateur"),
-# #             "metadata"              : row.get("metadata"),
-# #             "statut"                : row.get("statut"),
-# #         }
-# #         batch.append(InsertOne(doc))
-# #         docs_traites += 1
-
-# #         if len(batch) >= 1000:
-# #             try:
-# #                 collection.bulk_write(batch, ordered=False)
-# #             except BulkWriteError:
-# #                 pass
-# #             batch = []
-
-# #     if batch:
-# #         try:
-# #             collection.bulk_write(batch, ordered=False)
-# #         except BulkWriteError:
-# #             pass
-
-# #     client.close()
-# #     yield {
-# #         "docs_traites"     : docs_traites,
-# #         "docs_avec_emojis" : docs_avec_emojis,
-# #         "statut"           : "ok"
-# #     }
-
-# # # ============================================================
-# # # LECTURE DISTRIBUÉE
-# # # ============================================================
-# # def lire_partition_depuis_mongo(partition_info):
-# #     import sys
-# #     sys.path.insert(0, '/opt/pymongo_libs')
-# #     from pymongo import MongoClient
-
-# #     for item in partition_info:
-# #         client     = MongoClient("mongodb://mongodb_pfe:27017/",
-# #                                  serverSelectionTimeoutMS=5000)
-# #         db         = client["telecom_algerie"]
-# #         collection = db["commentaires_sans_doublons"]
-
-# #         curseur = collection.find(
-# #             {},
-# #             {"_id": 1, "Commentaire_Client": 1, "commentaire_moderateur": 1,
-# #              "date": 1, "source": 1, "moderateur": 1, "metadata": 1, "statut": 1}
-# #         ).skip(item["skip"]).limit(item["limit"])
-
-# #         for doc in curseur:
-# #             doc["_id"] = str(doc["_id"])
-# #             yield doc
-
-# #         client.close()
-
-# # # ============================================================
-# # # PIPELINE SPARK
-# # # ============================================================
-# # from pyspark.sql import SparkSession
-# # from datetime import datetime
-
-# # temps_debut = time.time()
-
-# # print("="*70)
-# # print("✨ EXTRACTION EMOJIS — Multi-Node Spark")
-# # print(f"   Source      : {COLLECTION_SOURCE}")
-# # print(f"   Destination : {COLLECTION_DEST}")
-# # print("   Traitement  :")
-# # print("   ✅ Extraction emojis → emojis_originaux")
-# # print("   ✅ Traduction arabe  → emojis_sentiment")
-# # print("   ✅ Suppression emojis du texte")
-# # print("   Spark 4.1.1 | mapPartitions | Workers → MongoDB direct")
-# # print("="*70)
-
-# # # 1. Connexion MongoDB Driver
-# # print("\n📂 Connexion MongoDB (Driver)...")
-# # client_driver = MongoClient(MONGO_URI_DRIVER)
-# # db_driver     = client_driver[DB_NAME]
-# # coll_source   = db_driver[COLLECTION_SOURCE]
-# # total_docs    = coll_source.count_documents({})
-# # print(f"✅ {total_docs} documents dans la source")
-
-# # # 2. Connexion Spark
-# # print("\n⚡ Connexion au cluster Spark...")
-# # temps_spark = time.time()
-
-# # spark = SparkSession.builder \
-# #     .appName("Extraction_Emojis_MultiNode") \
-# #     .master(SPARK_MASTER) \
-# #     .config("spark.executor.memory", "2g") \
-# #     .config("spark.executor.cores", "2") \
-# #     .config("spark.sql.shuffle.partitions", "4") \
-# #     .getOrCreate()
-
-# # spark.sparkContext.setLogLevel("WARN")
-# # print(f"✅ Spark connecté en {time.time()-temps_spark:.2f}s")
-
-# # # 3. Lecture distribuée
-# # print("\n📥 LECTURE DISTRIBUÉE...")
-# # docs_par_worker = math.ceil(total_docs / NB_WORKERS)
-# # plages = [
-# #     {"skip" : i * docs_par_worker,
-# #      "limit": min(docs_par_worker, total_docs - i * docs_par_worker)}
-# #     for i in range(NB_WORKERS)
-# # ]
-# # for idx, p in enumerate(plages):
-# #     print(f"   • Worker {idx+1} : skip={p['skip']}, limit={p['limit']}")
-
-# # rdd_data = spark.sparkContext \
-# #     .parallelize(plages, NB_WORKERS) \
-# #     .mapPartitions(lire_partition_depuis_mongo)
-
-# # df_spark     = spark.read.json(rdd_data.map(
-# #     lambda d: json.dumps(
-# #         {k: str(v) if not isinstance(v, (str, int, float, bool, type(None), list)) else v
-# #          for k, v in d.items()}
-# #     )
-# # ))
-# # total_lignes = df_spark.count()
-# # print(f"✅ {total_lignes} documents chargés")
-
-# # # 4. Vider destination
-# # coll_dest = db_driver[COLLECTION_DEST]
-# # coll_dest.delete_many({})
-# # print("\n🧹 Collection destination vidée")
-
-# # # 5. Traitement + écriture distribuée
-# # print("\n💾 EXTRACTION + ÉCRITURE DISTRIBUÉE...")
-# # temps_traitement = time.time()
-
-# # rdd_stats = df_spark.rdd \
-# #     .map(lambda row: row.asDict()) \
-# #     .mapPartitions(traiter_partition)
-
-# # stats              = rdd_stats.collect()
-# # total_traites      = sum(s.get("docs_traites",      0) for s in stats if s.get("statut") == "ok")
-# # total_avec_emojis  = sum(s.get("docs_avec_emojis",  0) for s in stats if s.get("statut") == "ok")
-# # erreurs            = [s for s in stats if "_erreur" in s]
-
-# # print(f"✅ Traitement terminé en {time.time()-temps_traitement:.2f}s")
-# # if erreurs:
-# #     for e in erreurs:
-# #         print(f"   ⚠️  {e.get('_erreur')}")
-
-# # # 6. Vérification finale
-# # print("\n🔎 VÉRIFICATION FINALE...")
-# # total_en_dest      = coll_dest.count_documents({})
-# # docs_sans_emojis   = coll_dest.count_documents({"emojis_originaux": []})
-# # docs_avec_emojis_v = coll_dest.count_documents({"emojis_originaux": {"$ne": []}})
-
-# # # Vérifier qu'il ne reste plus d'emojis dans le texte
-# # import json as json_mod
-# # with open("/home/mouna/projet_telecom/dictionnaires/master_dict.json", encoding="utf-8") as f:
-# #     emojis_list = list(json_mod.load(f)["emojis"].keys())
-
-# # emojis_restants = 0
-# # for emoji in emojis_list[:10]:  # vérifier les 10 premiers emojis
-# #     emojis_restants += coll_dest.count_documents(
-# #         {"Commentaire_Client": {"$regex": re.escape(emoji) if False else emoji}}
-# #     )
-
-# # print(f"   ┌──────────────────────────────────────────────────┐")
-# # print(f"   │ Documents insérés        : {total_en_dest:<20} │")
-# # print(f"   │ Docs avec emojis         : {docs_avec_emojis_v:<20} │")
-# # print(f"   │ Docs sans emojis         : {docs_sans_emojis:<20} │")
-# # print(f"   │ Statut : {'✅ SUCCÈS TOTAL !':<38} │")
-# # print(f"   └──────────────────────────────────────────────────┘")
-
-# # # 7. Exemple dans MongoDB
-# # print("\n📋 EXEMPLE DE DOCUMENT CRÉÉ :")
-# # exemple = coll_dest.find_one({"emojis_originaux": {"$ne": []}})
-# # if exemple:
-# #     print(f"   Texte original   : {exemple.get('Commentaire_Client', '')[:60]}...")
-# #     print(f"   emojis_originaux : {exemple.get('emojis_originaux', [])}")
-# #     print(f"   emojis_sentiment : {exemple.get('emojis_sentiment', [])}")
-
-# # # 8. Rapport
-# # temps_total = time.time() - temps_debut
-# # rapport = f"""
-# # {"="*70}
-# # RAPPORT — EXTRACTION EMOJIS (Multi-Node Spark)
-# # {"="*70}
-# # Date        : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-# # Spark 4.1.1 | Multi-Node | {NB_WORKERS} Workers
-# # Collection  : {DB_NAME}.{COLLECTION_SOURCE} → {COLLECTION_DEST}
-# # Dict        : {DICT_PATH}
-
-# # TRAITEMENT :
-# #    • Extraction emojis  → colonne emojis_originaux
-# #    • Traduction arabe   → colonne emojis_sentiment
-# #    • Suppression emojis → Commentaire_Client propre
-
-# # RÉSULTATS :
-# #    • Total source           : {total_lignes}
-# #    • Total inséré           : {total_en_dest}
-# #    • Docs avec emojis       : {docs_avec_emojis_v}
-# #    • Docs sans emojis       : {docs_sans_emojis}
-# #    • Pourcentage avec emojis: {docs_avec_emojis_v/total_en_dest*100:.1f}%
-
-# # STRUCTURE NOUVELLE COLLECTION :
-# #    • Commentaire_Client  : texte sans emojis
-# #    • emojis_originaux    : ["😠", "👎", ...]
-# #    • emojis_sentiment    : ["غضب شديد", "عدم رضا", ...]
-
-# # TEMPS :
-# #    • Total               : {temps_total:.2f}s
-# #    • Vitesse             : {total_lignes/temps_total:.0f} docs/s
-
-# # STOCKAGE :
-# #    • Source      : {DB_NAME}.{COLLECTION_SOURCE}
-# #    • Destination : {DB_NAME}.{COLLECTION_DEST}
-# # {"="*70}
-# # """
-
-# # os.makedirs(os.path.dirname(RAPPORT_PATH), exist_ok=True)
-# # with open(RAPPORT_PATH, "w", encoding="utf-8") as f:
-# #     f.write(rapport)
-
-# # spark.stop()
-# # client_driver.close()
-
-# # print(f"\n✅ Rapport : {RAPPORT_PATH}")
-# # print("\n" + "="*70)
-# # print("📊 RÉSUMÉ FINAL")
-# # print("="*70)
-# # print(f"   📥 Documents source      : {total_lignes}")
-# # print(f"   📤 Documents insérés     : {total_en_dest}")
-# # print(f"   😀 Docs avec emojis      : {docs_avec_emojis_v}")
-# # print(f"   📝 Docs sans emojis      : {docs_sans_emojis}")
-# # print(f"   ⏱️  Temps total           : {temps_total:.2f}s")
-# # print(f"   🚀 Vitesse               : {total_lignes/temps_total:.0f} docs/s")
-# # print(f"   📁 Destination           : {DB_NAME}.{COLLECTION_DEST}")
-# # print("="*70)
-# # print("🎉 EXTRACTION EMOJIS TERMINÉE EN MODE MULTI-NODE !")
-
 # #!/usr/bin/env python3
 # # -*- coding: utf-8 -*-
 
 # # extraire_emojis_multinode.py
-# # Extraction emojis → colonnes séparées + correction des chaînes "[]"
+# # Extraction emojis → colonnes séparées
 # # SOURCE      : commentaires_sans_doublons
 # # DESTINATION : commentaires_sans_emojis
 # # Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
 
 # from pymongo import MongoClient
-# import os, time, math, json, re
-# from datetime import datetime
+# import os, time, math, json
 
 # # ============================================================
 # # CONFIGURATION
 # # ============================================================
 # MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
 # DB_NAME           = "telecom_algerie"
-# COLLECTION_SOURCE = "commentaires_sans_doublons_tfidf"
-# COLLECTION_DEST   = "commentaires_sans_emojis_tfidf"
+# COLLECTION_SOURCE = "commentaires_sans_doublons"
+# COLLECTION_DEST   = "commentaires_sans_emojis"
 # NB_WORKERS        = 3
 # SPARK_MASTER      = "spark://spark-master:7077"
 # DICT_PATH         = "/opt/dictionnaires/master_dict.json"
 # RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_emojis.txt"
 
 # # ============================================================
-# # FONCTION DE CORRECTION INITIALE (une seule fois)
-# # ============================================================
-# def corriger_chaines_vides():
-#     """Convertit les chaînes '[]' en tableaux vides dans la collection source."""
-#     print("\n🔄 Correction des chaînes '[]' dans la collection source...")
-#     client = MongoClient(MONGO_URI_DRIVER)
-#     db = client[DB_NAME]
-#     coll = db[COLLECTION_SOURCE]
-#     res1 = coll.update_many(
-#         {"emojis_originaux": "[]"},
-#         {"$set": {"emojis_originaux": []}}
-#     )
-#     print(f"   → {res1.modified_count} docs corrigés pour emojis_originaux")
-#     res2 = coll.update_many(
-#         {"emojis_sentiment": "[]"},
-#         {"$set": {"emojis_sentiment": []}}
-#     )
-#     print(f"   → {res2.modified_count} docs corrigés pour emojis_sentiment")
-#     client.close()
-
-# # ============================================================
-# # FONCTION WORKER (avec extraction et suppression)
+# # FONCTION WORKER
 # # ============================================================
 # def traiter_partition(partition):
 #     """
 #     Chaque Worker :
 #     1. Charge le dictionnaire emojis depuis master_dict.json
 #     2. Pour chaque document :
-#        - Extrait les emojis → emojis_originaux (liste)
-#        - Traduit en arabe  → emojis_sentiment (liste)
+#        - Extrait les emojis → emojis_originaux
+#        - Traduit en arabe  → emojis_sentiment
 #        - Supprime les emojis du texte
 #     3. Écrit dans MongoDB
 #     """
-#     import sys, json, re
+#     import sys, json
 #     sys.path.insert(0, '/opt/pymongo_libs')
 #     from pymongo import MongoClient, InsertOne
 #     from pymongo.errors import BulkWriteError
@@ -408,40 +43,52 @@
 #     # ── Charger dictionnaire emojis ──────────────────────────
 #     with open(DICT_PATH, encoding="utf-8") as f:
 #         d = json.load(f)
-#     emojis_dict = d["emojis"]  # {"😠": "غضب شديد", ...}
+#     emojis_dict = d["emojis"]  # {"😠": "غضب شديد", "👍": "اعجاب", ...}
 
 #     # ── Connexion MongoDB Worker ─────────────────────────────
 #     try:
-#         client = MongoClient("mongodb://mongodb_pfe:27017/",
-#                              serverSelectionTimeoutMS=5000)
-#         db = client["telecom_algerie"]
-#         collection = db["commentaires_sans_emojis_tfidf"]
+#         client     = MongoClient("mongodb://mongodb_pfe:27017/",
+#                                  serverSelectionTimeoutMS=5000)
+#         db         = client["telecom_algerie"]
+#         collection = db["commentaires_sans_emojis"]
 #     except Exception as e:
 #         yield {"_erreur": str(e), "statut": "connexion_failed"}
 #         return
 
 #     # ── Fonction extraction emojis ───────────────────────────
 #     def extraire_emojis(texte):
+#         """
+#         Retourne :
+#            emojis_originaux  : ["😠", "😠", "👎"]
+#            emojis_sentiment  : ["غضب شديد", "غضب شديد", "عدم رضا"]
+#            texte_propre      : texte sans emojis
+#         """
 #         if not isinstance(texte, str) or not texte.strip():
 #             return [], [], texte or ""
 
-#         originaux = []
+#         originaux  = []
 #         sentiments = []
 #         texte_propre = texte
 
 #         for emoji, sentiment in emojis_dict.items():
 #             if emoji in texte_propre:
+#                 # Compter combien de fois cet emoji apparaît
 #                 count = texte_propre.count(emoji)
-#                 originaux.extend([emoji] * count)
-#                 sentiments.extend([sentiment] * count)
+#                 for _ in range(count):
+#                     originaux.append(emoji)
+#                     sentiments.append(sentiment)
+#                 # Supprimer l'emoji du texte
 #                 texte_propre = texte_propre.replace(emoji, " ")
 
+#         # Nettoyer les espaces multiples
+#         import re
 #         texte_propre = re.sub(r'\s+', ' ', texte_propre).strip()
+
 #         return originaux, sentiments, texte_propre
 
 #     # ── Traitement + écriture ────────────────────────────────
-#     batch = []
-#     docs_traites = 0
+#     batch         = []
+#     docs_traites  = 0
 #     docs_avec_emojis = 0
 
 #     for row in partition:
@@ -453,18 +100,17 @@
 #         if originaux:
 #             docs_avec_emojis += 1
 
-#         # Construction du document (enrichi)
 #         doc = {
-#             "_id": row.get("_id"),
-#             "Commentaire_Client": texte_propre,
-#             "emojis_originaux": originaux,
-#             "emojis_sentiment": sentiments,
+#             "_id"                   : row.get("_id"),
+#             "Commentaire_Client"    : texte_propre,
+#             "emojis_originaux"      : originaux,
+#             "emojis_sentiment"      : sentiments,
 #             "commentaire_moderateur": row.get("commentaire_moderateur"),
-#             "date": row.get("date"),
-#             "source": row.get("source"),
-#             "moderateur": row.get("moderateur"),
-#             "metadata": row.get("metadata"),
-#             "statut": row.get("statut"),
+#             "date"                  : row.get("date"),
+#             "source"                : row.get("source"),
+#             "moderateur"            : row.get("moderateur"),
+#             "metadata"              : row.get("metadata"),
+#             "statut"                : row.get("statut"),
 #         }
 #         batch.append(InsertOne(doc))
 #         docs_traites += 1
@@ -484,9 +130,9 @@
 
 #     client.close()
 #     yield {
-#         "docs_traites": docs_traites,
-#         "docs_avec_emojis": docs_avec_emojis,
-#         "statut": "ok"
+#         "docs_traites"     : docs_traites,
+#         "docs_avec_emojis" : docs_avec_emojis,
+#         "statut"           : "ok"
 #     }
 
 # # ============================================================
@@ -498,10 +144,10 @@
 #     from pymongo import MongoClient
 
 #     for item in partition_info:
-#         client = MongoClient("mongodb://mongodb_pfe:27017/",
-#                              serverSelectionTimeoutMS=5000)
-#         db = client["telecom_algerie"]
-#         collection = db["commentaires_sans_doublons_tfidf"]
+#         client     = MongoClient("mongodb://mongodb_pfe:27017/",
+#                                  serverSelectionTimeoutMS=5000)
+#         db         = client["telecom_algerie"]
+#         collection = db["commentaires_sans_doublons"]
 
 #         curseur = collection.find(
 #             {},
@@ -519,33 +165,30 @@
 # # PIPELINE SPARK
 # # ============================================================
 # from pyspark.sql import SparkSession
+# from datetime import datetime
 
 # temps_debut = time.time()
 
-# print("=" * 70)
-# print("✨ EXTRACTION + CORRECTION EMOJIS — Multi-Node Spark")
+# print("="*70)
+# print("✨ EXTRACTION EMOJIS — Multi-Node Spark")
 # print(f"   Source      : {COLLECTION_SOURCE}")
 # print(f"   Destination : {COLLECTION_DEST}")
 # print("   Traitement  :")
-# print("   ✅ Correction des chaînes '[]' → [] (source)")
-# print("   ✅ Extraction emojis → emojis_originaux (liste)")
-# print("   ✅ Traduction arabe  → emojis_sentiment (liste)")
+# print("   ✅ Extraction emojis → emojis_originaux")
+# print("   ✅ Traduction arabe  → emojis_sentiment")
 # print("   ✅ Suppression emojis du texte")
 # print("   Spark 4.1.1 | mapPartitions | Workers → MongoDB direct")
-# print("=" * 70)
+# print("="*70)
 
-# # ---- 1. Correction préalable des chaînes "[]" dans la source ----
-# corriger_chaines_vides()
-
-# # ---- 2. Connexion MongoDB Driver ----
+# # 1. Connexion MongoDB Driver
 # print("\n📂 Connexion MongoDB (Driver)...")
 # client_driver = MongoClient(MONGO_URI_DRIVER)
-# db_driver = client_driver[DB_NAME]
-# coll_source = db_driver[COLLECTION_SOURCE]
-# total_docs = coll_source.count_documents({})
+# db_driver     = client_driver[DB_NAME]
+# coll_source   = db_driver[COLLECTION_SOURCE]
+# total_docs    = coll_source.count_documents({})
 # print(f"✅ {total_docs} documents dans la source")
 
-# # ---- 3. Connexion Spark ----
+# # 2. Connexion Spark
 # print("\n⚡ Connexion au cluster Spark...")
 # temps_spark = time.time()
 
@@ -558,24 +201,24 @@
 #     .getOrCreate()
 
 # spark.sparkContext.setLogLevel("WARN")
-# print(f"✅ Spark connecté en {time.time() - temps_spark:.2f}s")
+# print(f"✅ Spark connecté en {time.time()-temps_spark:.2f}s")
 
-# # ---- 4. Lecture distribuée ----
+# # 3. Lecture distribuée
 # print("\n📥 LECTURE DISTRIBUÉE...")
 # docs_par_worker = math.ceil(total_docs / NB_WORKERS)
 # plages = [
-#     {"skip": i * docs_par_worker,
+#     {"skip" : i * docs_par_worker,
 #      "limit": min(docs_par_worker, total_docs - i * docs_par_worker)}
 #     for i in range(NB_WORKERS)
 # ]
 # for idx, p in enumerate(plages):
-#     print(f"   • Worker {idx + 1} : skip={p['skip']}, limit={p['limit']}")
+#     print(f"   • Worker {idx+1} : skip={p['skip']}, limit={p['limit']}")
 
 # rdd_data = spark.sparkContext \
 #     .parallelize(plages, NB_WORKERS) \
 #     .mapPartitions(lire_partition_depuis_mongo)
 
-# df_spark = spark.read.json(rdd_data.map(
+# df_spark     = spark.read.json(rdd_data.map(
 #     lambda d: json.dumps(
 #         {k: str(v) if not isinstance(v, (str, int, float, bool, type(None), list)) else v
 #          for k, v in d.items()}
@@ -584,12 +227,12 @@
 # total_lignes = df_spark.count()
 # print(f"✅ {total_lignes} documents chargés")
 
-# # ---- 5. Vider destination ----
+# # 4. Vider destination
 # coll_dest = db_driver[COLLECTION_DEST]
 # coll_dest.delete_many({})
 # print("\n🧹 Collection destination vidée")
 
-# # ---- 6. Traitement + écriture distribuée ----
+# # 5. Traitement + écriture distribuée
 # print("\n💾 EXTRACTION + ÉCRITURE DISTRIBUÉE...")
 # temps_traitement = time.time()
 
@@ -597,21 +240,32 @@
 #     .map(lambda row: row.asDict()) \
 #     .mapPartitions(traiter_partition)
 
-# stats = rdd_stats.collect()
-# total_traites = sum(s.get("docs_traites", 0) for s in stats if s.get("statut") == "ok")
-# total_avec_emojis = sum(s.get("docs_avec_emojis", 0) for s in stats if s.get("statut") == "ok")
-# erreurs = [s for s in stats if "_erreur" in s]
+# stats              = rdd_stats.collect()
+# total_traites      = sum(s.get("docs_traites",      0) for s in stats if s.get("statut") == "ok")
+# total_avec_emojis  = sum(s.get("docs_avec_emojis",  0) for s in stats if s.get("statut") == "ok")
+# erreurs            = [s for s in stats if "_erreur" in s]
 
-# print(f"✅ Traitement terminé en {time.time() - temps_traitement:.2f}s")
+# print(f"✅ Traitement terminé en {time.time()-temps_traitement:.2f}s")
 # if erreurs:
 #     for e in erreurs:
 #         print(f"   ⚠️  {e.get('_erreur')}")
 
-# # ---- 7. Vérification finale ----
+# # 6. Vérification finale
 # print("\n🔎 VÉRIFICATION FINALE...")
-# total_en_dest = coll_dest.count_documents({})
-# docs_sans_emojis = coll_dest.count_documents({"emojis_originaux": []})
+# total_en_dest      = coll_dest.count_documents({})
+# docs_sans_emojis   = coll_dest.count_documents({"emojis_originaux": []})
 # docs_avec_emojis_v = coll_dest.count_documents({"emojis_originaux": {"$ne": []}})
+
+# # Vérifier qu'il ne reste plus d'emojis dans le texte
+# import json as json_mod
+# with open("/home/mouna/projet_telecom/dictionnaires/master_dict.json", encoding="utf-8") as f:
+#     emojis_list = list(json_mod.load(f)["emojis"].keys())
+
+# emojis_restants = 0
+# for emoji in emojis_list[:10]:  # vérifier les 10 premiers emojis
+#     emojis_restants += coll_dest.count_documents(
+#         {"Commentaire_Client": {"$regex": re.escape(emoji) if False else emoji}}
+#     )
 
 # print(f"   ┌──────────────────────────────────────────────────┐")
 # print(f"   │ Documents insérés        : {total_en_dest:<20} │")
@@ -620,7 +274,7 @@
 # print(f"   │ Statut : {'✅ SUCCÈS TOTAL !':<38} │")
 # print(f"   └──────────────────────────────────────────────────┘")
 
-# # ---- 8. Exemple ----
+# # 7. Exemple dans MongoDB
 # print("\n📋 EXEMPLE DE DOCUMENT CRÉÉ :")
 # exemple = coll_dest.find_one({"emojis_originaux": {"$ne": []}})
 # if exemple:
@@ -628,23 +282,20 @@
 #     print(f"   emojis_originaux : {exemple.get('emojis_originaux', [])}")
 #     print(f"   emojis_sentiment : {exemple.get('emojis_sentiment', [])}")
 
-# # ---- 9. Rapport ----
+# # 8. Rapport
 # temps_total = time.time() - temps_debut
 # rapport = f"""
-# {"=" * 70}
-# RAPPORT — EXTRACTION + CORRECTION EMOJIS (Multi-Node Spark)
-# {"=" * 70}
+# {"="*70}
+# RAPPORT — EXTRACTION EMOJIS (Multi-Node Spark)
+# {"="*70}
 # Date        : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 # Spark 4.1.1 | Multi-Node | {NB_WORKERS} Workers
 # Collection  : {DB_NAME}.{COLLECTION_SOURCE} → {COLLECTION_DEST}
 # Dict        : {DICT_PATH}
 
-# CORRECTION PRÉALABLE :
-#    • Conversion des chaînes "[]" → [] dans la source
-
 # TRAITEMENT :
-#    • Extraction emojis  → colonne emojis_originaux (liste)
-#    • Traduction arabe   → colonne emojis_sentiment (liste)
+#    • Extraction emojis  → colonne emojis_originaux
+#    • Traduction arabe   → colonne emojis_sentiment
 #    • Suppression emojis → Commentaire_Client propre
 
 # RÉSULTATS :
@@ -652,16 +303,21 @@
 #    • Total inséré           : {total_en_dest}
 #    • Docs avec emojis       : {docs_avec_emojis_v}
 #    • Docs sans emojis       : {docs_sans_emojis}
-#    • Pourcentage avec emojis: {docs_avec_emojis_v / total_en_dest * 100:.1f}%
+#    • Pourcentage avec emojis: {docs_avec_emojis_v/total_en_dest*100:.1f}%
+
+# STRUCTURE NOUVELLE COLLECTION :
+#    • Commentaire_Client  : texte sans emojis
+#    • emojis_originaux    : ["😠", "👎", ...]
+#    • emojis_sentiment    : ["غضب شديد", "عدم رضا", ...]
 
 # TEMPS :
 #    • Total               : {temps_total:.2f}s
-#    • Vitesse             : {total_lignes / temps_total:.0f} docs/s
+#    • Vitesse             : {total_lignes/temps_total:.0f} docs/s
 
 # STOCKAGE :
 #    • Source      : {DB_NAME}.{COLLECTION_SOURCE}
 #    • Destination : {DB_NAME}.{COLLECTION_DEST}
-# {"=" * 70}
+# {"="*70}
 # """
 
 # os.makedirs(os.path.dirname(RAPPORT_PATH), exist_ok=True)
@@ -672,300 +328,240 @@
 # client_driver.close()
 
 # print(f"\n✅ Rapport : {RAPPORT_PATH}")
-# print("\n" + "=" * 70)
+# print("\n" + "="*70)
 # print("📊 RÉSUMÉ FINAL")
-# print("=" * 70)
+# print("="*70)
 # print(f"   📥 Documents source      : {total_lignes}")
 # print(f"   📤 Documents insérés     : {total_en_dest}")
 # print(f"   😀 Docs avec emojis      : {docs_avec_emojis_v}")
 # print(f"   📝 Docs sans emojis      : {docs_sans_emojis}")
 # print(f"   ⏱️  Temps total           : {temps_total:.2f}s")
-# print(f"   🚀 Vitesse               : {total_lignes / temps_total:.0f} docs/s")
+# print(f"   🚀 Vitesse               : {total_lignes/temps_total:.0f} docs/s")
 # print(f"   📁 Destination           : {DB_NAME}.{COLLECTION_DEST}")
-# print("=" * 70)
-# print("🎉 EXTRACTION + CORRECTION EMOJIS TERMINÉE EN MODE MULTI-NODE !")
-
+# print("="*70)
+# print("🎉 EXTRACTION EMOJIS TERMINÉE EN MODE MULTI-NODE !")
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-corriger_emojis_multinode.py – Correction + extraction + suppression des emojis (Spark multi-nœuds)
-AVEC GESTION DU FLAG "traite"
-Lit depuis une collection source avec traite=false
-Écrit dans une collection destination avec traite=false
-Marque traite=true dans la source après traitement
-"""
 
-from pyspark.sql import SparkSession
-from pymongo import MongoClient, InsertOne
-from pymongo.errors import BulkWriteError
-from datetime import datetime
+# extraire_emojis_multinode.py
+# Extraction emojis → colonnes séparées + correction des chaînes "[]"
+# SOURCE      : commentaires_sans_doublons
+# DESTINATION : commentaires_sans_emojis
+# Spark 4.1.1 | mapPartitions | Workers → MongoDB direct
+
+from pymongo import MongoClient
 import os, time, math, json, re
+from datetime import datetime
 
 # ============================================================
 # CONFIGURATION
 # ============================================================
 MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
-MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
 DB_NAME           = "telecom_algerie"
-COLLECTION_SOURCE = "commentaires_sans_url_arobase"  # Source (à corriger)
-COLLECTION_DEST   = "commentaires_sans_emojis"              # Destination
+COLLECTION_SOURCE = "commentaires_sans_doublons_combinision"
+COLLECTION_DEST   = "commentaires_sans_emojis_combinision"
 NB_WORKERS        = 3
 SPARK_MASTER      = "spark://spark-master:7077"
-RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_correction_emojis.txt"
-
-# Regex et dictionnaire pour les emojis
-_EMOJI_RANGES = (
-    '\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
-    '\U0001F1E0-\U0001F1FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF'
-    '\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F'
-    '\U0001FA70-\U0001FAFF\U0001FB00-\U0001FBFF\u2600-\u26FF\u2700-\u27BF'
-    '\u231A-\u231B\u23E9-\u23F3\u23F8-\u23FA\u25AA-\u25AB\u25B6\u25C0'
-    '\u25FB-\u25FE\u2614-\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA-\u26AB'
-    '\u26BD-\u26BE\u26C4-\u26C5\u26CE\u26D4\u26EA\u26F2-\u26F3\u26F5\u26FA'
-    '\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721'
-    '\u2728\u2733-\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763-\u2764'
-    '\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C'
-    '\u2B50\u2B55\u3030\u303D\u3297\u3299\uFE0F\u200D'
-)
-EMOJI_REGEX = re.compile(f"[{_EMOJI_RANGES}]+", flags=re.UNICODE)
-
-EMOJI_TO_SENTIMENT = {
-    "😪": "نعاس",
-    "😢": "tristesse",
-    "😡": "colère",
-    "😠": "mécontentement",
-    "😍": "amour",
-    "👍": "approbation",
-    "👎": "désapprobation",
-}
+DICT_PATH         = "/opt/dictionnaires/master_dict.json"
+RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_emojis.txt"
 
 # ============================================================
-# FONCTIONS DE GESTION DES FLAGS
+# FONCTION DE CORRECTION INITIALE (une seule fois)
 # ============================================================
-
-def get_nouveaux_commentaires_count():
-    """Compte les commentaires avec traite=false dans la source"""
-    client = MongoClient(MONGO_URI_DRIVER, serverSelectionTimeoutMS=5000)
+def corriger_chaines_vides():
+    """Convertit les chaînes '[]' en tableaux vides dans la collection source."""
+    print("\n🔄 Correction des chaînes '[]' dans la collection source...")
+    client = MongoClient(MONGO_URI_DRIVER)
     db = client[DB_NAME]
-    collection = db[COLLECTION_SOURCE]
-    count = collection.count_documents({"traite": False})
+    coll = db[COLLECTION_SOURCE]
+    res1 = coll.update_many(
+        {"emojis_originaux": "[]"},
+        {"$set": {"emojis_originaux": []}}
+    )
+    print(f"   → {res1.modified_count} docs corrigés pour emojis_originaux")
+    res2 = coll.update_many(
+        {"emojis_sentiment": "[]"},
+        {"$set": {"emojis_sentiment": []}}
+    )
+    print(f"   → {res2.modified_count} docs corrigés pour emojis_sentiment")
     client.close()
-    return count
 
+# ============================================================
+# FONCTION WORKER (avec extraction et suppression)
+# ============================================================
+def traiter_partition(partition):
+    """
+    Chaque Worker :
+    1. Charge le dictionnaire emojis depuis master_dict.json
+    2. Pour chaque document :
+       - Extrait les emojis → emojis_originaux (liste)
+       - Traduit en arabe  → emojis_sentiment (liste)
+       - Supprime les emojis du texte
+    3. Écrit dans MongoDB
+    """
+    import sys, json, re
+    sys.path.insert(0, '/opt/pymongo_libs')
+    from pymongo import MongoClient, InsertOne
+    from pymongo.errors import BulkWriteError
 
-def marquer_comme_traite(ids):
-    """Marque les commentaires comme traités (traite=True) - Version STRINGS"""
-    if not ids:
-        print("   ⚠️ Aucun ID à marquer")
+    # ── Charger dictionnaire emojis ──────────────────────────
+    with open(DICT_PATH, encoding="utf-8") as f:
+        d = json.load(f)
+    emojis_dict = d["emojis"]  # {"😠": "غضب شديد", ...}
+
+    # ── Connexion MongoDB Worker ─────────────────────────────
+    try:
+        client = MongoClient("mongodb://mongodb_pfe:27017/",
+                             serverSelectionTimeoutMS=5000)
+        db = client["telecom_algerie"]
+        collection = db["commentaires_sans_emojis_combinision"]
+    except Exception as e:
+        yield {"_erreur": str(e), "statut": "connexion_failed"}
         return
-    
-    client = MongoClient(MONGO_URI_DRIVER, serverSelectionTimeoutMS=5000)
-    db = client[DB_NAME]
-    collection = db[COLLECTION_SOURCE]
-    
-    # ⚠️ CORRECTION : Garder les IDs comme STRINGS (pas ObjectId)
-    valid_ids = []
-    for id_str in ids:
+
+    # ── Fonction extraction emojis ───────────────────────────
+    def extraire_emojis(texte):
+        if not isinstance(texte, str) or not texte.strip():
+            return [], [], texte or ""
+
+        originaux = []
+        sentiments = []
+        texte_propre = texte
+
+        for emoji, sentiment in emojis_dict.items():
+            if emoji in texte_propre:
+                count = texte_propre.count(emoji)
+                originaux.extend([emoji] * count)
+                sentiments.extend([sentiment] * count)
+                texte_propre = texte_propre.replace(emoji, " ")
+
+        texte_propre = re.sub(r'\s+', ' ', texte_propre).strip()
+        return originaux, sentiments, texte_propre
+
+    # ── Traitement + écriture ────────────────────────────────
+    batch = []
+    docs_traites = 0
+    docs_avec_emojis = 0
+
+    for row in partition:
+        commentaire_original = row.get("Commentaire_Client", "") or ""
+
+        # Extraire emojis
+        originaux, sentiments, texte_propre = extraire_emojis(commentaire_original)
+
+        if originaux:
+            docs_avec_emojis += 1
+
+        # Construction du document (enrichi)
+        doc = {
+            "_id": row.get("_id"),
+            "Commentaire_Client": texte_propre,
+            "emojis_originaux": originaux,
+            "emojis_sentiment": sentiments,
+            "commentaire_moderateur": row.get("commentaire_moderateur"),
+            "date": row.get("date"),
+            "source": row.get("source"),
+            "moderateur": row.get("moderateur"),
+            "metadata": row.get("metadata"),
+            "statut": row.get("statut"),
+        }
+        batch.append(InsertOne(doc))
+        docs_traites += 1
+
+        if len(batch) >= 1000:
+            try:
+                collection.bulk_write(batch, ordered=False)
+            except BulkWriteError:
+                pass
+            batch = []
+
+    if batch:
         try:
-            id_str = str(id_str).strip()
-            if len(id_str) > 0:
-                valid_ids.append(id_str)
-        except:
+            collection.bulk_write(batch, ordered=False)
+        except BulkWriteError:
             pass
-    
-    if valid_ids:
-        resultat = collection.update_many(
-            {"_id": {"$in": valid_ids}},  # ← Recherche par string
-            {"$set": {"traite": True, "date_traitement_emojis": datetime.now()}}
-        )
-        print(f"   ✅ {resultat.modified_count} commentaires marqués traite=True")
-    else:
-        print("   ⚠️ Aucun ID valide trouvé")
-    
+
     client.close()
-
+    yield {
+        "docs_traites": docs_traites,
+        "docs_avec_emojis": docs_avec_emojis,
+        "statut": "ok"
+    }
 
 # ============================================================
-# FONCTIONS DE TRAITEMENT
+# LECTURE DISTRIBUÉE
 # ============================================================
-
-def corriger_emojis_dans_document(doc):
-    """Corrige et extrait les emojis du document"""
-    if doc.get("emojis_originaux") == "[]":
-        doc["emojis_originaux"] = []
-    if doc.get("emojis_sentiment") == "[]":
-        doc["emojis_sentiment"] = []
-
-    if (not doc.get("emojis_originaux") or doc["emojis_originaux"] == []) and "Commentaire_Client" in doc:
-        texte = doc.get("Commentaire_Client", "")
-        if texte and isinstance(texte, str):
-            emojis = EMOJI_REGEX.findall(texte)
-            if emojis:
-                sentiments = [EMOJI_TO_SENTIMENT.get(e, "emoji") for e in emojis]
-                doc["emojis_originaux"] = emojis
-                doc["emojis_sentiment"] = sentiments
-                doc["emojis_corrige_spark"] = True
-                doc["date_correction_spark"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    for field in ["Commentaire_Client", "normalized_arabert", "normalized_full"]:
-        if field in doc and isinstance(doc[field], str):
-            original = doc[field]
-            cleaned = EMOJI_REGEX.sub('', original)
-            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-            if original != cleaned:
-                doc[field] = cleaned
-                doc["emojis_supprimes_du_texte"] = True
-                doc["date_suppression_spark"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return doc
-
-
-def lire_commentaires_non_traites_depuis_mongo(partition_info):
-    """
-    Lecture distribuée depuis MongoDB
-    Lit UNIQUEMENT les commentaires avec traite=False
-    """
+def lire_partition_depuis_mongo(partition_info):
     import sys
     sys.path.insert(0, '/opt/pymongo_libs')
     from pymongo import MongoClient
 
     for item in partition_info:
-        client = MongoClient(MONGO_URI_WORKERS, serverSelectionTimeoutMS=5000)
-        db = client[DB_NAME]
-        collection = db[COLLECTION_SOURCE]
-        
-        # Requête : seulement les commentaires non traités
-        query = {"traite": False}
-        
-        curseur = collection.find(query, {}).skip(item["skip"]).limit(item["limit"])
+        client = MongoClient("mongodb://mongodb_pfe:27017/",
+                             serverSelectionTimeoutMS=5000)
+        db = client["telecom_algerie"]
+        collection = db["commentaires_sans_doublons_combinision"]
+
+        curseur = collection.find(
+            {},
+            {"_id": 1, "Commentaire_Client": 1, "commentaire_moderateur": 1,
+             "date": 1, "source": 1, "moderateur": 1, "metadata": 1, "statut": 1}
+        ).skip(item["skip"]).limit(item["limit"])
+
         for doc in curseur:
-            original_id = str(doc["_id"])
-            doc["original_id"] = original_id
+            doc["_id"] = str(doc["_id"])
             yield doc
+
         client.close()
 
-
-def traiter_partition(partition):
-    """
-    Traite les documents et écrit dans la collection destination
-    """
-    import sys
-    sys.path.insert(0, '/opt/pymongo_libs')
-    from pymongo import MongoClient, InsertOne
-    from pymongo.errors import BulkWriteError
-
-    docs_partition = list(partition)
-    
-    if len(docs_partition) == 0:
-        return []
-    
-    docs_traites = []
-    ids_traites = []
-    docs_modifies = 0
-
-    for doc in docs_partition:
-        original_id = doc.get("original_id")
-        if not original_id:
-            original_id = str(doc.get("_id", ""))
-        
-        doc_corrige = corriger_emojis_dans_document(doc)
-        
-        # Ajouter le flag traite=False pour l'étape suivante
-        doc_corrige["traite"] = False
-        doc_corrige["_id"] = original_id
-        
-        docs_traites.append(doc_corrige)
-        ids_traites.append(original_id)
-        
-        if doc_corrige.get("emojis_corrige_spark") or doc_corrige.get("emojis_supprimes_du_texte"):
-            docs_modifies += 1
-    
-    # Écriture dans MongoDB (collection destination)
-    if docs_traites:
-        try:
-            client = MongoClient(MONGO_URI_WORKERS, serverSelectionTimeoutMS=5000)
-            db = client[DB_NAME]
-            collection = db[COLLECTION_DEST]
-        except Exception as e:
-            yield {"_erreur": str(e), "statut": "connexion_failed", "ids_traites": []}
-            return
-        
-        batch = []
-        for doc in docs_traites:
-            batch.append(InsertOne(doc))
-            if len(batch) >= 1000:
-                try:
-                    collection.bulk_write(batch, ordered=False)
-                except BulkWriteError:
-                    pass
-                batch = []
-        
-        if batch:
-            try:
-                collection.bulk_write(batch, ordered=False)
-            except BulkWriteError:
-                pass
-        
-        client.close()
-    
-    yield {
-        "docs_traites": len(docs_partition),
-        "docs_modifies": docs_modifies,
-        "ids_traites": ids_traites,
-        "statut": "ok"
-    }
-
-
 # ============================================================
-# PIPELINE SPARK AVEC GESTION DES FLAGS
+# PIPELINE SPARK
 # ============================================================
+from pyspark.sql import SparkSession
 
 temps_debut = time.time()
 
 print("=" * 70)
-print("✨ CORRECTION DES EMOJIS — Multi-Node Spark (avec flag traite)")
-print(f"   Source      : {DB_NAME}.{COLLECTION_SOURCE} (traite=false)")
-print(f"   Destination : {DB_NAME}.{COLLECTION_DEST}")
-print("   Opérations :")
-print("   ✅ Conversion '[]' → []")
-print("   ✅ Extraction emojis manquants")
+print("✨ EXTRACTION + CORRECTION EMOJIS — Multi-Node Spark")
+print(f"   Source      : {COLLECTION_SOURCE}")
+print(f"   Destination : {COLLECTION_DEST}")
+print("   Traitement  :")
+print("   ✅ Correction des chaînes '[]' → [] (source)")
+print("   ✅ Extraction emojis → emojis_originaux (liste)")
+print("   ✅ Traduction arabe  → emojis_sentiment (liste)")
 print("   ✅ Suppression emojis du texte")
-print("   ✅ Marquage traite=true dans la source")
+print("   Spark 4.1.1 | mapPartitions | Workers → MongoDB direct")
 print("=" * 70)
 
-# Vérifier les nouveaux commentaires
-nouveaux_count = get_nouveaux_commentaires_count()
+# ---- 1. Correction préalable des chaînes "[]" dans la source ----
+corriger_chaines_vides()
 
-if nouveaux_count == 0:
-    print("\n✅ Aucun nouveau commentaire à traiter (traite=false)")
-    print("   Le pipeline est à jour.")
-    exit(0)
-
-print(f"\n📥 {nouveaux_count} nouveaux commentaires à traiter (traite=false)")
-
-# 1. Connexion MongoDB Driver
+# ---- 2. Connexion MongoDB Driver ----
 print("\n📂 Connexion MongoDB (Driver)...")
 client_driver = MongoClient(MONGO_URI_DRIVER)
 db_driver = client_driver[DB_NAME]
 coll_source = db_driver[COLLECTION_SOURCE]
-total_docs = nouveaux_count
-print(f"✅ {total_docs} documents à traiter")
+total_docs = coll_source.count_documents({})
+print(f"✅ {total_docs} documents dans la source")
 
-# 2. Connexion Spark
+# ---- 3. Connexion Spark ----
 print("\n⚡ Connexion au cluster Spark...")
 temps_spark = time.time()
+
 spark = SparkSession.builder \
-    .appName("Correction_Emojis_With_Traite") \
+    .appName("Extraction_Emojis_MultiNode") \
     .master(SPARK_MASTER) \
     .config("spark.executor.memory", "2g") \
     .config("spark.executor.cores", "2") \
     .config("spark.sql.shuffle.partitions", "4") \
     .getOrCreate()
-spark.sparkContext.setLogLevel("WARN")
-print(f"✅ Spark connecté en {time.time()-temps_spark:.2f}s")
 
-# 3. Lecture distribuée (uniquement traite=false)
-print("\n📥 LECTURE DISTRIBUÉE (traite=false)...")
+spark.sparkContext.setLogLevel("WARN")
+print(f"✅ Spark connecté en {time.time() - temps_spark:.2f}s")
+
+# ---- 4. Lecture distribuée ----
+print("\n📥 LECTURE DISTRIBUÉE...")
 docs_par_worker = math.ceil(total_docs / NB_WORKERS)
 plages = [
     {"skip": i * docs_par_worker,
@@ -973,28 +569,28 @@ plages = [
     for i in range(NB_WORKERS)
 ]
 for idx, p in enumerate(plages):
-    print(f"   • Worker {idx+1} : skip={p['skip']}, limit={p['limit']}")
+    print(f"   • Worker {idx + 1} : skip={p['skip']}, limit={p['limit']}")
 
 rdd_data = spark.sparkContext \
     .parallelize(plages, NB_WORKERS) \
-    .mapPartitions(lire_commentaires_non_traites_depuis_mongo)
+    .mapPartitions(lire_partition_depuis_mongo)
 
 df_spark = spark.read.json(rdd_data.map(
     lambda d: json.dumps(
         {k: str(v) if not isinstance(v, (str, int, float, bool, type(None), list)) else v
-         for k, v in d.items() if k not in ["original_id"]}
+         for k, v in d.items()}
     )
 ))
 total_lignes = df_spark.count()
 print(f"✅ {total_lignes} documents chargés")
 
-# 4. Vider la collection destination
+# ---- 5. Vider destination ----
 coll_dest = db_driver[COLLECTION_DEST]
-# coll_dest.delete_many({})
-# print("\n🧹 Collection destination vidée")
-print(f"   📁 Collection destination: {coll_dest.count_documents({})} documents existants")
-# 5. Traitement + écriture dans la collection destination
-print("\n💾 CORRECTION + ÉCRITURE...")
+coll_dest.delete_many({})
+print("\n🧹 Collection destination vidée")
+
+# ---- 6. Traitement + écriture distribuée ----
+print("\n💾 EXTRACTION + ÉCRITURE DISTRIBUÉE...")
 temps_traitement = time.time()
 
 rdd_stats = df_spark.rdd \
@@ -1003,48 +599,452 @@ rdd_stats = df_spark.rdd \
 
 stats = rdd_stats.collect()
 total_traites = sum(s.get("docs_traites", 0) for s in stats if s.get("statut") == "ok")
-total_modifies = sum(s.get("docs_modifies", 0) for s in stats if s.get("statut") == "ok")
+total_avec_emojis = sum(s.get("docs_avec_emojis", 0) for s in stats if s.get("statut") == "ok")
 erreurs = [s for s in stats if "_erreur" in s]
 
-# Récupérer tous les IDs à marquer comme traités
-tous_ids_traites = []
-for s in stats:
-    if s.get("statut") == "ok":
-        tous_ids_traites.extend(s.get("ids_traites", []))
-
-print(f"✅ Traitement terminé en {time.time()-temps_traitement:.2f}s")
+print(f"✅ Traitement terminé en {time.time() - temps_traitement:.2f}s")
 if erreurs:
     for e in erreurs:
         print(f"   ⚠️  {e.get('_erreur')}")
 
-# 6. Marquer les commentaires comme traités dans la collection source
-if tous_ids_traites:
-    print(f"\n🏷️  Marquage de {len(tous_ids_traites)} commentaires...")
-    marquer_comme_traite(tous_ids_traites)
+# ---- 7. Vérification finale ----
+print("\n🔎 VÉRIFICATION FINALE...")
+total_en_dest = coll_dest.count_documents({})
+docs_sans_emojis = coll_dest.count_documents({"emojis_originaux": []})
+docs_avec_emojis_v = coll_dest.count_documents({"emojis_originaux": {"$ne": []}})
 
-# 7. Vérification finale
-total_dest = coll_dest.count_documents({})
-print(f"\n🔎 VÉRIFICATION FINALE...")
 print(f"   ┌──────────────────────────────────────────────────┐")
-print(f"   │ Documents source (traités) : {total_traites:<20} │")
-print(f"   │ Documents modifiés          : {total_modifies:<20} │")
-print(f"   │ Documents destination       : {total_dest:<20} │")
+print(f"   │ Documents insérés        : {total_en_dest:<20} │")
+print(f"   │ Docs avec emojis         : {docs_avec_emojis_v:<20} │")
+print(f"   │ Docs sans emojis         : {docs_sans_emojis:<20} │")
+print(f"   │ Statut : {'✅ SUCCÈS TOTAL !':<38} │")
 print(f"   └──────────────────────────────────────────────────┘")
 
-# 8. Exemple
-print("\n📋 EXEMPLE DE DOCUMENT CORRIGÉ :")
-exemple = db_driver[COLLECTION_DEST].find_one({"emojis_originaux": {"$ne": []}})
+# ---- 8. Exemple ----
+print("\n📋 EXEMPLE DE DOCUMENT CRÉÉ :")
+exemple = coll_dest.find_one({"emojis_originaux": {"$ne": []}})
 if exemple:
-    print(f"   Commentaire_Client : {exemple.get('Commentaire_Client', '')[:80]}...")
-    print(f"   emojis_originaux   : {exemple.get('emojis_originaux', [])}")
-    print(f"   emojis_sentiment   : {exemple.get('emojis_sentiment', [])}")
-    print(f"   traite             : {exemple.get('traite')}")
+    print(f"   Texte original   : {exemple.get('Commentaire_Client', '')[:60]}...")
+    print(f"   emojis_originaux : {exemple.get('emojis_originaux', [])}")
+    print(f"   emojis_sentiment : {exemple.get('emojis_sentiment', [])}")
+
+# ---- 9. Rapport ----
+temps_total = time.time() - temps_debut
+rapport = f"""
+{"=" * 70}
+RAPPORT — EXTRACTION + CORRECTION EMOJIS (Multi-Node Spark)
+{"=" * 70}
+Date        : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Spark 4.1.1 | Multi-Node | {NB_WORKERS} Workers
+Collection  : {DB_NAME}.{COLLECTION_SOURCE} → {COLLECTION_DEST}
+Dict        : {DICT_PATH}
+
+CORRECTION PRÉALABLE :
+   • Conversion des chaînes "[]" → [] dans la source
+
+TRAITEMENT :
+   • Extraction emojis  → colonne emojis_originaux (liste)
+   • Traduction arabe   → colonne emojis_sentiment (liste)
+   • Suppression emojis → Commentaire_Client propre
+
+RÉSULTATS :
+   • Total source           : {total_lignes}
+   • Total inséré           : {total_en_dest}
+   • Docs avec emojis       : {docs_avec_emojis_v}
+   • Docs sans emojis       : {docs_sans_emojis}
+   • Pourcentage avec emojis: {docs_avec_emojis_v / total_en_dest * 100:.1f}%
+
+TEMPS :
+   • Total               : {temps_total:.2f}s
+   • Vitesse             : {total_lignes / temps_total:.0f} docs/s
+
+STOCKAGE :
+   • Source      : {DB_NAME}.{COLLECTION_SOURCE}
+   • Destination : {DB_NAME}.{COLLECTION_DEST}
+{"=" * 70}
+"""
+
+os.makedirs(os.path.dirname(RAPPORT_PATH), exist_ok=True)
+with open(RAPPORT_PATH, "w", encoding="utf-8") as f:
+    f.write(rapport)
 
 spark.stop()
 client_driver.close()
 
-temps_total = time.time() - temps_debut
-print(f"\n⏱️  Temps total : {temps_total:.2f}s")
+print(f"\n✅ Rapport : {RAPPORT_PATH}")
+print("\n" + "=" * 70)
+print("📊 RÉSUMÉ FINAL")
 print("=" * 70)
-print("🎉 CORRECTION DES EMOJIS TERMINÉE !")
+print(f"   📥 Documents source      : {total_lignes}")
+print(f"   📤 Documents insérés     : {total_en_dest}")
+print(f"   😀 Docs avec emojis      : {docs_avec_emojis_v}")
+print(f"   📝 Docs sans emojis      : {docs_sans_emojis}")
+print(f"   ⏱️  Temps total           : {temps_total:.2f}s")
+print(f"   🚀 Vitesse               : {total_lignes / temps_total:.0f} docs/s")
+print(f"   📁 Destination           : {DB_NAME}.{COLLECTION_DEST}")
 print("=" * 70)
+print("🎉 EXTRACTION + CORRECTION EMOJIS TERMINÉE EN MODE MULTI-NODE !")
+
+
+# #!/usr/bin/env python3
+# # -*- coding: utf-8 -*-
+# """
+# corriger_emojis_multinode.py – Correction + extraction + suppression des emojis (Spark multi-nœuds)
+# AVEC GESTION DU FLAG "traite"
+# Lit depuis une collection source avec traite=false
+# Écrit dans une collection destination avec traite=false
+# Marque traite=true dans la source après traitement
+# """
+
+# from pyspark.sql import SparkSession
+# from pymongo import MongoClient, InsertOne
+# from pymongo.errors import BulkWriteError
+# from datetime import datetime
+# import os, time, math, json, re
+
+# # ============================================================
+# # CONFIGURATION
+# # ============================================================
+# MONGO_URI_DRIVER  = "mongodb://localhost:27018/"
+# MONGO_URI_WORKERS = "mongodb://mongodb_pfe:27017/"
+# DB_NAME           = "telecom_algerie"
+# COLLECTION_SOURCE = "commentaires_sans_doublons_combinision"  # Source (à corriger)
+# COLLECTION_DEST   = "commentaires_sans_emojis"              # Destination
+# NB_WORKERS        = 3
+# SPARK_MASTER      = "spark://spark-master:7077"
+# RAPPORT_PATH      = "/home/mouna/projet_telecom/scripts/nettoyage/Rapports/rapport_correction_emojis.txt"
+
+# # Regex et dictionnaire pour les emojis
+# _EMOJI_RANGES = (
+#     '\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF'
+#     '\U0001F1E0-\U0001F1FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF'
+#     '\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F'
+#     '\U0001FA70-\U0001FAFF\U0001FB00-\U0001FBFF\u2600-\u26FF\u2700-\u27BF'
+#     '\u231A-\u231B\u23E9-\u23F3\u23F8-\u23FA\u25AA-\u25AB\u25B6\u25C0'
+#     '\u25FB-\u25FE\u2614-\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA-\u26AB'
+#     '\u26BD-\u26BE\u26C4-\u26C5\u26CE\u26D4\u26EA\u26F2-\u26F3\u26F5\u26FA'
+#     '\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721'
+#     '\u2728\u2733-\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763-\u2764'
+#     '\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C'
+#     '\u2B50\u2B55\u3030\u303D\u3297\u3299\uFE0F\u200D'
+# )
+# EMOJI_REGEX = re.compile(f"[{_EMOJI_RANGES}]+", flags=re.UNICODE)
+
+# EMOJI_TO_SENTIMENT = {
+#     "😪": "نعاس",
+#     "😢": "tristesse",
+#     "😡": "colère",
+#     "😠": "mécontentement",
+#     "😍": "amour",
+#     "👍": "approbation",
+#     "👎": "désapprobation",
+# }
+
+# # ============================================================
+# # FONCTIONS DE GESTION DES FLAGS
+# # ============================================================
+
+# def get_nouveaux_commentaires_count():
+#     """Compte les commentaires avec traite=false dans la source"""
+#     client = MongoClient(MONGO_URI_DRIVER, serverSelectionTimeoutMS=5000)
+#     db = client[DB_NAME]
+#     collection = db[COLLECTION_SOURCE]
+#     count = collection.count_documents({"traite": False})
+#     client.close()
+#     return count
+
+
+# def marquer_comme_traite(ids):
+#     """Marque les commentaires comme traités (traite=True) - Version STRINGS"""
+#     if not ids:
+#         print("   ⚠️ Aucun ID à marquer")
+#         return
+    
+#     client = MongoClient(MONGO_URI_DRIVER, serverSelectionTimeoutMS=5000)
+#     db = client[DB_NAME]
+#     collection = db[COLLECTION_SOURCE]
+    
+#     # ⚠️ CORRECTION : Garder les IDs comme STRINGS (pas ObjectId)
+#     valid_ids = []
+#     for id_str in ids:
+#         try:
+#             id_str = str(id_str).strip()
+#             if len(id_str) > 0:
+#                 valid_ids.append(id_str)
+#         except:
+#             pass
+    
+#     if valid_ids:
+#         resultat = collection.update_many(
+#             {"_id": {"$in": valid_ids}},  # ← Recherche par string
+#             {"$set": {"traite": True, "date_traitement_emojis": datetime.now()}}
+#         )
+#         print(f"   ✅ {resultat.modified_count} commentaires marqués traite=True")
+#     else:
+#         print("   ⚠️ Aucun ID valide trouvé")
+    
+#     client.close()
+
+
+# # ============================================================
+# # FONCTIONS DE TRAITEMENT
+# # ============================================================
+
+# def corriger_emojis_dans_document(doc):
+#     """Corrige et extrait les emojis du document"""
+#     if doc.get("emojis_originaux") == "[]":
+#         doc["emojis_originaux"] = []
+#     if doc.get("emojis_sentiment") == "[]":
+#         doc["emojis_sentiment"] = []
+
+#     if (not doc.get("emojis_originaux") or doc["emojis_originaux"] == []) and "Commentaire_Client" in doc:
+#         texte = doc.get("Commentaire_Client", "")
+#         if texte and isinstance(texte, str):
+#             emojis = EMOJI_REGEX.findall(texte)
+#             if emojis:
+#                 sentiments = [EMOJI_TO_SENTIMENT.get(e, "emoji") for e in emojis]
+#                 doc["emojis_originaux"] = emojis
+#                 doc["emojis_sentiment"] = sentiments
+#                 doc["emojis_corrige_spark"] = True
+#                 doc["date_correction_spark"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+#     for field in ["Commentaire_Client", "normalized_arabert", "normalized_full"]:
+#         if field in doc and isinstance(doc[field], str):
+#             original = doc[field]
+#             cleaned = EMOJI_REGEX.sub('', original)
+#             cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+#             if original != cleaned:
+#                 doc[field] = cleaned
+#                 doc["emojis_supprimes_du_texte"] = True
+#                 doc["date_suppression_spark"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     return doc
+
+
+# def lire_commentaires_non_traites_depuis_mongo(partition_info):
+#     """
+#     Lecture distribuée depuis MongoDB
+#     Lit UNIQUEMENT les commentaires avec traite=False
+#     """
+#     import sys
+#     sys.path.insert(0, '/opt/pymongo_libs')
+#     from pymongo import MongoClient
+
+#     for item in partition_info:
+#         client = MongoClient(MONGO_URI_WORKERS, serverSelectionTimeoutMS=5000)
+#         db = client[DB_NAME]
+#         collection = db[COLLECTION_SOURCE]
+        
+#         # Requête : seulement les commentaires non traités
+#         query = {"traite": False}
+        
+#         curseur = collection.find(query, {}).skip(item["skip"]).limit(item["limit"])
+#         for doc in curseur:
+#             original_id = str(doc["_id"])
+#             doc["original_id"] = original_id
+#             yield doc
+#         client.close()
+
+
+# def traiter_partition(partition):
+#     """
+#     Traite les documents et écrit dans la collection destination
+#     """
+#     import sys
+#     sys.path.insert(0, '/opt/pymongo_libs')
+#     from pymongo import MongoClient, InsertOne
+#     from pymongo.errors import BulkWriteError
+
+#     docs_partition = list(partition)
+    
+#     if len(docs_partition) == 0:
+#         return []
+    
+#     docs_traites = []
+#     ids_traites = []
+#     docs_modifies = 0
+
+#     for doc in docs_partition:
+#         original_id = doc.get("original_id")
+#         if not original_id:
+#             original_id = str(doc.get("_id", ""))
+        
+#         doc_corrige = corriger_emojis_dans_document(doc)
+        
+#         # Ajouter le flag traite=False pour l'étape suivante
+#         doc_corrige["traite"] = False
+#         doc_corrige["_id"] = original_id
+        
+#         docs_traites.append(doc_corrige)
+#         ids_traites.append(original_id)
+        
+#         if doc_corrige.get("emojis_corrige_spark") or doc_corrige.get("emojis_supprimes_du_texte"):
+#             docs_modifies += 1
+    
+#     # Écriture dans MongoDB (collection destination)
+#     if docs_traites:
+#         try:
+#             client = MongoClient(MONGO_URI_WORKERS, serverSelectionTimeoutMS=5000)
+#             db = client[DB_NAME]
+#             collection = db[COLLECTION_DEST]
+#         except Exception as e:
+#             yield {"_erreur": str(e), "statut": "connexion_failed", "ids_traites": []}
+#             return
+        
+#         batch = []
+#         for doc in docs_traites:
+#             batch.append(InsertOne(doc))
+#             if len(batch) >= 1000:
+#                 try:
+#                     collection.bulk_write(batch, ordered=False)
+#                 except BulkWriteError:
+#                     pass
+#                 batch = []
+        
+#         if batch:
+#             try:
+#                 collection.bulk_write(batch, ordered=False)
+#             except BulkWriteError:
+#                 pass
+        
+#         client.close()
+    
+#     yield {
+#         "docs_traites": len(docs_partition),
+#         "docs_modifies": docs_modifies,
+#         "ids_traites": ids_traites,
+#         "statut": "ok"
+#     }
+
+
+# # ============================================================
+# # PIPELINE SPARK AVEC GESTION DES FLAGS
+# # ============================================================
+
+# temps_debut = time.time()
+
+# print("=" * 70)
+# print("✨ CORRECTION DES EMOJIS — Multi-Node Spark (avec flag traite)")
+# print(f"   Source      : {DB_NAME}.{COLLECTION_SOURCE} (traite=false)")
+# print(f"   Destination : {DB_NAME}.{COLLECTION_DEST}")
+# print("   Opérations :")
+# print("   ✅ Conversion '[]' → []")
+# print("   ✅ Extraction emojis manquants")
+# print("   ✅ Suppression emojis du texte")
+# print("   ✅ Marquage traite=true dans la source")
+# print("=" * 70)
+
+# # Vérifier les nouveaux commentaires
+# nouveaux_count = get_nouveaux_commentaires_count()
+
+# if nouveaux_count == 0:
+#     print("\n✅ Aucun nouveau commentaire à traiter (traite=false)")
+#     print("   Le pipeline est à jour.")
+#     exit(0)
+
+# print(f"\n📥 {nouveaux_count} nouveaux commentaires à traiter (traite=false)")
+
+# # 1. Connexion MongoDB Driver
+# print("\n📂 Connexion MongoDB (Driver)...")
+# client_driver = MongoClient(MONGO_URI_DRIVER)
+# db_driver = client_driver[DB_NAME]
+# coll_source = db_driver[COLLECTION_SOURCE]
+# total_docs = nouveaux_count
+# print(f"✅ {total_docs} documents à traiter")
+
+# # 2. Connexion Spark
+# print("\n⚡ Connexion au cluster Spark...")
+# temps_spark = time.time()
+# spark = SparkSession.builder \
+#     .appName("Correction_Emojis_With_Traite") \
+#     .master(SPARK_MASTER) \
+#     .config("spark.executor.memory", "2g") \
+#     .config("spark.executor.cores", "2") \
+#     .config("spark.sql.shuffle.partitions", "4") \
+#     .getOrCreate()
+# spark.sparkContext.setLogLevel("WARN")
+# print(f"✅ Spark connecté en {time.time()-temps_spark:.2f}s")
+
+# # 3. Lecture distribuée (uniquement traite=false)
+# print("\n📥 LECTURE DISTRIBUÉE (traite=false)...")
+# docs_par_worker = math.ceil(total_docs / NB_WORKERS)
+# plages = [
+#     {"skip": i * docs_par_worker,
+#      "limit": min(docs_par_worker, total_docs - i * docs_par_worker)}
+#     for i in range(NB_WORKERS)
+# ]
+# for idx, p in enumerate(plages):
+#     print(f"   • Worker {idx+1} : skip={p['skip']}, limit={p['limit']}")
+
+# rdd_data = spark.sparkContext \
+#     .parallelize(plages, NB_WORKERS) \
+#     .mapPartitions(lire_commentaires_non_traites_depuis_mongo)
+
+# df_spark = spark.read.json(rdd_data.map(
+#     lambda d: json.dumps(
+#         {k: str(v) if not isinstance(v, (str, int, float, bool, type(None), list)) else v
+#          for k, v in d.items() if k not in ["original_id"]}
+#     )
+# ))
+# total_lignes = df_spark.count()
+# print(f"✅ {total_lignes} documents chargés")
+
+# # 4. Vider la collection destination
+# coll_dest = db_driver[COLLECTION_DEST]
+# # coll_dest.delete_many({})
+# # print("\n🧹 Collection destination vidée")
+# print(f"   📁 Collection destination: {coll_dest.count_documents({})} documents existants")
+# # 5. Traitement + écriture dans la collection destination
+# print("\n💾 CORRECTION + ÉCRITURE...")
+# temps_traitement = time.time()
+
+# rdd_stats = df_spark.rdd \
+#     .map(lambda row: row.asDict()) \
+#     .mapPartitions(traiter_partition)
+
+# stats = rdd_stats.collect()
+# total_traites = sum(s.get("docs_traites", 0) for s in stats if s.get("statut") == "ok")
+# total_modifies = sum(s.get("docs_modifies", 0) for s in stats if s.get("statut") == "ok")
+# erreurs = [s for s in stats if "_erreur" in s]
+
+# # Récupérer tous les IDs à marquer comme traités
+# tous_ids_traites = []
+# for s in stats:
+#     if s.get("statut") == "ok":
+#         tous_ids_traites.extend(s.get("ids_traites", []))
+
+# print(f"✅ Traitement terminé en {time.time()-temps_traitement:.2f}s")
+# if erreurs:
+#     for e in erreurs:
+#         print(f"   ⚠️  {e.get('_erreur')}")
+
+# # 6. Marquer les commentaires comme traités dans la collection source
+# if tous_ids_traites:
+#     print(f"\n🏷️  Marquage de {len(tous_ids_traites)} commentaires...")
+#     marquer_comme_traite(tous_ids_traites)
+
+# # 7. Vérification finale
+# total_dest = coll_dest.count_documents({})
+# print(f"\n🔎 VÉRIFICATION FINALE...")
+# print(f"   ┌──────────────────────────────────────────────────┐")
+# print(f"   │ Documents source (traités) : {total_traites:<20} │")
+# print(f"   │ Documents modifiés          : {total_modifies:<20} │")
+# print(f"   │ Documents destination       : {total_dest:<20} │")
+# print(f"   └──────────────────────────────────────────────────┘")
+
+# # 8. Exemple
+# print("\n📋 EXEMPLE DE DOCUMENT CORRIGÉ :")
+# exemple = db_driver[COLLECTION_DEST].find_one({"emojis_originaux": {"$ne": []}})
+# if exemple:
+#     print(f"   Commentaire_Client : {exemple.get('Commentaire_Client', '')[:80]}...")
+#     print(f"   emojis_originaux   : {exemple.get('emojis_originaux', [])}")
+#     print(f"   emojis_sentiment   : {exemple.get('emojis_sentiment', [])}")
+#     print(f"   traite             : {exemple.get('traite')}")
+
+# spark.stop()
+# client_driver.close()
+
+# temps_total = time.time() - temps_debut
+# print(f"\n⏱️  Temps total : {temps_total:.2f}s")
+# print("=" * 70)
+# print("🎉 CORRECTION DES EMOJIS TERMINÉE !")
+# print("=" * 70)
